@@ -31,7 +31,7 @@ function failPolicyList(param,err){
 export function queryPolicyList(param){
 	return function(dispatch){
 		dispatch(requestPolicyList(param));
-		return fetch('https://api.github.com',{
+		return fetch('../assets/json/policyList.json',{
 			method: 'get'
 		}).then(response=>response.text())
 		.then(data=>{
