@@ -1,11 +1,24 @@
 ﻿import React from 'react';
 //声明组件
-class Nav extends React.Component{
+const Nav = React.createClass({
+	getInitialState(){
+		return {
+			isLogin: true,
+			userName: 'Nicky.Wu'
+		};
+	},
 	render(){
+		const loginHtml = this.state.isLogin ? (
+			<div className="logined">
+				欢迎您:{this.state.userName}
+			</div>
+		) : (
+			<div className="no-login">未登录.</div>
+		);
 		return(
-			<div className="nav">This is nav.</div>
+			<div className="nav">{loginHtml}</div>
 		)
 	}
-};
+});
 //导出组件
 export default Nav;
