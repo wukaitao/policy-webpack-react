@@ -1,0 +1,19 @@
+﻿import * as types from '../actions/actionType.js';
+
+//reducer其实也是一个方法而已，三处是state和action,返回值是新的state
+export function policyList(state=[],action){
+	switch(action.type){
+		case types.PolicyListData:
+			if(action.status=='beforeSend'){
+				return state;
+			}else if(action.status=='success'){
+				console.log(action.data);
+				const result = [{"policyKeyMsg":"1 Plan | 1 Member","updateTime":"2017-01-06 11:10:07","updateBy":"admin3","policyName":"【尤英】外包测试保单-复制-012","policyStatus":1,"isTemplate":0,"policyId":387},{"policyKeyMsg":"1 Plan | 1 Member","updateTime":"2017-01-05 19:22:39","updateBy":"admin1","policyName":"黄金计划-A0001-173","policyStatus":1,"isTemplate":0,"policyId":173},{"policyKeyMsg":"1 Plan | 1 Member","updateTime":"2017-01-04 15:56:13","updateBy":"admin3","policyName":"【尤英】外包测试保单-复制-013","policyStatus":0,"isTemplate":0,"policyId":425},{"policyKeyMsg":"","updateTime":"2017-01-04 15:20:49","updateBy":"admin3","policyName":"【尤英】发送新建TOB","policyStatus":0,"isTemplate":0,"policyId":444},{"policyKeyMsg":"","updateTime":"2016-12-30 16:55:15","updateBy":"admin3","policyName":"【尤英】发送policy","policyStatus":0,"isTemplate":0,"policyId":443},{"policyKeyMsg":"2 Plan | 19 Member","updateTime":"2016-12-27 09:02:20","updateBy":"admin1234567","policyName":"【Jaye】中方董事会成员-800402_W（不可动）","policyStatus":1,"isTemplate":0,"policyId":373},{"policyKeyMsg":"2 Plan | 5 Member","updateTime":"2016-12-27 09:02:09","updateBy":"admin1234567","policyName":"【Jaye】Director Level-800327_001（不可动）","policyStatus":1,"isTemplate":0,"policyId":371},{"policyKeyMsg":"2 Plan | 4 Member","updateTime":"2016-12-27 09:01:50","updateBy":"admin1234567","policyName":"【Jaye】Director Level-800326|001（不可动）","policyStatus":1,"isTemplate":0,"policyId":372},{"policyKeyMsg":"1 Plan | 18 Member","updateTime":"2016-12-27 09:01:39","updateBy":"admin1234567","policyName":"【Jaye】Excom level-800481（不可动）","policyStatus":1,"isTemplate":0,"policyId":370},{"policyKeyMsg":"1 Plan | 25 Member","updateTime":"2016-12-27 09:01:04","updateBy":"admin1234567","policyName":"【Jaye】高级经理计划-801106（不可动）","policyStatus":1,"isTemplate":0,"policyId":374},{"policyKeyMsg":"1 Plan | 160 Member","updateTime":"2016-12-27 09:00:49","updateBy":"admin1234567","policyName":"【Jaye】高级经理计划-801105（不可动）","policyStatus":1,"isTemplate":0,"policyId":375},{"policyKeyMsg":"1 Plan | 1 Member","updateTime":"2016-12-26 17:01:03","updateBy":"admin","policyName":"【尤英】外包测试保单-复制-017","policyStatus":0,"isTemplate":0,"policyId":438},{"policyKeyMsg":"","updateTime":"2016-12-19 11:45:20","updateBy":"admin","policyName":"[勿删勿改]招行高管计划-中国大陆和香港以及任职之分行所在国家","policyStatus":0,"isTemplate":0,"policyId":437},{"policyKeyMsg":"","updateTime":"2016-12-19 11:43:02","updateBy":"admin","policyName":"[勿删勿改]招行高管计划-中国大陆和香港","policyStatus":0,"isTemplate":0,"policyId":436},{"policyKeyMsg":"","updateTime":"2016-12-19 11:41:12","updateBy":"admin","policyName":"[勿删勿改]招行高管计划-田行长","policyStatus":0,"isTemplate":0,"policyId":434},{"policyKeyMsg":"","updateTime":"2016-12-19 11:40:43","updateBy":"admin","policyName":"[勿删勿改]招行高管计划-全球","policyStatus":1,"isTemplate":0,"policyId":435},{"policyKeyMsg":"","updateTime":"2016-12-19 11:04:10","updateBy":"admin","policyName":"【尤英】外包测试保单-复制-016","policyStatus":0,"isTemplate":0,"policyId":433},{"policyKeyMsg":"1 Plan | 51 Member","updateTime":"2016-12-16 10:28:01","updateBy":"admin1234567","policyName":"【Jaye】所有人测试保单（不可动）","policyStatus":1,"isTemplate":0,"policyId":355},{"policyKeyMsg":"","updateTime":"2016-12-16 09:55:11","updateBy":"admin","policyName":"【尤英】测试TOB-2","policyStatus":0,"isTemplate":0,"policyId":431},{"policyKeyMsg":"","updateTime":"2016-12-15 16:23:47","updateBy":"admin","policyName":"【尤英】TOB测试-1","policyStatus":0,"isTemplate":0,"policyId":427}];
+				return result;
+			}else if(action.status=='error'){
+				return state;
+			};
+		default:
+			return state;
+	};
+};

@@ -1,0 +1,29 @@
+﻿html,body{
+	font-size: 12px;
+	font-family: '微软雅黑';
+	margin: 0;
+	padding: 0;
+	color: #333;
+}
+a{
+	text-decoration: none;
+}
+/*common start*/
+button,input,textarea{
+    vertical-align: middle;
+}
+table{
+    border-collapse: collapse;
+}
+.text-center{
+    text-align: center;
+}
+.text-ellipsis{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+i{
+    vertical-align: baseline;
+}
+/*common end*/

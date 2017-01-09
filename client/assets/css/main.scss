@@ -1,0 +1,73 @@
+﻿@import 'common.scss';
+
+/*policymanage*/
+.policy-manage .data-table{
+    width: 100%;
+    min-width: 980px;
+    table-layout: fixed;
+}
+.policy-manage .data-table thead tr{
+    background-color: #ccc;
+    font-weight: bold;
+    text-align: center;
+}
+.policy-manage .data-table .template{
+    color: #2679c5;
+}
+.policy-manage .data-table th{
+    white-space: nowrap;
+    overflow: hidden;
+    line-height: 32px;
+    padding: 0px 5px;
+}
+.policy-manage .data-table th:first-child{
+    font-size: 12px;
+}
+.policy-manage .data-table th input[type="checkbox"]{
+    margin-left: -2px;
+}
+.policy-manage .data-table th button{
+    background-color: #eee;
+    font-size: 12px;
+    padding: 0px 2px;
+    line-height: 20px;
+    vertical-align: baseline;
+    border: none;
+}
+.policy-manage .data-table td{
+    line-height: 28px;
+    padding: 0px 5px;
+}
+.policy-manage .data-table td .btn{
+    font-size: 12px;
+    background-color: #ddd;
+    border-color: #ddd;
+    line-height: 24px;
+    width: 50px;
+    margin: 2px 0px;
+    padding: 0px;
+    border-radius: 5px;
+}
+.policy-manage .data-table td .btn:hover{
+    background-color: #bbb;
+    border-color: #bbb;
+}
+.policy-manage .data-table td .btn:active{
+    box-shadow: 0px 1px 5px rgba(0,0,0,0.15) inset;
+}
+.policy-manage .data-table tbody tr:nth-child(even){
+    background-color: #f0f0f0;
+}
+.policy-manage .data-table tbody tr:hover{
+    background-color: #97c5ef;
+}
+.policy-manage .data-table tbody tr i{
+    display: none;
+    vertical-align: middle;
+    margin: 0px 0px 0px 5px;
+    font-size: 12px;
+    cursor: pointer;
+}
+.policy-manage .data-table tbody tr:hover i{
+    display: inline-block;
+}
