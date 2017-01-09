@@ -1,12 +1,16 @@
 ﻿const HtmlWebpackPlugin =  require('html-webpack-plugin');//生成html中间件
 const ExtractTextPlugin = require('extract-text-webpack-plugin');//抽取css样式
+const TransferWebpackPlugin = require('transfer-webpack-plugin');;//复制文件
 const webpack = require('webpack');//打包工具
 const path = require('path');//路径中间件
 
 const config = {
 	entry: {
+		common: [
+			'./client/assets/js/jquery/jquery.js',
+			'./client/assets/js/jquery/jquery.md5.js'
+		],
 		main: [
-			'./client/vendors.js',
 			'./client/main.js'
 		]
 	},
@@ -20,24 +24,19 @@ const config = {
 	module: {
 		loaders: [
 			{
-				test: /\.html/,
-				loader: 'html!resolve-url'
-			},
-			{
-				test: /\.vue/,
-				loader: 'vue'
-			},
-			{
 				test: /\.(js|jsx)$/,
 				exclude: /node_modules/,
-				loader: 'babel-loader?presets=es2015'
+				loader: 'babel-loader',
+				query: {
+					presets: ['es2015','react']
+				}
 			},
 			{
 				test: /\.json$/,
 				loader: 'json'
 			},
 			{
-				test: /\.(css|scss|less)$/,
+				test: /\.(css|scss)$/,
 				loader: ExtractTextPlugin.extract('style-loader','css-loader','resolve-url','sass-loader')
 			},
 			{
@@ -55,28 +54,22 @@ const config = {
 					limit: 10000,
 					name: 'assets/fonts/[name].[hash].[ext]'
 				}
+			},
+			{
+				test: path.resolve(__dirname,'../client/assets/js/jquery/jquery.js'),
+				loader: 'expose?jQuery!expose?$'
+			},
+			{
+				test: path.resolve(__dirname,'../client/assets/js/fetch/fetch.js'),
+				loader: 'expose?fetch'
 			}
 		]
 	},
-	vue: {
-		//vue编译器配置(js/style/css/scss/less等)
-		loaders: {
-			js: 'babel-loader?presets=es2015'
-		}
-	},
-	resolve: {
-		//自动扩展文件后缀名
-        extensions: ['','.js','json','.css','.scss'],
-    	//别名配置
-        alias: {
-            'vue': path.resolve(__dirname,'../node_modules/vue/dist/vue.js'),
-            'vue-router': path.resolve(__dirname,'../node_modules/vue-router/dist/vue-router.js'),
-            'vue-resource': path.resolve(__dirname,'../node_modules/vue-resource/dist/vue-resource.js'),
-            'vuex': path.resolve(__dirname,'../node_modules/vuex/dist/vuex.js')
-        }
-	},
 	plugins: [
 		new ExtractTextPlugin('assets/css/[name].[hash].css'),//抽取css样式
+		new TransferWebpackPlugin(//复制json文件
+			[{from: './client/json'}], path.resolve(__dirname,'../dist/assets/json')
+		),
 		new HtmlWebpackPlugin({
 			filename: 'index.html',//文件名
 			title: 'my first project by webpack.',//标题(会被template模板覆盖)

@@ -1,7 +1,6 @@
-﻿'use strict'
-const HtmlWebpackPlugin =  require('html-webpack-plugin');//生成html中间件
-const webpack = require('webpack');//打包工具
+﻿const HtmlWebpackPlugin =  require('html-webpack-plugin');//生成html中间件
 const hotMiddlewareScript = 'webpack-hot-middleware/client?reload=true';//热重载(重新刷新)
+const webpack = require('webpack');//打包工具
 const path = require('path');//路径中间件
 const express = require('express');//框架
 const app = express();//web框架

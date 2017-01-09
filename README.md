@@ -3,6 +3,7 @@
 /* package.json */
 //babel:转换ES6为浏览器支持的ES5
 //html-webpack-plugin:生成html文件
+//transfer-webpack-plugin:复制文件
 //webpack:打包工具
 //webpack-dev-middleware:express框架的开发服务器
 //webpack-hot-middleware:热重载
