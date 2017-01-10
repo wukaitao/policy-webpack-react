@@ -16,7 +16,10 @@ const Nav = React.createClass({
 			<div className="no-login">未登录.</div>
 		);
 		return(
-			<div className="nav">{loginHtml}</div>
+			<div className="nav">
+				{loginHtml}
+				<div><span className="icon-monitor"></span></div>
+			</div>
 		)
 	}
 });

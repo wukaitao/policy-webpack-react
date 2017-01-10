@@ -9,11 +9,13 @@
 //webpack-hot-middleware:热重载
 //webpack-merge:合并
 
-//vue:mvvn框架
-//vue-router:vue路由
-//vue-resource:vue请求
-//vuex:vue数据仓库
+//react:mvvn框架
+//react-router:react路由
+//react-dom:react渲染
+//redux:redux数据仓库
+//redux-thunk:redux异步加载
 //fetch:http请求(https://github.com/github/fetch)
+//md5:md5加密
 
 //express:框架结构
 

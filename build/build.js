@@ -40,8 +40,6 @@ const config = merge(baseWebpackConfig,{
   		})
   	]
 });
-console.log('config:');
-console.log(JSON.stringify(config.module.loaders));
 
 webpack(config,function(err,stats){
 	if(err) throw err;

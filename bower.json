@@ -1,0 +1,26 @@
+{
+  "name": "policy-webpack-react",
+  "description": "The project whitch develop by webpack & react.",
+  "main": "build/dev-server.js",
+  "authors": [
+    "Nicky.Wu"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "policy",
+    "webpack",
+    "react"
+  ],
+  "homepage": "https://github.com/wukaitao/policy-webpack-react",
+  "moduleType": [
+    "amd",
+    "es6",
+    "globals",
+    "node"
+  ],
+  "private": true,
+  "dependencies": {
+    "jquery": "~3.1.1",
+    "fetch": "~2.0.1"
+  }
+}

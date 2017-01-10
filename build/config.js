@@ -3,8 +3,7 @@ const path = require('path');//路径中间件
 module.exports = {
 	entry: {
 		vendor: [
-			'./client/assets/js/jquery/jquery.js',
-			'./client/assets/js/jquery/jquery.md5.js'
+			'./bower_components/jquery/dist/jquery.js'
 		],
 		main: [
 			'./client/main.js'
@@ -41,11 +40,11 @@ module.exports = {
 				}
 			},
 			{
-				test: path.resolve(__dirname,'../client/assets/js/jquery/jquery.js'),
+				test: path.resolve(__dirname,'../bower_components/jquery/dist/jquery.js'),
 				loader: 'expose?jQuery!expose?$'
 			},
 			{
-				test: path.resolve(__dirname,'../client/assets/js/fetch/fetch.js'),
+				test: path.resolve(__dirname,'../bower_components/fetch/fetch.js'),
 				loader: 'expose?fetch'
 			}
 		]

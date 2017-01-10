@@ -1,7 +1,8 @@
 ﻿import React from 'react';
 import {Link} from 'react-router';
+import md5 from 'md5';
 //声明组件
-class Login extends React.Component{
+const Login = React.createClass({
 	render(){
 		return(
 			<div>
@@ -11,6 +12,6 @@ class Login extends React.Component{
 			</div>
 		)
 	}
-};
+});
 //导出组件
 export default Login;
