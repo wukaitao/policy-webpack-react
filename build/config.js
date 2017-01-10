@@ -14,7 +14,7 @@ module.exports = {
 			{
 				test: /\.(js|jsx)$/,
 				exclude: /node_modules/,
-				loader: 'babel-loader',
+				loader: 'babel',
 				query: {
 					presets: ['es2015','react']
 				}
@@ -32,7 +32,7 @@ module.exports = {
 				}
 			},
 			{
-				test: /\.(eot|svg|ttf|woff)$/,
+				test: /\.(woff2?|eot|ttf|otf|svg)(\?.*)?$/,
 				loader: 'url',
 				query: {
 					limit: 10000,
