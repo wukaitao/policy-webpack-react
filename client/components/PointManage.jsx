@@ -1,17 +1,18 @@
 ﻿import React,{PropTypes} from 'react';
+import {Link} from 'react-router';
 //声明组件
-const Popup = React.createClass({
+const PointManage = React.createClass({
 	propTypes: {
 		//组件的props安全
 	},
 	render(){
 		return (
 			<div>
-				Popup.
+				PointManage.
 			</div>
 		)
 	}
 });
 
 //导出组件
-export default Popup;
+export default PointManage;

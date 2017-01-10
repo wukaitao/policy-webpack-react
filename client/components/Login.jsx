@@ -29,9 +29,6 @@ const Login = React.createClass({
 		return(
 			<div>
 				This is Login.
-				<Link to="/login" activeClassName="current">Login</Link>
-				<Link to="/policymanage" activeClassName="current">PolicyManage</Link>
-				<button onClick={this.login}>登录</button>
 			</div>
 		)
 	}

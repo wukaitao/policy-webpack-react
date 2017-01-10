@@ -1,5 +1,16 @@
 ﻿@import 'common.scss';
 
+/*nav*/
+.nav{
+    a{
+        display: inline-block;
+        padding: 5px 8px;
+        line-height: 16px;
+        color: #2679c5;
+        cursor: pointer;
+    }
+}
+
 /*policymanage*/
 .policy-manage .data-table{
     width: 100%;

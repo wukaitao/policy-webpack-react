@@ -32,8 +32,6 @@ const PolicyManage = React.createClass({
 		return(
 			<div className="policy-manage">
 				This is PolicyManage.
-				<Link to="/login" activeClassName="current">Login</Link>
-				<Link to="/policymanage" activeClassName="current">PolicyManage</Link>
 				<button onClick={this.getPolicyList.bind(this,25)}>获取列表数据</button>
 				<table className="data-table">
 					<colgroup>
