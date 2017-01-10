@@ -1,5 +1,6 @@
 ﻿const HtmlWebpackPlugin =  require('html-webpack-plugin');//生成html中间件
 const hotMiddlewareScript = 'webpack-hot-middleware/client?reload=true';//热重载(重新刷新)
+const proxyMiddleware = require('http-proxy-middleware');//代理服务器
 const webpack = require('webpack');//打包工具
 const merge = require('webpack-merge');//合并
 const path = require('path');//路径中间件
@@ -66,6 +67,21 @@ compiler.plugin('compilation',function(compilation){
 app.use(devMiddleWare);//注入服务器
 app.use(hotMiddleWare);//注入热重载
 app.use(express.static('./client'));//静态目录
+//代理服务器
+const proxyTable = {
+	'/hmc_ghb_server/': {
+		target: 'http://hms-uat.cignacmb.com/hmc_ghb_server/',
+		changeOrigin: true,
+		pathRewrite: {
+			'^/hmc_ghb_server/': ''
+		}
+	}
+};
+Object.keys(proxyTable).forEach(function(key){
+	const options = proxyTable[key];
+	typeof options=='string'&&(options={target: options});
+	app.use(proxyMiddleware(key,options));
+});
 app.listen(port,function(e){
 	console.log(`server start at http://localhost:${port}`);
 });

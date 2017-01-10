@@ -2,6 +2,7 @@
 
 /* package.json */
 //babel:转换ES6为浏览器支持的ES5
+//http-proxy-middleware:代理服务器
 //html-webpack-plugin:生成html文件
 //transfer-webpack-plugin:复制文件
 //webpack:打包工具
