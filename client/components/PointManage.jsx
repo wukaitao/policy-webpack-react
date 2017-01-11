@@ -5,6 +5,13 @@ const PointManage = React.createClass({
 	propTypes: {
 		//组件的props安全
 	},
+	getDefaultProps(){
+		console.log('创建期:PointManage+getDefaultProps');
+	},
+	getInitialState(){
+		console.log('创建期:PointManage+getInitialState');
+		return {};
+	},
 	render(){
 		return (
 			<section className="main">

@@ -11,6 +11,7 @@ a{
 /*common start*/
 button,input,textarea{
     vertical-align: middle;
+    outline: none;
 }
 table{
     border-collapse: collapse;
@@ -23,10 +24,287 @@ table{
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.hide{
+    display: none;
+}
 i{
     vertical-align: baseline;
 }
 /*common end*/
+
+/*dialog style start*/
+.dialog{
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.35);
+    z-index: 1001;
+    *{
+        box-sizing: border-box;
+    }
+}
+.dialog.show{
+    display: table;
+}
+.dialog-wrap{
+    display: table-cell;
+    width: 100%;
+    height: 100%;
+    vertical-align: middle;
+}
+.toast-box{
+    margin: 0px auto;
+    z-index: 1002;
+    width: 260px;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+    background-color: #fff;
+    border-radius: 5px;
+    overflow: hidden;
+    i{
+        vertical-align: middle;
+        margin: 5px 10px 5px 0px;
+        font-size: 32px;
+        color: #2679c5;
+    }
+    p{
+        display: inline-block;
+    }
+}
+.dialog-box{
+    background-color: #fff;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 0px auto;
+}
+.dialog-title{
+    height: 28px;
+    line-height: 28px;
+    padding: 0px 10px;
+    color: #fff;
+    background-color: #2679c5;
+    i{
+        float: right;
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        text-align: center;
+        line-height: 16px;
+        margin: 6px 0px;
+        padding: 0px;
+        font-size: 14px;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+    i:hover{
+        background-color: #175590;
+    }
+}
+.dialog-content{
+    padding: 10px 10px 0px;
+    line-height: 22px;
+    color: #000;
+    i{
+        float: left;
+        vertical-align: middle;
+        margin: 5px 10px 5px 0px;
+        font-size: 32px;
+        color: #2679c5;
+    }
+    p{
+        padding: 12px 0px;
+        line-height: 16px;
+        height: 100%;
+        overflow: auto;
+    }
+}
+.dialog-toolbar{
+    height: 38px;
+    padding: 6px 10px;
+    text-align: right;
+    .btn{
+        vertical-align: top;
+    }
+}
+.toast-box i.icon-question,
+.toast-box i.icon-info,
+.toast-box i.icon-circle-check,
+.dialog-content i.icon-question,
+.dialog-content i.icon-info,
+.dialog-content i.icon-circle-check{
+    color: #2679c5;
+}
+.toast-box i.icon-notification,
+.toast-box i.icon-circle-cross,
+.dialog-content i.icon-notification,
+.dialog-content i.icon-circle-cross{
+    color: #ff8502;
+}
+/*dialog style end*/
+
+/*loading style start*/
+@keyframes showDelay{
+    0%, 80%, 100%{
+        opacity: 0.2;
+    }
+    40%{
+        opacity: 1;
+    }
+}
+.cover{
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.35);
+    z-index: 1000;
+}
+.loading{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1001;
+    width: 150px;
+    height: 80px;
+    margin: -40px 0px 0px -75px;
+    background-color: rgba(0,0,0,0.65);
+    border-radius: 5px;
+    text-align: center;
+    font-size: 12px;
+    color: #fff;
+    p{
+        line-height: 28px;
+        margin: 10px 0px 0px;
+        padding: 0px;
+    }
+    .box{
+        position: relative;
+        top: 10px;
+        width: 2px;
+        height: 18px;
+        margin: 10px auto;
+        > div{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            > span{
+                position: absolute;
+                display: inline-block;
+                width: 100%;
+                height: 4px;
+                background-color: #fff;
+                animation: showDelay 1.3s infinite ease-in-out;
+            }
+            .rect-odd{
+                top: 0px;
+                left: 0px;
+            }
+            .rect-even{
+                bottom: 0px;
+                left: 0px;
+            }
+        }
+        .contaier-one{
+            transform: rotate(0deg);
+            .rect-odd{
+                animation-delay: -1.2s;
+            }
+            .rect-even{
+                animation-delay: -0.6s;
+            }
+        }
+        .contaier-two{
+            transform: rotate(30deg);
+            .rect-odd{
+                animation-delay: -1.1s;
+            }
+            .rect-even{
+                animation-delay: -0.5s;
+            }
+        }
+        .contaier-three{
+            transform: rotate(60deg);
+            .rect-odd{
+                animation-delay: -1s;
+            }
+            .rect-even{
+                animation-delay: -0.4s;
+            }
+        }
+        .contaier-four{
+            transform: rotate(90deg);
+            .rect-odd{
+                animation-delay: -0.9s;
+            }
+            .rect-even{
+                animation-delay: -0.3s;
+            }
+        }
+        .contaier-five{
+            transform: rotate(120deg);
+            .rect-odd{
+                animation-delay: -0.8s;
+            }
+            .rect-even{
+                animation-delay: -0.2s;
+            }
+        }
+        .contaier-sixe{
+            transform: rotate(150deg);
+            .rect-odd{
+                animation-delay: -0.7s;
+            }
+            .rect-even{
+                animation-delay: -0.1s;
+            }
+        }
+    }
+}
+/*loading style end*/
+
+/*btn style start*/
+.btn{
+    border:1px solid #ccc;
+    background-color: #ccc;
+    line-height: 24px;
+    padding: 0px 10px;
+    text-align: center;
+    vertical-align: middle;
+    color: #333;
+    border-radius: 5px;
+    display: inline-block;
+    cursor: pointer;
+}
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active{
+    border:1px solid #2679c5;
+    background-color: #2679c5;
+    color: #fff;
+}
+.btn-warn,
+.btn-warn:hover,
+.btn-warn:active{
+    border:1px solid #ff8502;
+    background-color: #ff8502;
+    color: #fff;
+}
+.btn-disabled,
+.btn-disabled:hover,
+.btn-disabled:active{
+    border:1px solid #ddd;
+    background-color: #ddd;
+    text-shadow: 1px 1px 1px rgba(255,255,255,1);
+    color: #666;
+}
+/*btn style end*/
 
 /*fonts start*/
 @font-face {

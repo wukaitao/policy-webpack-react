@@ -16,24 +16,32 @@ require('./assets/css/main.scss');
 const store = configureStore();
 
 const App = React.createClass({
+	requireAuth(nextState,replace){
+		//登录认证
+		console.log('requireAuth');
+	},
+	judgeLogin(nextState,replace){
+		//登录判断
+		console.log('judgeLogin');
+	},
 	render(){
 		return(
 			<Router history={hashHistory}>
 				<Route path='/' component={Main}>
-					<IndexRoute component={Login}/>
-					<Route path='/login' component={Login}/>
-					<Route path='/policymanage' component={PolicyManage}/>
-					<Route path='/policyadd' component={PolicyEdit}/>
-					<Route path='/policyview/:id' component={PolicyEdit}/>
-					<Route path='/policyedit/:id' component={PolicyEdit}/>
-					<Route path='/policycopy/:id' component={PolicyEdit}/>
-					<Route path='/pointchoose' component={PointChoose}/>
-					<Route path='/pointdrag' component={PointDrag}/>
-					<Route path='/pointmanage' component={PointManage}/>
-					<Route path='/cateadd/:type' component={PointCreate}/>
-					<Route path='/cateedit/:id' component={PointCreate}/>
-					<Route path='/pointadd/:type/:parentId' component={PointCreate}/>
-					<Route path='/pointedit/:pointId' component={PointCreate}/>
+					<IndexRoute component={Login} onEnter={this.judgeLogin}/>
+					<Route path='/login' component={Login} onEnter={this.judgeLogin}/>
+					<Route path='/policymanage' component={PolicyManage} onEnter={this.requireAuth}/>
+					<Route path='/policyadd' component={PolicyEdit} onEnter={this.requireAuth}/>
+					<Route path='/policyview/:id' component={PolicyEdit} onEnter={this.requireAuth}/>
+					<Route path='/policyedit/:id' component={PolicyEdit} onEnter={this.requireAuth}/>
+					<Route path='/policycopy/:id' component={PolicyEdit} onEnter={this.requireAuth}/>
+					<Route path='/pointchoose' component={PointChoose} onEnter={this.requireAuth}/>
+					<Route path='/pointdrag' component={PointDrag} onEnter={this.requireAuth}/>
+					<Route path='/pointmanage' component={PointManage} onEnter={this.requireAuth}/>
+					<Route path='/cateadd/:type' component={PointCreate} onEnter={this.requireAuth}/>
+					<Route path='/cateedit/:id' component={PointCreate} onEnter={this.requireAuth}/>
+					<Route path='/pointadd/:type/:parentId' component={PointCreate} onEnter={this.requireAuth}/>
+					<Route path='/pointedit/:pointId' component={PointCreate} onEnter={this.requireAuth}/>
 				</Route>
 			</Router>
 		)

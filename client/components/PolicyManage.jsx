@@ -7,6 +7,13 @@ const PolicyManage = React.createClass({
 		queryPolicyList: PropTypes.func.isRequired,
 		policyList: PropTypes.any.isRequired
 	},
+	getDefaultProps(){
+		console.log('创建期:PolicyManage+getDefaultProps');
+	},
+	getInitialState(){
+		console.log('创建期:PolicyManage+getInitialState');
+		return {};
+	},
 	getPolicyList(page){
 		const param = {
 			currentPage: page,
