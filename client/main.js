@@ -32,7 +32,7 @@ const App = React.createClass({
 					<Route path='/login' component={Login} onEnter={this.judgeLogin}/>
 					<Route path='/policymanage' component={PolicyManage} onEnter={this.requireAuth}/>
 					<Route path='/policyadd' component={PolicyEdit} onEnter={this.requireAuth}/>
-					<Route path='/policyview/:id' component={PolicyEdit} onEnter={this.requireAuth}/>
+					<Route path='/policyview/:id' component={PolicyEdit} onEnter={this.requireAuth} yui="yes"/>
 					<Route path='/policyedit/:id' component={PolicyEdit} onEnter={this.requireAuth}/>
 					<Route path='/policycopy/:id' component={PolicyEdit} onEnter={this.requireAuth}/>
 					<Route path='/pointchoose' component={PointChoose} onEnter={this.requireAuth}/>

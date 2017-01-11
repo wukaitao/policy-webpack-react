@@ -3,11 +3,17 @@ import {Link} from 'react-router';
 import md5 from 'md5';
 //声明组件
 const Login = React.createClass({
+	getDefaultProps(){
+		console.log('创建期:Login+getDefaultProps');
+	},
 	getInitialState(){
 		return {
 			userName: 'admin3',
 			password: md5('5tgbSDFG')
 		};
+	},
+	componentWillMount(){
+		console.log('创建期:Login+componentWillMount');
 	},
 	componentDidMount(){
 		this.props.router.setRouteLeaveHook(
@@ -22,7 +28,8 @@ const Login = React.createClass({
 			return '内容还没有保存,确定要离开?';
 		//};
 	},
-	login(){
+	login(event){
+		event.preventDefault();
 		const param = {
 			userName: this.state.userName,
 			password: this.state.password

@@ -5,6 +5,10 @@ const PolicyEdit = React.createClass({
 	propTypes: {
 		//组件的props安全
 	},
+	getInitialState(){
+		console.log('PolicyEdit+getInitialState');
+		return {};
+	},
 	render(){
 		return (
 			<section className="main">
