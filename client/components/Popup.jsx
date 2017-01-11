@@ -6,8 +6,9 @@ const Popup = React.createClass({
 	},
 	render(){
 		return (
-			<div>
+			<div className="popup">
 				Popup.
+				{this.props.children}
 			</div>
 		)
 	}

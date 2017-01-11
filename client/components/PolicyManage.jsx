@@ -30,7 +30,7 @@ const PolicyManage = React.createClass({
 			);
 		});
 		return(
-			<div className="policy-manage">
+			<section className="main policy-manage">
 				This is PolicyManage.
 				<button onClick={this.getPolicyList.bind(this,25)}>获取列表数据</button>
 				<table className="data-table">
@@ -56,7 +56,7 @@ const PolicyManage = React.createClass({
 						{list}
 					</tbody>
 				</table>
-			</div>
+			</section>
 		)
 	}
 });

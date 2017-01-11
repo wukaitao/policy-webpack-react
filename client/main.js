@@ -1,10 +1,9 @@
 ﻿import React from 'react';
 import ReactDom from 'react-dom';
-import {Router,Route,hashHistory} from 'react-router';
+import {Router,Route,IndexRoute,hashHistory,IndexRedirect} from 'react-router';
 import {Provider} from 'react-redux';
 import configureStore from './store/configureStore.js';
-import Nav from './components/Nav.jsx';
-import Popup from './components/Popup.jsx';
+import Main from './components/Main.jsx';
 import Login from './components/Login.jsx';
 import PolicyManage from './containers/PolicyManage.js';
 import PolicyEdit from './components/PolicyEdit.jsx';
@@ -19,10 +18,9 @@ const store = configureStore();
 const App = React.createClass({
 	render(){
 		return(
-			<div>
-				<Nav/>
-				<Router history={hashHistory}>
-					<Route path='/' component={Login}/>
+			<Router history={hashHistory}>
+				<Route path='/' component={Main}>
+					<IndexRoute component={Login}/>
 					<Route path='/login' component={Login}/>
 					<Route path='/policymanage' component={PolicyManage}/>
 					<Route path='/policyadd' component={PolicyEdit}/>
@@ -36,9 +34,8 @@ const App = React.createClass({
 					<Route path='/cateedit/:id' component={PointCreate}/>
 					<Route path='/pointadd/:type/:parentId' component={PointCreate}/>
 					<Route path='/pointedit/:pointId' component={PointCreate}/>
-				</Router>
-				<Popup/>
-			</div>
+				</Route>
+			</Router>
 		)
 	}
 });

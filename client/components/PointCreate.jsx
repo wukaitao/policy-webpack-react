@@ -7,9 +7,9 @@ const PointCreate = React.createClass({
 	},
 	render(){
 		return (
-			<div>
+			<section className="main">
 				PointCreate.
-			</div>
+			</section>
 		)
 	}
 });

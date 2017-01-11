@@ -7,9 +7,9 @@ const PolicyEdit = React.createClass({
 	},
 	render(){
 		return (
-			<div>
+			<section className="main">
 				PolicyEdit.
-			</div>
+			</section>
 		)
 	}
 });

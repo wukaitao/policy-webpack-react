@@ -1,18 +1,18 @@
 ﻿import React,{PropTypes} from 'react';
 import {Link} from 'react-router';
 //声明组件
-const PointDrag = React.createClass({
+const PointChoose = React.createClass({
 	propTypes: {
 		//组件的props安全
 	},
 	render(){
 		return (
-			<div>
-				PointDrag.
-			</div>
+			<section className="main">
+				PointChoose.
+			</section>
 		)
 	}
 });
 
 //导出组件
-export default PointDrag;
+export default PointChoose;
