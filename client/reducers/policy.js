@@ -20,6 +20,7 @@ export function policyListData(state=initState.policyListData,action){
 								  action.data.data.totalCount%20==0 ? action.data.data.totalCount/20 : 
 								  parseInt(action.data.data.totalCount/20)+1;
 				action.data.data.pageCount = pageCount;
+				action.data.data.basicList.forEach(item=>item.isPosting=false);
 				return action.data;
 			}else if(action.status=='error'){
 				return state;

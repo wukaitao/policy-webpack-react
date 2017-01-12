@@ -19,8 +19,10 @@ const PolicyManage = React.createClass({
 		};
 		this.props.queryPolicyList(param);
 	},
+	postPolicy(one){},
 	delSelectedPolicy(){},
 	createPdf(id){},
+	showTobPolicyRelation(){},
 	render(){
 		const data = this.props.policyListData.data;
 		const classSet = addons.classSet;
@@ -53,18 +55,27 @@ const PolicyManage = React.createClass({
 						{item.isTemplate?'模板':item.policyId}
 					</td>
 					<td className="text-center">
-						{!item.isTemplate&&item.policyKeyMsg?item.policyKeyMsg:null}
+						{!item.isTemplate&&item.policyKeyMsg ?
+							<span>
+								{item.policyKeyMsg}
+								<i className="icon-eye" onClick={this.showTobPolicyRelation.bind(this,item.policyId,item.tobName)}></i>
+							</span> : null
+						}
 					</td>
 					<td className="text-center">{item.updateBy}</td>
 					<td className="text-center">{item.updateTime}</td>
 					<td className="text-center">
-						{item.isTemplate?null:item.policyStatus==0?'待提交':item.policyStatus==1?'已提交':null}
+						{item.isTemplate ? 
+							null : item.policyStatus==0 ? 
+							<span><span>待提交</span>{item.isPosting?<span className="btn btn-disabled">提交中.</span>:<span className="btn" onClick={this.postPolicy.bind(this,item)}>提交</span>}</span> : item.policyStatus==1 ? 
+							<span><span>已提交</span>{item.isPosting?<span className="btn btn-disabled">提交中.</span>:<span className="btn" onClick={this.postPolicy.bind(this,item)}>再提交</span>}</span>: null
+						}
 					</td>
 					<td className="text-center">
-						{item.isTemplate&&!this.isTemplateManager?<Link to="/policyview/{{item.tobId}}" className="btn">查看</Link>:null}
-						{!item.isTemplate||this.isTemplateManager?<Link to="/policyedit/{{item.tobId}}" className="btn">修改</Link>:null}
-						<Link to="/policycopy/{{item.tobId}}" className="btn">复制</Link>
-						<span onClick={this.createPdf.bind(this,item.tobId)} className="btn">生成pdf</span>
+						{item.isTemplate&&!this.isTemplateManager?<Link to={`/policyview/${item.policyId}`} className="btn">查看</Link>:null}
+						{!item.isTemplate||this.isTemplateManager?<Link to={`/policyview/${item.policyId}`} className="btn">修改</Link>:null}
+						<Link to={`/policycopy/${item.policyId}`} className="btn">复制</Link>
+						<span onClick={this.createPdf.bind(this,item.policyId)} className="btn">生成pdf</span>
 					</td>
 				</tr>
 			);
