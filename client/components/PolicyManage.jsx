@@ -24,6 +24,7 @@ const PolicyManage = React.createClass({
 	createPdf(id){},
 	showTobPolicyRelation(){},
 	render(){
+		console.log('render');
 		const data = this.props.policyListData.data;
 		const classSet = addons.classSet;
 		const btnFirstClass = classSet({
