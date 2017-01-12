@@ -15,6 +15,7 @@
 //react-dom:react渲染
 //redux:redux数据仓库
 //redux-thunk:redux异步加载
+//react-addons:处理样式过度和样式对象等
 //fetch:http请求(https://github.com/github/fetch)
 //md5:md5加密
 

@@ -3,30 +3,13 @@ import {Link} from 'react-router';
 import md5 from 'md5';
 //声明组件
 const Login = React.createClass({
-	getDefaultProps(){
-		console.log('创建期:Login+getDefaultProps');
-	},
-	getInitialState(){
-		return {
-			userName: 'admin3',
-			password: md5('5tgbSDFG')
-		};
-	},
-	componentWillMount(){
-		console.log('创建期:Login+componentWillMount');
-	},
-	componentDidMount(){
-		//this.props.router.setRouteLeaveHook(
-		//	this.props.route,
-		//	this.routerWillLeave
-		//);
-	},
-	routerWillLeave(nextLocation){
-		//返回false会停留当前页面
-		//否则,返回一个字符串,会显示给用户,让其自己决定
-		//if(!this.state.isSaved){
-			return '内容还没有保存,确定要离开?';
-		//};
+	componentDidUpdate(){
+		//监听props和state变化
+		if(this.props.loginData.statusCode==0){
+			//请求成功
+			console.log('登录成功.');
+			this.props.router.replace('/policymanage');
+		}
 	},
 	login(event){
 		event.preventDefault();

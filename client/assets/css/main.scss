@@ -158,73 +158,161 @@
 /*login page end*/
 
 /*policymanage*/
-.policy-manage .data-table{
-    width: 100%;
-    min-width: 980px;
-    table-layout: fixed;
-}
-.policy-manage .data-table thead tr{
-    background-color: #ccc;
-    font-weight: bold;
-    text-align: center;
-}
-.policy-manage .data-table .template{
-    color: #2679c5;
-}
-.policy-manage .data-table th{
-    white-space: nowrap;
-    overflow: hidden;
-    line-height: 32px;
-    padding: 0px 5px;
-}
-.policy-manage .data-table th:first-child{
-    font-size: 12px;
-}
-.policy-manage .data-table th input[type="checkbox"]{
-    margin-left: -2px;
-}
-.policy-manage .data-table th button{
-    background-color: #eee;
-    font-size: 12px;
-    padding: 0px 2px;
-    line-height: 20px;
-    vertical-align: baseline;
-    border: none;
-}
-.policy-manage .data-table td{
-    line-height: 28px;
-    padding: 0px 5px;
-}
-.policy-manage .data-table td .btn{
-    font-size: 12px;
-    background-color: #ddd;
-    border-color: #ddd;
-    line-height: 24px;
-    width: 50px;
-    margin: 2px 0px;
-    padding: 0px;
-    border-radius: 5px;
-}
-.policy-manage .data-table td .btn:hover{
-    background-color: #bbb;
-    border-color: #bbb;
-}
-.policy-manage .data-table td .btn:active{
-    box-shadow: 0px 1px 5px rgba(0,0,0,0.15) inset;
-}
-.policy-manage .data-table tbody tr:nth-child(even){
-    background-color: #f0f0f0;
-}
-.policy-manage .data-table tbody tr:hover{
-    background-color: #97c5ef;
-}
-.policy-manage .data-table tbody tr i{
-    display: none;
-    vertical-align: middle;
-    margin: 0px 0px 0px 5px;
-    font-size: 12px;
-    cursor: pointer;
-}
-.policy-manage .data-table tbody tr:hover i{
-    display: inline-block;
+.policy-manage{
+    margin-top: -80px;
+    padding-top: 44px;
+    .pagination{
+        padding: 5px 10px;
+        text-align: right;
+        .pageInfo{
+            float: left;
+        }
+    }
+    .ipt-goPage{
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        width: 60px;
+        height: 24px;
+        padding: 0px 5px;
+    }
+    .toolbar{
+        .toolbar-row{
+            text-align: right;
+            padding: 5px 10px;
+            .searchbox{
+                border:1px solid #fff;
+                border-radius: 5px;
+                height: 24px;
+                display: inline-block;
+                background-color: #fff;
+                input{
+                    height: 24px;
+                    width: 185px; 
+                    vertical-align: middle;
+                    border: none;
+                    margin: 0px 5px;
+                }
+                .type{
+                    position: relative;
+                    display: inline-block;
+                    width: 45px;
+                    height: 24px;
+                    text-align: left;
+                    margin: 0px -3px 0px 0px;
+                    padding: 0px 5px;
+                    vertical-align: text-top;
+                    color: #333;
+                    cursor: pointer;
+                    i{
+                        vertical-align: middle;
+                    }
+                    ul{
+                        position: absolute;
+                        top: 24px;
+                        left: 0px;
+                        right: -1px;
+                        z-index: 100;
+                        padding: 0px 0px 2px 0px;
+                        border-radius: 0px 0px 5px 5px;
+                        text-align: left;
+                        background-color: #fff;
+                    }
+                    li{
+                        margin: 0px 5px;
+                        line-height: 22px;
+                    }
+                    li:hover{
+                        background-color: #97c5ef;
+                    }
+                }
+                .icon-search{
+                    display: inline-block;
+                    cursor: pointer;
+                    background-color: #2679c5;
+                    color: #fff;
+                    height: 24px;
+                    padding: 0px 10px;
+                    border-radius: 0px 5px 5px 0px;
+                    vertical-align: top;
+                    line-height: 24px;
+                }
+            }
+        }
+    }
+    .data-table{
+        width: 100%;
+        min-width: 980px;
+        table-layout: fixed;
+        thead{
+            tr{
+                background-color: #ccc;
+                font-weight: bold;
+                text-align: center;
+                th{
+                    white-space: nowrap;
+                    overflow: hidden;
+                    line-height: 32px;
+                    padding: 0px 5px;
+                }
+                th:first-child{
+                    font-size: 12px;
+                    input[type="checkbox"]{
+                        margin-left: -2px;
+                    }
+                    button{
+                        background-color: #eee;
+                        font-size: 12px;
+                        padding: 0px 2px;
+                        line-height: 20px;
+                        vertical-align: baseline;
+                        border: none;
+                    }
+                }
+            }
+        }
+        .template{
+            color: #2679c5;
+        }
+        td{
+            line-height: 28px;
+            padding: 0px 5px;
+            .btn{
+                font-size: 12px;
+                background-color: #ddd;
+                border-color: #ddd;
+                line-height: 24px;
+                width: 50px;
+                margin: 2px 0px 2px 2px;
+                padding: 0px;
+                border-radius: 5px;
+            }
+            .btn:hover{
+                background-color: #bbb;
+                border-color: #bbb;
+            }
+            .btn:active{
+                box-shadow: 0px 1px 5px rgba(0,0,0,0.15) inset;
+            }
+        }
+        tbody{
+            tr{
+                i{
+                    display: none;
+                    vertical-align: middle;
+                    margin: 0px 0px 0px 5px;
+                    font-size: 12px;
+                    cursor: pointer;
+                }
+            }
+            tr:nth-child(even){
+                background-color: #f0f0f0;
+            }
+            tr:hover{
+                background-color: #97c5ef;
+                i{
+                    display: inline-block;
+                }
+            }
+        }
+    }
 }

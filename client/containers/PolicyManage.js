@@ -6,7 +6,7 @@ import * as PolicyActions from '../actions/policy.js';
 //将state.policyList绑定到props.policyList
 const mapStateToProps = state =>{
 	return {
-		policyList: state.policyList
+		policyListData: state.policyListData
 	};
 };
 //将action的所有方法绑定到props上

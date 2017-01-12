@@ -5,6 +5,7 @@ const Popup = React.createClass({
 		//组件的props安全
 	},
 	render(){
+		return false;
 		return (
 			<div className="popup">
 				Popup.
