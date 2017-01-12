@@ -80,13 +80,13 @@ const PolicyManage = React.createClass({
 				</tr>
 			);
 		}) : <tr><td colSpan="8" className="text-center">暂时没有数据，请稍后查询</td></tr>;
-		const selectedPageOption = (count=>{
-			var htmlTemp = '';
-			for(let i=0;i<count;i++){
-				htmlTemp += '<option value="'+i+'">'+i+'</option>';
-			};
-			return htmlTemp;
-		})(data.pageCount);
+		const selectedPageOption = [];
+		for(var i=0;i<data.pageCount;i++){
+			selectedPageOption.push(
+				<option key={i} value={i}>{i}</option>
+			);
+		};
+		//http://stackoverflow.com/questions/21733847/react-jsx-selecting-selected-on-selected-select-option
 		return(
 			<section className="main policy-manage">
 				<div className="toolbar">
@@ -153,6 +153,7 @@ const PolicyManage = React.createClass({
 						{selectedPageOption}
 					</select>
 					*/}
+					<select>{selectedPageOption}</select>
 				</div>
 			</section>
 		)
