@@ -16,10 +16,10 @@ const Login = React.createClass({
 		console.log('创建期:Login+componentWillMount');
 	},
 	componentDidMount(){
-		this.props.router.setRouteLeaveHook(
-			this.props.route,
-			this.routerWillLeave
-		);
+		//this.props.router.setRouteLeaveHook(
+		//	this.props.route,
+		//	this.routerWillLeave
+		//);
 	},
 	routerWillLeave(nextLocation){
 		//返回false会停留当前页面
@@ -30,10 +30,29 @@ const Login = React.createClass({
 	},
 	login(event){
 		event.preventDefault();
-		const param = {
-			userName: this.state.userName,
-			password: this.state.password
+		//前端校验
+		const userNameReg = /^[a-zA-Z\d]\w{3,11}[a-zA-Z\d]$/;
+		const passwordReg = /^(\w){6,20}$/;
+		this.refs.userName.value = this.refs.userName.value.replace(/^\s+|\s+$/g,'');
+		this.refs.password.value = this.refs.password.value.replace(/^\s+|\s+$/g,'')
+		if(!userNameReg.test(this.refs.userName.value)){
+			console.log('用户名必须是以数字或字母开头，4-12位字符');
+			return;
+		}else if(!passwordReg.test(this.refs.password.value)){
+			console.log('密码必须是6-20位字母、数字、下划线');
+			return;
 		};
+		//后端校验(模拟)
+		if(this.refs.userName.value!='admin3'||this.refs.password.value!='5tgbSDFG'){
+			console.log('账号不存在或者密码错误');
+			return;
+		};
+		const param = {
+			userName: this.refs.userName.value,
+			password: md5(this.refs.password.value)
+		};
+		this.props.login(param);
+		/*
 		fetch('/hmc_ghb_server/tob/tobLogin',{
 			method: 'post',
 			body: JSON.stringify(param)
@@ -44,6 +63,7 @@ const Login = React.createClass({
 		}).catch(err=>{
 			console.log('登录失败!');
 		});
+		*/
 	},
 	render(){
 		return(
@@ -63,13 +83,13 @@ const Login = React.createClass({
 									<label htmlFor="userName">
 										用户名：
 									</label>
-									<input id="userName" type="text" name="userName" autoComplete="off" maxLength="12" placeholder="请输入用户名" className="textbox-text"/>
+									<input id="userName" type="text" ref="userName" autoComplete="off" maxLength="12" placeholder="请输入用户名" className="textbox-text"/>
 								</div>
 								<div className="form-row">
 									<label htmlFor="password">
 										<span style={{letterSpacing: "1em"}}>密</span>码：
 									</label>
-									<input id="password" type="password" name="password" autoComplete="off" maxLength="20" placeholder="请输入密码" className="textbox-text"/>
+									<input id="password" type="password" ref="password" autoComplete="off" maxLength="20" placeholder="请输入密码" className="textbox-text"/>
 								</div>
 								<div className="btn-area">
 									<button id="btnLogin" className="btn" type="submit">登录</button>

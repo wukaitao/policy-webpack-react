@@ -4,7 +4,7 @@ import {Router,Route,IndexRoute,hashHistory,IndexRedirect} from 'react-router';
 import {Provider} from 'react-redux';
 import configureStore from './store/configureStore.js';
 import Main from './components/Main.jsx';
-import Login from './components/Login.jsx';
+import Login from './containers/Login.js';
 import PolicyManage from './containers/PolicyManage.js';
 import PolicyEdit from './components/PolicyEdit.jsx';
 import PointChoose from './components/PointChoose.jsx';

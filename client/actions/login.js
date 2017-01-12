@@ -32,8 +32,7 @@ export function login(param){
 	return function(dispatch){
 		dispatch(requestLogin(param));
 		return fetch('../assets/json/policyLogin.json',{
-			method: 'post',
-			body: JSON.stringify(param)
+			method: 'get'
 		}).then(response=>response.text())
 		.then(data=>{
 			dispatch(receiveLogin(param,JSON.parse(data)));
