@@ -25,8 +25,8 @@ const Login = React.createClass({
 			console.log('密码必须是6-20位字母、数字、下划线');
 			return;
 		};
-		//后端校验(模拟)
-		if(this.refs.userName.value!='admin3'||this.refs.password.value!='5tgbSDFG'){
+		//后端校验(模拟)admin3 5tgbSDFG
+		if(this.refs.userName.value!='admin'||this.refs.password.value!='123456'){
 			console.log('账号不存在或者密码错误');
 			return;
 		};

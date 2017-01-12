@@ -13,6 +13,7 @@ const PolicyManage = React.createClass({
 	},
 	getPolicyList(page,flag){
 		if(!flag) return;
+		console.log(page);
 		const param = {
 			currentPage: page,
 			policyMemberIdPattern: 'policy'
@@ -24,7 +25,6 @@ const PolicyManage = React.createClass({
 	createPdf(id){},
 	showTobPolicyRelation(){},
 	render(){
-		console.log('render');
 		const data = this.props.policyListData.data;
 		const classSet = addons.classSet;
 		const btnFirstClass = classSet({
@@ -74,7 +74,7 @@ const PolicyManage = React.createClass({
 					</td>
 					<td className="text-center">
 						{item.isTemplate&&!this.isTemplateManager?<Link to={`/policyview/${item.policyId}`} className="btn">查看</Link>:null}
-						{!item.isTemplate||this.isTemplateManager?<Link to={`/policyview/${item.policyId}`} className="btn">修改</Link>:null}
+						{!item.isTemplate||this.isTemplateManager?<Link to={`/policyedit/${item.policyId}`} className="btn">修改</Link>:null}
 						<Link to={`/policycopy/${item.policyId}`} className="btn">复制</Link>
 						<span onClick={this.createPdf.bind(this,item.policyId)} className="btn">生成pdf</span>
 					</td>
@@ -82,7 +82,7 @@ const PolicyManage = React.createClass({
 			);
 		}) : <tr><td colSpan="8" className="text-center">暂时没有数据，请稍后查询</td></tr>;
 		const selectedPageOption = [];
-		for(var i=0;i<data.pageCount;i++){
+		for(var i=1;i<data.pageCount+1;i++){
 			selectedPageOption.push(
 				<option key={i} value={i}>{i}</option>
 			);
@@ -149,12 +149,9 @@ const PolicyManage = React.createClass({
 					className={btnNextClass}>下一页</span>
 					<span onClick={this.getPolicyList.bind(this,parseInt(data.pageCount),parseInt(data.currentPage)!=parseInt(data.pageCount))} 
 					className={btnLastClass}>最后一页</span>
-					{/*
-					<select className="ipt-goPage" ref="selectedPage" onChange={this.getPolicyList.bind(this,this.refs.selectedPage.value,true)}>
+					<select className="ipt-goPage" ref="selectedPage" value={data.currentPage} onChange={this.getPolicyList.bind(this,23,true)}>
 						{selectedPageOption}
 					</select>
-					*/}
-					<select>{selectedPageOption}</select>
 				</div>
 			</section>
 		)
