@@ -35,6 +35,22 @@ function receivePolicyRelationList(param,data){
 		data
 	};
 };
+function receivePolicyDetail(param,data){
+	return {
+		type: types.PolicyDetail,
+		status: 'success',
+		param,
+		data
+	};
+};
+function receiveHospitalList(param,data){
+	return {
+		type: types.HospitalList,
+		status: 'success',
+		param,
+		data
+	};
+};
 //dispatch->action
 export function queryPolicyList(param){
 	return function(dispatch){
@@ -56,6 +72,24 @@ export function queryPolicyRelationList(param){
 		}).then(response=>response.text())
 		.then(data=>{
 			dispatch(receivePolicyRelationList(param,JSON.parse(data)));
+		}).catch(err=>{
+		});
+	};
+};
+export function queryPolicyDetail(param){
+	return function(dispatch){
+		return fetch('../assets/json/policyDetails.json',{
+			method: 'get'
+		}).then(response=>response.text())
+		.then(data=>{
+			dispatch(receivePolicyDetail(param,JSON.parse(data)));
+			fetch('../assets/json/hosList.json',{
+				method: 'get'
+			}).then(response=>response.text())
+			.then(data=>{
+				dispatch(receiveHospitalList(param,JSON.parse(data)));
+			}).catch(err=>{
+			});
 		}).catch(err=>{
 		});
 	};

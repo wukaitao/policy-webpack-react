@@ -12,6 +12,16 @@ const initState = {
 		data: [],
 		statusCode: 'static',
 		msg: '请求初始化'
+	},
+	policyDetailData: {
+		data: {},
+		statusCode: 'static',
+		msg: '请求初始化'
+	},
+	hospitalListData: {
+		data: [],
+		statusCode: 'static',
+		msg: '请求初始化'
 	}
 };
 //reducer其实也是一个方法而已，三处是state和action,返回值是新的state
@@ -37,6 +47,36 @@ export function policyListData(state=initState.policyListData,action){
 export function policyRelationListData(state=initState.policyRelationListData,action){
 	switch(action.type){
 		case types.PolicyRelationList:
+			if(action.status=='beforeSend'){
+				return state;
+			}else if(action.status=='success'){
+				console.log(action.data);
+				return action.data;
+			}else if(action.status=='error'){
+				return state;
+			};
+		default:
+			return state;
+	};
+};
+export function policyDetailData(state=initState.policyDetailData,action){
+	switch(action.type){
+		case types.PolicyDetail:
+			if(action.status=='beforeSend'){
+				return state;
+			}else if(action.status=='success'){
+				console.log(action.data);
+				return action.data;
+			}else if(action.status=='error'){
+				return state;
+			};
+		default:
+			return state;
+	};
+};
+export function hospitalListData(state=initState.hospitalListData,action){
+	switch(action.type){
+		case types.HospitalList:
 			if(action.status=='beforeSend'){
 				return state;
 			}else if(action.status=='success'){

@@ -6,10 +6,10 @@ import configureStore from './store/configureStore.js';
 import Main from './components/Main.jsx';
 import Login from './containers/Login.js';
 import PolicyManage from './containers/PolicyManage.js';
-import PolicyEdit from './components/PolicyEdit.jsx';
+import PolicyEdit from './containers/PolicyEdit.js';
 import PointChoose from './components/PointChoose.jsx';
 import PointDrag from './components/PointDrag.jsx';
-import PointManage from './components/PointManage.jsx';
+import PointManage from './containers/PointManage.js';
 import PointCreate from './components/PointCreate.jsx';
 require('./assets/css/main.scss');
 

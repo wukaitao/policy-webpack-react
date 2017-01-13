@@ -1,13 +1,12 @@
 ﻿import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import PolicyManage from '../components/PolicyManage.jsx';
+import PolicyEdit from '../components/PolicyEdit.jsx';
 import * as PolicyActions from '../actions/policy.js';
 
-//将state.policyList绑定到props.policyList
+//将state.policyDetailData绑定到props.policyDetailData
 const mapStateToProps = state =>{
 	return {
-		policyListData: state.policyListData,
-		policyRelationListData: state.policyRelationListData
+		policyDetailData: state.policyDetailData
 	};
 };
 //将action的所有方法绑定到props上
@@ -16,4 +15,4 @@ const mapDispatchToProps = dispatch => {
 };
 
 //通过react-redux提供的connect方法将我们需要的state数据和action的方法绑定到props上
-export default connect(mapStateToProps,mapDispatchToProps)(PolicyManage);
+export default connect(mapStateToProps,mapDispatchToProps)(PolicyEdit);

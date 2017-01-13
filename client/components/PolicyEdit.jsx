@@ -9,6 +9,10 @@ const PolicyEdit = React.createClass({
 		console.log('PolicyEdit+getInitialState');
 		return {};
 	},
+	componentWillMount(){
+		//默认加载内容
+		this.getPolicyDetail();
+	},
 	componentDidMount(){
 		//this.props.router.setRouteLeaveHook(
 		//	this.props.route,
@@ -21,6 +25,13 @@ const PolicyEdit = React.createClass({
 		//if(!this.state.isSaved){
 			return '内容还没有保存,确定要离开?';
 		//};
+	},
+	getPolicyDetail(){
+		const param = {
+			policyId: 11,
+			path: 'edit'
+		};
+		this.props.queryPolicyDetail(param);
 	},
 	back(){},
 	show(){},
