@@ -12,6 +12,7 @@ const PointManage = React.createClass({
 	render(){
 		return (
 			<section className="main">
+				<Link to="/pointedit/25">新建节点</Link>
 				PointManage.
 			</section>
 		)

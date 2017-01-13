@@ -2,8 +2,17 @@
 import {Link} from 'react-router';
 //声明组件
 const PointCreate = React.createClass({
-	propTypes: {
-		//组件的props安全
+	componentWillMount(){
+		this.saveAddTemplateNode();
+		this.saveUpdateTemplateNode();
+	},
+	saveAddTemplateNode(){
+		const param = {};
+		this.props.addTemplateNode(param);
+	},
+	saveUpdateTemplateNode(){
+		const param = {};
+		this.props.updateTemplateNode(param);
 	},
 	render(){
 		return (

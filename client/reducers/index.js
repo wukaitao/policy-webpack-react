@@ -13,6 +13,8 @@ const rootReducer = combineReducers({
 	submitPDFData: policy.submitPDFData,
 	deletePolicyData: policy.deletePolicyData,
 	allPointData: point.allPointData,
+	templateNodeAddData: point.templateNodeAddData,
+	templateNodeUpdateData: point.templateNodeUpdateData,
 	loginData: login.loginData,
 	logoutData: login.logoutData,
 	pageStatus: popup.pageStatus

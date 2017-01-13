@@ -10,7 +10,7 @@ import PolicyEdit from './containers/PolicyEdit.js';
 import PointChoose from './components/PointChoose.jsx';
 import PointDrag from './components/PointDrag.jsx';
 import PointManage from './containers/PointManage.js';
-import PointCreate from './components/PointCreate.jsx';
+import PointCreate from './containers/PointCreate.js';
 require('./assets/css/main.scss');
 
 const store = configureStore();
