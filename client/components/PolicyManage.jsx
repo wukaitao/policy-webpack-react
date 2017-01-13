@@ -12,6 +12,7 @@ const PolicyManage = React.createClass({
 		return true;
 	},
 	getPolicyList(page,flag){
+		//获取列表
 		if(!flag) return;
 		console.log(page);
 		const param = {
@@ -20,9 +21,28 @@ const PolicyManage = React.createClass({
 		};
 		this.props.queryPolicyList(param);
 	},
-	postPolicy(one){},
-	delSelectedPolicy(){},
-	createPdf(id){},
+	postPolicy(one){
+		//提交保单
+		const param = {
+			policyId: one.policyId
+		};
+		this.props.submitPDF(param);
+	},
+	delSelectedPolicy(){
+		//删除保单
+		const param = {
+			currentPage: this.props.policyListData.data.currentPage,
+			policyIdArray: []
+		};
+		this.props.deletePolicy(param);
+	},
+	createPdf(id){
+		//生成pdf
+		const param = {
+			policyId: id
+		};
+		this.props.createPdf(param);
+	},
 	showTobPolicyRelation(id,policyName){
 		//保单关系列表
 		const param = {

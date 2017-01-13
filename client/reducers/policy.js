@@ -22,9 +22,20 @@ const initState = {
 		data: [],
 		statusCode: 'static',
 		msg: '请求初始化'
+	},
+	submitPDFData: {
+		data: {},
+		statusCode: 'static',
+		msg: '请求初始化'
+	},
+	deletePolicyData: {
+		data: {},
+		statusCode: 'static',
+		msg: '请求初始化'
 	}
 };
 //reducer其实也是一个方法而已，三处是state和action,返回值是新的state
+//获取保单列表结果数据
 export function policyListData(state=initState.policyListData,action){
 	switch(action.type){
 		case types.PolicyListData:
@@ -44,6 +55,7 @@ export function policyListData(state=initState.policyListData,action){
 			return state;
 	};
 };
+//获取关联保单结果数据
 export function policyRelationListData(state=initState.policyRelationListData,action){
 	switch(action.type){
 		case types.PolicyRelationList:
@@ -59,6 +71,7 @@ export function policyRelationListData(state=initState.policyRelationListData,ac
 			return state;
 	};
 };
+//获取保单详情结果数据
 export function policyDetailData(state=initState.policyDetailData,action){
 	switch(action.type){
 		case types.PolicyDetail:
@@ -74,9 +87,42 @@ export function policyDetailData(state=initState.policyDetailData,action){
 			return state;
 	};
 };
+//获取医院列表结果数据
 export function hospitalListData(state=initState.hospitalListData,action){
 	switch(action.type){
 		case types.HospitalList:
+			if(action.status=='beforeSend'){
+				return state;
+			}else if(action.status=='success'){
+				console.log(action.data);
+				return action.data;
+			}else if(action.status=='error'){
+				return state;
+			};
+		default:
+			return state;
+	};
+};
+//提交保单结果数据
+export function submitPDFData(state=initState.submitPDFData,action){
+	switch(action.type){
+		case types.SubmitPDF:
+			if(action.status=='beforeSend'){
+				return state;
+			}else if(action.status=='success'){
+				console.log(action.data);
+				return action.data;
+			}else if(action.status=='error'){
+				return state;
+			};
+		default:
+			return state;
+	};
+};
+//删除保单结果数据
+export function deletePolicyData(state=initState.deletePolicyData,action){
+	switch(action.type){
+		case types.DeletePolicy:
 			if(action.status=='beforeSend'){
 				return state;
 			}else if(action.status=='success'){

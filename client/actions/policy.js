@@ -51,7 +51,24 @@ function receiveHospitalList(param,data){
 		data
 	};
 };
+function receiveSubmitPDFData(param,data){
+	return {
+		type: types.SubmitPDF,
+		status: 'success',
+		param,
+		data
+	};
+};
+function receiveDeletePolicyData(param,data){
+	return {
+		type: types.DeletePolicy,
+		status: 'success',
+		param,
+		data
+	};
+};
 //dispatch->action
+//获取保单列表
 export function queryPolicyList(param){
 	return function(dispatch){
 		dispatch(requestPolicyList(param));
@@ -65,6 +82,7 @@ export function queryPolicyList(param){
 		});
 	};
 };
+//获取关联保单
 export function queryPolicyRelationList(param){
 	return function(dispatch){
 		return fetch('../assets/json/policyRelationList.json',{
@@ -76,6 +94,7 @@ export function queryPolicyRelationList(param){
 		});
 	};
 };
+//获取保单详情
 export function queryPolicyDetail(param){
 	return function(dispatch){
 		return fetch('../assets/json/policyDetails.json',{
@@ -93,4 +112,32 @@ export function queryPolicyDetail(param){
 		}).catch(err=>{
 		});
 	};
+};
+//提交保单
+export function submitPDF(param){
+	return function(dispatch){
+		return fetch('../assets/json/submitPDF.json',{
+			method: 'get'
+		}).then(response=>response.text())
+		.then(data=>{
+			dispatch(receiveSubmitPDFData(param,JSON.parse(data)));
+		}).catch(err=>{
+		});
+	};
+};
+//删除保单
+export function deletePolicy(param){
+	return function(dispatch){
+		return fetch('../assets/json/policyDelete.json',{
+			method: 'get'
+		}).then(response=>response.text())
+		.then(data=>{
+			dispatch(receiveDeletePolicyData(param,JSON.parse(data)));
+		}).catch(err=>{
+		});
+	};
+};
+//生成pdf
+export function createPdf(param){
+	window.location.href = '../assets/json/downLoadPDF?policyId='+param.policyId;
 };

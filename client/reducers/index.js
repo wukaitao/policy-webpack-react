@@ -10,6 +10,8 @@ const rootReducer = combineReducers({
 	policyRelationListData: policy.policyRelationListData,
 	policyDetailData: policy.policyDetailData,
 	hospitalListData: policy.hospitalListData,
+	submitPDFData: policy.submitPDFData,
+	deletePolicyData: policy.deletePolicyData,
 	allPointData: point.allPointData,
 	loginData: login.loginData,
 	pageStatus: popup.pageStatus
