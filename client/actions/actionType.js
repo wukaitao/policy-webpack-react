@@ -17,7 +17,7 @@ export const HospitalList = 'HospitalList';//获取医院列表
 export const DeletePolicy = 'DeletePolicy';//删除policy
 export const SubmitPDF = 'SubmitPDF';//提交policy
 export const CreatePdf = 'CreatePdf';//生成pdf
-export const PolicyPolicyRelationList = 'PolicyPolicyRelationList';//policy保单关系列表
+export const PolicyRelationList = 'PolicyRelationList';//policy保单关系列表
 export const DialogOpen = 'DialogOpen';//打开弹窗
 export const DialogCancel = 'DialogCancel';//关闭弹窗
 

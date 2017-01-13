@@ -23,7 +23,14 @@ const PolicyManage = React.createClass({
 	postPolicy(one){},
 	delSelectedPolicy(){},
 	createPdf(id){},
-	showTobPolicyRelation(){},
+	showTobPolicyRelation(id,policyName){
+		//保单关系列表
+		const param = {
+			policyId: id,
+			policyName: policyName
+		};
+		this.props.queryPolicyRelationList(param);
+	},
 	render(){
 		const data = this.props.policyListData.data;
 		const classSet = addons.classSet;
