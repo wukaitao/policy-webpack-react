@@ -2,6 +2,7 @@
 //声明组件
 const Popup = React.createClass({
 	render(){
+		console.log('ok.');
 		const loadingHtml = (
 			<div className="cover">
 				<div className="loading">
