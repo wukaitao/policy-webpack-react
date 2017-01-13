@@ -1,6 +1,6 @@
 ﻿import React from 'react';
 import {Link} from 'react-router';
-import Nav from '../components/Nav.jsx';
+import Nav from '../containers/Nav.js';
 import Popup from '../components/Popup.jsx';
 //声明组件
 const Main = React.createClass({

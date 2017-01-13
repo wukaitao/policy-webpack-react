@@ -14,6 +14,7 @@ const rootReducer = combineReducers({
 	deletePolicyData: policy.deletePolicyData,
 	allPointData: point.allPointData,
 	loginData: login.loginData,
+	logoutData: login.logoutData,
 	pageStatus: popup.pageStatus
 });
 

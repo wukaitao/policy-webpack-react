@@ -27,7 +27,15 @@ function failLogin(param,err){
 		err
 	};
 };
+function receiveLogout(data){
+	return {
+		type: types.Logout,
+		status: 'success',
+		data
+	};
+};
 //dispatch->action
+//登录
 export function login(param){
 	return function(dispatch){
 		dispatch(requestLogin(param));
@@ -38,6 +46,18 @@ export function login(param){
 			dispatch(receiveLogin(param,JSON.parse(data)));
 		}).catch(err=>{
 			dispatch(failLogin(param,err));
+		});
+	};
+};
+//退出
+export function logout(){
+	return function(dispatch){
+		return fetch('../assets/json/policyLogout.json',{
+			method: 'get'
+		}).then(response=>response.text())
+		.then(data=>{
+			dispatch(receiveLogout(JSON.parse(data)));
+		}).catch(err=>{
 		});
 	};
 };

@@ -23,5 +23,3 @@ export const DialogCancel = 'DialogCancel';//关闭弹窗
 
 export const Login = 'Login';//登录
 export const Logout = 'Logout';//退出
-
-export const DialogMsg = 'DialogMsg';//弹出提示信息
