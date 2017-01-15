@@ -1,4 +1,5 @@
 ﻿import React,{PropTypes} from 'react';
+import addons from 'react-addons';
 import {Link} from 'react-router';
 //声明组件
 const PolicyEdit = React.createClass({
@@ -36,59 +37,225 @@ const PolicyEdit = React.createClass({
 	back(){},
 	show(){},
 	save(flag){},
+	searchHospital(){},
+	toTop(){},
 	showPolicyBtn(){return true;},
 	showTemplateBtn(){return true;},
 	showEditBtn(){return true;},
+	//test start
+	editHospital(){return false;},
+	curHospitalType(){return 'coinsuranceList';},
+	hasChosenLeft(){return false;},
+	hasChosenRight(){return false;},
+	hasExpLeft(){return false;},
+	hasExpRight(){return false;},
+	isDisabledHosSelectedAllRight(){return false;},
+	isDisabledHosSelectedAllLeft(){return false;},
+	//test end
+//	render(){
+//		return false;
+//	},
 	render(){
-		return false;
-	}
-/*	render(){
-		return false;
-		const baseHtml = this.props.editBase ? (
+		const statusCode = this.props.policyDetailData.statusCode;
+		if(statusCode=='static'||!this.props.hospitalListData.data.length) return false;
+		const self = this;
+		const classSet = addons.classSet;
+		const data = this.props.policyDetailData.data;
+		const hospitalList = this.props.hospitalListData.data;
+		//改变hospitalListData
+		hospitalList.forEach(function(p){
+			p.chosen = false;
+			//0:共付;1:无赔付;2:所有;
+			//编辑tob的时候根据返回的共付和无赔付list来改变payType
+			if(data.coinsuranceArray && data.coinsuranceArray.indexOf(p.HOS_ID) != -1) p.payType = 0;
+			else if(data.deductibleArray && data.deductibleArray.indexOf(p.HOS_ID) != -1) p.payType = 1;
+			else p.payType = 2;
+		});
+		const editHospitalClass = classSet({
+			'hide': this.editHospital()
+		});
+		const viewHospitalClass = classSet({
+			'hide': !this.editHospital(),
+			'table-hospital': true
+		});
+		const coinsuranceClass = classSet({
+			'selected': this.curHospitalType=='coinsuranceList',
+			'tab': true
+		});
+		const deductibleClass = classSet({
+			'selected': this.curHospitalType=='deductibleList',
+			'tab': true
+		});
+		const addHospitalClass = classSet({
+			'btn-disabled': !this.hasChosenLeft,
+			'btn': true
+		});
+		const removeHospitalClass = classSet({
+			'btn-disabled': !this.hasChosenRight,
+			'btn': true
+		});
+		const addExpHospitalClass = classSet({
+			'btn-disabled': !this.hasExpLeft,
+			'btn': true
+		});
+		const removeExpHospitalClass = classSet({
+			'btn-disabled': !this.hasExpRight,
+			'btn': true
+		});
+		const baseHtml = (
 			<table>
 				<colgroup>
 					<col width="100"/><col/>
 				</colgroup>
-				<tr>
-					<td className="label">
-						{this.props.policyCur.isTemplate ? '模板名称：' : 'POLICY名称：'}
-					</td>
-					<td>
-						<input type="text" className="ipt" maxLength="250" ref="policyCur.policyName">
-					</td>
-				</tr>
-				<tr>
-					<td className="label" valign="top">
-						{this.props.policyCur.isTemplate ? '模板标题：' : 'POLICY标题：'}
-					</td>
-					<td id="baseeditor0" className="editor"></td>
-				</tr>
-			</table>
-		) : (
-			<table>
-				<colgroup>
-					<col width="100"/><col/>
-				</colgroup>
-				<tr>
-					<td className="label">
-						{this.props.policyCur.isTemplate ? '模板名称：' : 'POLICY名称：'}
-					</td>
-					<td>
-						<div className="detail" v-html="policyCur.policyName"></div>
-					</td>
-				</tr>
-				<tr>
-					<td className="label" valign="top">
-						{this.props.policyCur.isTemplate ? '模板标题：' : 'POLICY标题：'}
-					</td>
-					<td>
-						<div className="detail" v-html="policyCur.policyTitle"></div>
-					</td>
-				</tr>
+				<tbody>
+					<tr>
+						<td className="label">
+							{data.isTemplate ? '模板名称：' : 'POLICY名称：'}
+						</td>
+						<td>
+							{this.props.editBase ? (
+								<input type="text" className="ipt" maxLength="250" ref="policyName"/>
+							) : (
+								<div className="detail" dangerouslySetInnerHTML={{__html: data.policyName}}/>
+							)}
+						</td>
+					</tr>
+					<tr>
+						<td className="label">
+							{data.isTemplate ? '模板标题：' : 'POLICY标题：'}
+						</td>
+						{this.props.editBase ? (
+							<td id="baseeditor0" className="editor"/>
+						) : (
+							<td>
+								<div className="detail" dangerouslySetInnerHTML={{__html: data.policyTitle}}/>
+							</td>
+						)}
+					</tr>
+				</tbody>
 			</table>
 		);
+		const hospitalHtml = (
+			<article>
+				<nav>
+					<div>医院选择</div>
+					<hr/>
+					{this.showEditBtn ? <button className="btn" onClick={this.show.bind(this,'editHospital',{count:0,id:'',nodeIndex:'',bind:''})}>预览</button> : null}
+				</nav>
+				<table className={editHospitalClass}>
+					<tbody>
+						<tr>
+							<td className="label">共付医院：</td>
+							<td className="label">无赔付医院：</td>
+						</tr>
+						<tr>
+							<td>
+								<ul className="detail">
+									{hospitalList.map((item,index)=>{
+										const liClass = classSet(
+											'exp': item.IS_EXPENSIVE
+										);
+										const html = item.payType==0 ? <li key={index} className={liClass}>{item.HOS_NAME}</li> : null;
+										return html;
+									})}
+								</ul>
+							</td>
+							<td>
+								<ul className="detail">
+									{hospitalList.map((item,index)=>{
+										const liClass = classSet(
+											'exp': item.IS_EXPENSIVE
+										);
+										const html = item.payType==1 ? <li key={index} className={liClass}>{item.HOS_NAME}</li> : null;
+										return html;
+									})}
+								</ul>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<table className={viewHospitalClass}>
+					<colgroup>
+						<col width="40%"/><col width="20%"/><col width="40%"/>
+					</colgroup>
+					<tbody>
+						<tr>
+							<td className="type">
+								医院类型选择：
+								<span className="tab-container">
+									<span className={coinsuranceClass} onClick={this.curHospitalType='coinsuranceList'}>共付医院</span>
+									<span className={deductibleClass} onClick={this.curHospitalType='deductibleList'}>无赔付医院</span>
+								</span>
+							</td>
+							<td/>
+							<td className="toolbar">
+								<span className="searchbox">
+									<input type="text" placeholder="请输入医院名称" ref="keyWord"/>
+									<i onClick={this.searchHospital} className="icon-search"></i>
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td className="title label">
+								所有医院
+								<span className="choose">
+									<input type="checkbox" disabled={this.isDisabledHosSelectedAllLeft} ref="hosSelectedAllLeft"/>全选
+								</span>
+							</td>
+							<td></td>
+							<td className="title label">
+								选中医院
+								<span className="choose">
+									<input type="checkbox" disabled={this.isDisabledHosSelectedAllRight} ref="hosSelectedAllRight"/>全选
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div className="hospital-container">
+									<ul>
+										{hospitalList.map((item,index)=>{
+											const liClass = classSet(
+												'selected': item.chosen,
+												'exp': item.IS_EXPENSIVE,
+												'hospital': true
+											);
+											const html = item.payType==2 ? <li key={index} className={liClass} onClick={item.chosen=!item.chosen}>{item.HOS_NAME}</li> : null;
+											return html;
+										})}
+									</ul>
+								</div>
+							</td>
+							<td className="text-center">
+								<span className={addHospitalClass} onClick={this.addHospital}> &gt;&gt; </span>
+								<span className={removeHospitalClass} onClick={this.removeHospital}> &lt;&lt; </span>
+								<span className={addExpHospitalClass} onClick={this.addExpHospital}>添加所有昂贵医院 </span>
+								<span className={removeExpHospitalClass} onClick={this.removeExpHospital}>移除所有昂贵医院 </span>
+							</td>
+							<td>
+								<div className="hospital-container">
+									<ul>
+										{hospitalList.map((item,index)=>{
+											const liClass = classSet(
+												'selected': item.chosen,
+												'exp': item.IS_EXPENSIVE,
+												'hospital': true
+											);
+											const html = (self.curHospitalType=='coinsuranceList'&&item.payType==0)||self.curHospitalType=='deductibleList'&&item.payType==1 ? 
+													(<li key={index} className={liClass} onClick={item.chosen=!item.chosen}>{item.HOS_NAME}</li>) : null;
+											return html;
+										})}
+									</ul>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</article>
+		);
+		const nodeHtml = '';
 		return (
-			<section className="main">
+			<section className="main policy-edit">
 				<header>
 					<button className="btn" onClick={this.back}>返回</button>
 					{this.showPolicyBtn ? <button className="btn" onClick={this.save}>保存POLICY</button> : null}
@@ -100,12 +267,13 @@ const PolicyEdit = React.createClass({
 					<article>
 						<nav>
 							<div>基础信息</div>
-							<hr>
+							<hr/>
 							{this.showEditBtn ? <button className="btn" onClick={this.show.bind(this,'editBase',{count:1,id:'baseeditor0',nodeIndex:'base',bind:'policyTitle'})}>预览</button> : null}
 						</nav>
 						{baseHtml}
 					</article>
-					<div v-for="(parent,index) in policyCur.benefitList">
+					{hospitalHtml}
+					{/*<div v-for="(parent,index) in policyCur.benefitList">
 						<div v-if="parent.nodeType==2" :id="'o'+parent.libId">
 							<nav className="nodeType2">
 								<div>{{parent.nodeTitle | toCn}}</div>
@@ -252,7 +420,7 @@ const PolicyEdit = React.createClass({
 								<td className="toolbar">
 									<span className="searchbox">
 										<input type="text" placeholder="请输入医院名称" v-model="keyWord"/>
-										<i onClick="searchHospital();" className="icon-search"></i>
+										<i onClick={this.searchHospital} className="icon-search"></i>
 									</span>
 								</td>
 							</tr>
@@ -297,18 +465,17 @@ const PolicyEdit = React.createClass({
 								</td>
 							</tr>
 						</table>
-					</article>
+				</article>*/}
 				</section>
 				<footer>
-					<button className="btn" onClick="back();">返回</button>
-					<button className="btn btn-primary" onClick="save();" v-if="showPolicyBtn()">保存POLICY</button>
-					<button className="btn btn-primary" onClick="save(true);" v-if="showTemplateBtn()">保存模板</button>
+					<button className="btn" onClick={this.back}>返回</button>
+					{this.showPolicyBtn ? <button className="btn btn-primary" onClick={this.save}>保存POLICY</button> : null}
+					{this.showTemplateBtn ? <button className="btn btn-primary" onClick={this.save.bind(this,true)}>保存模板</button> : null}
 				</footer>
-				<button className="btn toTop" onClick="toTop();">Top</button>
+				<button className="btn toTop" onClick={this.toTop}>Top</button>
 			</section>
 		)
 	}
-*/
 });
 
 //导出组件

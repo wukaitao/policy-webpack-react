@@ -6,7 +6,8 @@ import * as PolicyActions from '../actions/policy.js';
 //将state.policyDetailData绑定到props.policyDetailData
 const mapStateToProps = state =>{
 	return {
-		policyDetailData: state.policyDetailData
+		policyDetailData: state.policyDetailData,
+		hospitalListData: state.hospitalListData
 	};
 };
 //将action的所有方法绑定到props上

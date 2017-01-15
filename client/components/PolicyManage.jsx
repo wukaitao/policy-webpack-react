@@ -114,7 +114,6 @@ const PolicyManage = React.createClass({
 				<option key={i} value={i}>{i}</option>
 			);
 		};
-		//http://stackoverflow.com/questions/21733847/react-jsx-selecting-selected-on-selected-select-option
 		return(
 			<section className="main policy-manage">
 				<div className="toolbar">

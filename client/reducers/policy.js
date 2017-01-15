@@ -78,6 +78,28 @@ export function policyDetailData(state=initState.policyDetailData,action){
 			if(action.status=='beforeSend'){
 				return state;
 			}else if(action.status=='success'){
+				const data = action.data.data;
+				data.policyName = unescape(data.policyName);
+				if(data.path=='copy'){
+					data.policyName = data.policyName + '-复制';
+				};
+				data.policyTitle = unescape(data.policyTitle);
+				data.benefitList.sort((a,b)=>a.orderId-b.orderId);
+				data.benefitList.forEach((p)=>{
+					p.showEdit = false;
+					p.benefitKeyDesc = unescape(p.benefitKeyDesc);
+					p.benefitValueDesc = unescape(p.benefitValueDesc);
+					p.chosen=true;
+					p.children.sort((a,b)=>a.orderId-b.orderId);
+					p.children.forEach((c)=>{
+						c.showEdit = false;
+						c.benefitKeyDesc = unescape(c.benefitKeyDesc);
+						c.benefitValueDesc = unescape(c.benefitValueDesc);
+						c.chosen=true;
+						c.isPrev=c.nodeType==4;
+					});
+				});
+				action.data.data = data;
 				console.log(action.data);
 				return action.data;
 			}else if(action.status=='error'){

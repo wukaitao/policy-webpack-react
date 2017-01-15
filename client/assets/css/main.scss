@@ -157,7 +157,7 @@
 }
 /*login page end*/
 
-/*policymanage*/
+/*policymanage page start*/
 .policy-manage{
     margin-top: -80px;
     padding-top: 44px;
@@ -317,3 +317,244 @@
         }
     }
 }
+/*policymanage page end*/
+
+/*policyedit page start*/
+.policy-edit{
+    background-color: #f4f4f4;
+    *{
+        box-sizing: border-box;
+    }
+    .btn{
+        background-color: #ddd;
+        border: none;
+    }
+    .btn:hover{
+        background-color: #bbb;
+    }
+    .btn:hover{
+        background-color: #bbb;
+    }
+    .btn:active{
+        box-shadow: 0px 1px 5px rgba(0,0,0,0.15) inset;
+    }
+    .btn-primary{
+        background-color: #2679c5;
+    }
+    .btn-primary:hover{
+        background-color: #175590;
+    }
+    .btn-primary:active{
+        box-shadow: 0px 1px 5px rgba(0,0,0,0.15) inset;
+    }
+    header{
+        position: fixed;
+        top: 80px;
+        right: 0px;
+        padding: 20px 20px 20px 45px;
+        width: 240px;
+        text-align: center;
+        .btn{
+            float: left;
+            line-height: 30px;
+            width: 150px;
+            margin: 5px 0px;
+            cursor: pointer;
+        }
+    }
+    section{
+        padding: 10px 240px 20px 20px;
+        margin-top: 0px;
+        nav{
+            display: flex;
+            font-size: 16px;
+            font-weight: bold;
+            line-height: 50px;
+            margin-top: 15px;
+            hr{
+                flex: 1;
+                height: 0;
+                margin-left: 12px;
+                margin-right: 25px;
+                margin-top: 24px;
+            }
+            .btn{
+                border-radius: 19px;
+                height: 38px;
+                width: 38px;
+                line-height: 38px;
+                vertical-align: middle;
+                font-size: 12px;
+                margin-right: 25px;
+                padding: 0px;
+                cursor: pointer;
+            }
+        }
+        nav.nodeType1{
+            color: brown;
+        }
+        nav.nodeType2{
+            line-height: 30px;
+            margin-top: 35px;
+            color: red;
+        }
+        nav.nodeType5{
+            color: mediumvioletred;
+        }
+        table{
+            vertical-align: middle;
+            width: 100%;
+            table-layout: fixed;
+            td{
+                padding: 2px 10px 2px 0px;
+            }
+            .label{
+                color: blue;
+            }
+            .detail{
+                background-color: #eee;
+                display: inline-block;
+                width: 100%;
+                height: 100%;
+                border-radius: 5px;
+            }
+            .ipt{
+                height: 28px;
+                width: 300px;
+                padding: 0px 5px;
+                border:1px solid #d4d4d4;
+            }
+            .editor{
+                vertical-align: top;
+            }
+        }
+        .table-hospital{
+            width: 100%;
+            table-layout: fixed;
+            .toolbar{
+                text-align: right;
+            }
+            .tab-container{
+                line-height: 28px;
+                display: inline-block;
+                cursor: pointer;
+            }
+            .tab:first-child{
+                display: inline-block;
+                width: 90px;
+                border-radius: 5px 0px 0px 5px;
+                border: 1px solid #ccc;
+                border-right: 0px;
+                background-color: #f8f8f8;
+                text-align: center;
+            }
+            .tab:last-child{
+                float: right;
+                display: inline-block;
+                width: 90px;
+                border-radius: 0px 5px 5px 0px;
+                border: 1px solid #ccc;
+                background-color: #f8f8f8;
+                text-align: center;
+            }
+            .tab.selected{
+                background-color: #2679c5;
+                border-color: #2679c5;
+                color: #fff;
+            }
+            .toolbar{
+                .searchbox{
+                    border:1px solid #ccc;
+                    border-radius: 5px;
+                    height: 24px;
+                    display: inline-block;
+                    box-sizing: content-box;
+                    background-color: #fff;
+                    input{
+                        height: 24px;
+                        width: 150px; 
+                        vertical-align: middle;
+                        border: none;
+                        margin: 0px 5px;
+                    }
+                    .search-btn,i{
+                        display: inline-block;
+                        cursor: pointer;
+                        background-color: #2679c5;
+                        color: #fff;
+                        height: 24px;
+                        padding: 0px 10px;
+                        border-radius: 0px 5px 5px 0px;
+                        vertical-align: top;
+                        line-height: 24px;
+                    }
+                }
+            }
+            .title{
+                .choose{
+                    float: right;
+                    color: #000;
+                }
+            }
+            .hospital-container{
+                width: 100%;
+                height: 350px;
+                padding: 5px;
+                border-radius: 5px;
+                box-sizing: border-box;
+                background-color: #fff;
+                overflow: auto;
+                .selected{
+                    background-color: #2679c5;
+                    color: #fff;
+                }
+                .exp{
+                    color: #f00;
+                }
+            }
+            .btn{
+                line-height: 30px;
+                width: 150px;
+                vertical-align: middle;
+                display: inline-block;
+                margin: 5px 0px;
+                border-radius: 5px;
+                border: 1px solid #eee;
+                cursor: pointer;
+            }
+            .btn:hover{
+                background-color: #bbb;
+            }
+            .btn:active{
+                box-shadow: 0px 1px 5px rgba(0,0,0,0.15) inset;
+            }
+            .btn-disabled,.btn-disabled,.btn-disabled:active{
+                background-color: #eaeaea;
+                box-shadow: none;
+            }
+        }
+    }
+    footer{
+        text-align: center;
+        margin-right: 240px;
+        padding: 0px 0px 40px;
+        .btn{
+            line-height: 40px;
+            width: 100px;
+        }
+    }
+    .toTop{
+        position: fixed;
+        right: 45px;
+        bottom: 15px;
+        display: none;
+        border-radius: 19px;
+        height: 38px;
+        width: 38px;
+        line-height: 38px;
+        font-size: 12px;
+        margin-right: 25px;
+        padding: 0px;
+    }
+}
+/*policyedit page end*/
