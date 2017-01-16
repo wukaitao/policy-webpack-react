@@ -3,6 +3,14 @@ import Container from './Container';
 
 export default class DustbinSingleTarget extends Component {
   render() {
+	  const myArray = ['name','Nicky.Wu'];
+	  const [key,value]=myArray;
+	  console.log('key:'+key);
+	  console.log('value:'+value);
+	  const obj = {address: 'shenzhen',code: '0755'};
+	  const {address,code} = obj;
+	  console.log('address:'+address);
+	  console.log('code:'+code);
     return (
       <div>
         <p>

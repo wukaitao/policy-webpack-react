@@ -1,1 +1,7 @@
-{"statusCode":"0","msg":"","data":{"libId":141}}
+{
+    "statusCode": "0", 
+    "msg": "", 
+    "data": {
+        "libId": 141
+    }
+}
