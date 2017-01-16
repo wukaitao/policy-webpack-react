@@ -12,6 +12,8 @@ import PointDrag from './components/PointDrag.jsx';
 import PointManage from './containers/PointManage.js';
 import PointCreate from './containers/PointCreate.js';
 require('./assets/css/main.scss');
+//test drag and drop with react
+import DustbinSingleTarget from './Single Target/index.js';
 
 const store = configureStore();
 
@@ -42,6 +44,7 @@ const App = React.createClass({
 					<Route path='/cateedit/:id' component={PointCreate} onEnter={this.requireAuth}/>
 					<Route path='/pointadd/:type/:parentId' component={PointCreate} onEnter={this.requireAuth}/>
 					<Route path='/pointedit/:pointId' component={PointCreate} onEnter={this.requireAuth}/>
+					<Route path='/testdrag' component={DustbinSingleTarget}/>
 				</Route>
 			</Router>
 		)
