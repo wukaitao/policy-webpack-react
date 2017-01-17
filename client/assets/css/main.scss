@@ -558,3 +558,183 @@
     }
 }
 /*policyedit page end*/
+
+/*pointchoose page start*/
+.point-choose{
+    padding: 0 0 40px;
+    background-color: #f4f4f4;
+    .btn-primary{
+        background-color: #2679c5;
+        border: none;
+    }
+    .btn-primary:hover{
+        background-color: #175590;
+    }
+    .btn-primary:active{
+        box-shadow: 0px 1px 5px rgba(0,0,0,0.15) inset;
+    }
+    .btn{
+        display: block;
+        line-height: 40px;
+        width: 100px;
+        margin: 20px auto 0;
+    }
+    dl{
+        border-bottom: 1px solid darkgray;
+        padding: 30px 20px;
+        dt{
+            header{
+                border: 1px solid gray;
+                border-radius: 3px;
+                display: inline-block;
+                padding: 4px 10px;
+                font-weight: bold;
+                font-size: 15px;
+                margin: 10px 0;
+                background-color: #fff;
+                cursor: pointer;
+            }
+        }
+        dd{
+            border: 1px solid gray;
+            border-radius: 3px;
+            display: inline-block;
+            padding: 4px 10px;
+            margin: 10px 10px 0 0;
+            background-color: #fff;
+            cursor: pointer;
+        }
+        dd.chosen{
+            background-color: #2679c5;
+            border-color: #2679c5;
+            color: #fff;
+        }
+    }
+    header.chosenSome{
+        background-color: #3d9df6;
+        border-color: #3d9df6;
+        color: #fff;
+    }
+    header.chosenAll{
+        background-color: #2679c5;
+        border-color: #2679c5;
+        color: #fff;
+    }
+}
+/*pointchoose page end*/
+
+/*pointdrag page start*/
+.point-drag{
+    padding: 0 0 40px;
+    background-color: #f4f4f4;
+    .btn-primary{
+        background-color: #2679c5;
+        border: none;
+    }
+    .btn-primary:hover{
+        background-color: #175590;
+    }
+    .btn-primary:active{
+        box-shadow: 0px 1px 5px rgba(0,0,0,0.15) inset;
+    }
+    .btn{
+        display: block;
+        line-height: 40px;
+        width: 100px;
+        margin: 20px auto 0;
+    }
+    dl{
+        border-bottom: 1px solid darkgray;
+        padding: 30px 20px;
+        cursor: pointer;
+        dt{
+            header{
+                border: 1px solid gray;
+                border-radius: 3px;
+                display: inline-block;
+                padding: 4px 10px;
+                font-weight: bold;
+                font-size: 15px;
+                margin: 10px 0;
+                background-color: #fff;
+            }
+        }
+        dd{
+            border: 1px solid gray;
+            border-radius: 3px;
+            display: inline-block;
+            padding: 4px 10px;
+            margin: 10px 10px 0 0;
+            background-color: #fff;
+            cursor: pointer;
+        }
+    }
+    .chosen{
+        background-color: #2679c5;
+        border-color: #2679c5;
+        color: #fff;
+    }
+}
+/*pointdrag page end*/
+
+/*pointmanage page start*/
+.point-manage{
+    padding: 0 0 40px;
+    background-color: #f4f4f4;
+    dl{
+        border-bottom: 1px solid darkgray;
+        padding: 30px 20px;
+        dt{
+            header{
+                border: 1px solid gray;
+                border-radius: 3px;
+                display: inline-block;
+                padding: 4px 10px;
+                font-weight: bold;
+                font-size: 15px;
+                margin: 10px 0;
+                background-color: #fff;
+                cursor: pointer;
+            }
+        }
+        dd{
+            border: 1px solid gray;
+            border-radius: 3px;
+            display: inline-block;
+            padding: 4px 10px;
+            margin: 10px 10px 0 0;
+            background-color: #fff;
+            cursor: pointer;
+        }
+    }
+    .btn{
+        background-color: #ccc;
+        vertical-align: top;
+        line-height: inherit;
+    }
+}
+/*pointmanage page end*/
+
+/*pointedit page start*/
+.point-edit{
+    padding: 30px 20px 20px;
+    background-color: #f4f4f4;
+    .title{
+        font-size: 18px;
+        font-weight: bold;
+    }
+    .content{
+        display: table;
+        .label{
+            display: table-cell;
+            padding: 2px 10px 2px 0px;
+        }
+        .ipt{
+            height: 28px;
+            width: 300px;
+            padding: 0px 5px;
+            border:1px solid #d4d4d4;
+        }
+    }
+}
+/*pointedit page end*/
