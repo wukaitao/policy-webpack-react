@@ -1,6 +1,6 @@
 ﻿import React,{PropTypes} from 'react';
 import addons from 'react-addons';
-import {Link} from 'react-router';
+import {Link,hashHistory} from 'react-router';
 //声明组件
 const PolicyManage = React.createClass({
 	componentWillMount(){

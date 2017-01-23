@@ -35,18 +35,6 @@ const Login = React.createClass({
 			password: md5(this.refs.password.value)
 		};
 		this.props.login(param);
-		/*
-		fetch('/hmc_ghb_server/tob/tobLogin',{
-			method: 'post',
-			body: JSON.stringify(param)
-		}).then(response=>response.text())
-		.then(data=>{
-			console.log('登录成功!');
-			console.log(data);
-		}).catch(err=>{
-			console.log('登录失败!');
-		});
-		*/
 	},
 	render(){
 		return(

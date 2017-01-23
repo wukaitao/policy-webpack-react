@@ -2,6 +2,7 @@
 import ReactDom from 'react-dom';
 import {Router,Route,IndexRoute,hashHistory,IndexRedirect} from 'react-router';
 import {Provider} from 'react-redux';
+import {syncHistoryWithStore, routerReducer} from 'react-router-redux';
 import configureStore from './store/configureStore.js';
 import Main from './components/Main.jsx';
 import Login from './containers/Login.js';
@@ -17,6 +18,35 @@ import DustbinSingleTarget from './Single Target/index.js';
 
 const store = configureStore();
 //console.log(store.getState());
+
+const history = syncHistoryWithStore(hashHistory, store);
+
+/*
+function showMine(name,age,school){
+	console.log('My name is:'+name+', age:'+age+', school:'+school);
+};
+var args = ['Nicky.Wu',28,'scau'];
+showMine(...args);
+let state = {
+    resultList: [],
+    currentPage: 0,
+    totalRows: {}
+};
+let data = {
+    resultList: [{new:'new'}],
+    currentPage: 2,
+    totalRows: {row:'row'}
+};
+let combile = {
+    resultList: [
+        ...state.resultList,
+        ...data.resultList
+    ],
+    currentPage: data.currentPage,
+    totalRows: data.totalRows
+};
+console.log(combile);
+*/
 
 const App = React.createClass({
 	requireAuth(nextState,replace){
@@ -34,7 +64,7 @@ const App = React.createClass({
 	},
 	render(){
 		return(
-			<Router history={hashHistory}>
+			<Router history={history}>
 				<Route path='/' component={Main}>
 					<IndexRoute component={Login} onEnter={this.judgeLogin}/>
 					<Route path='/login' component={Login} onEnter={this.judgeLogin} callbackRootRoute={this.onRouteChange}/>

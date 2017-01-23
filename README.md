@@ -15,6 +15,7 @@
 //react-dom:react渲染
 //redux:redux数据仓库
 //redux-thunk:redux异步加载
+//react-router-redux:route信息保存到redux
 //react-addons:处理样式过度和样式对象等
 //react-dnd:用于react拖放
 //react-dnd-html5-backend:用于配合react拖放(如支持触屏拖放)

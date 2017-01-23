@@ -1,5 +1,5 @@
 ﻿import React from 'react';
-import {Link} from 'react-router';
+import {Link,hashHistory} from 'react-router';
 //声明组件
 const Nav = React.createClass({
 	getDefaultProps(){
@@ -30,11 +30,11 @@ const Nav = React.createClass({
 	},
 	componentDidUpdate(){
 		//监听props和state变化
-		if(this.props.logoutData.statusCode==0){
+		if(!this.isLoginPage()&&this.props.logoutData.statusCode==0){
 			//请求成功
 			console.log('退出成功.');
-			//this.props.router.replace('/login');
-		}
+			//hashHistory.push('/login');
+		};
 	},
 	componentWillUnmount(){
 		console.log('销毁期:componentWillUnmount');
@@ -42,10 +42,12 @@ const Nav = React.createClass({
 	logout(){
 		this.props.logout();
 	},
+	isLoginPage(){
+		return !this.props.path||this.props.path=='/'||this.props.path=='/login';
+	},
 	render(){
 		console.log('组件渲染:render');
-		const isLoginPage = !this.props.path||this.props.path=='/'||this.props.path=='/login';
-		if(isLoginPage){return false};
+		if(this.isLoginPage()){return false};
 		return(
 			<header className="head">
 				<nav className="nav">
