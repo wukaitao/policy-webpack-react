@@ -5,10 +5,20 @@
 	padding: 0;
 	color: #333;
 }
+*{
+    box-sizing: border-box;
+}
 a{
 	text-decoration: none;
 }
 /*common start*/
+ul,ol,li,dl,dt,dd{
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+    border: none;
+    outline: none;
+}
 button,input,textarea,select{
     vertical-align: middle;
     outline: none;
