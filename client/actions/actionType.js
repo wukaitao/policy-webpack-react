@@ -20,6 +20,8 @@ export const CreatePdf = 'CreatePdf';//生成pdf
 export const PolicyRelationList = 'PolicyRelationList';//policy保单关系列表
 export const DialogOpen = 'DialogOpen';//打开弹窗
 export const DialogCancel = 'DialogCancel';//关闭弹窗
+export const LoadingOpen = 'LoadingOpen';//打开Loading蒙层
+export const LoadingCancel = 'LoadingCancel';//关闭Loading蒙层
 
 export const Login = 'Login';//登录
 export const Logout = 'Logout';//退出

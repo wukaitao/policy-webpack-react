@@ -34,6 +34,14 @@ export function pageStatus(state=initState.pageStatus,action){
 			return action.param;
 		case types.DialogCancel:
 			return action.param;
+		case types.LoadingOpen:
+			//state.isLoading = true;
+			console.log('LoadingOpen');
+			return state;
+		case types.LoadingCancel:
+			state.isLoading = false;
+			console.log('LoadingCancel');
+			return state;
 		default:
 			return state;
 	};

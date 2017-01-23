@@ -16,6 +16,7 @@ require('./assets/css/main.scss');
 import DustbinSingleTarget from './Single Target/index.js';
 
 const store = configureStore();
+//console.log(store.getState());
 
 const App = React.createClass({
 	requireAuth(nextState,replace){

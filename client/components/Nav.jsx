@@ -29,7 +29,12 @@ const Nav = React.createClass({
 		console.log('存在期:componentWillUpdate');
 	},
 	componentDidUpdate(){
-		console.log('存在期:componentDidUpdate');
+		//监听props和state变化
+		if(this.props.logoutData.statusCode==0){
+			//请求成功
+			console.log('退出成功.');
+			//this.props.router.replace('/login');
+		}
 	},
 	componentWillUnmount(){
 		console.log('销毁期:componentWillUnmount');
@@ -39,7 +44,7 @@ const Nav = React.createClass({
 	},
 	render(){
 		console.log('组件渲染:render');
-		const isLoginPage = window.location.hash=='#/login'||window.location.hash=='#/';
+		const isLoginPage = !this.props.path||this.props.path=='/'||this.props.path=='/login';
 		if(isLoginPage){return false};
 		return(
 			<header className="head">

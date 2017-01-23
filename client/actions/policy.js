@@ -1,4 +1,5 @@
 ﻿import * as types from './actionType.js';
+import {loadingOpen,loadingCancel} from './popup.js';
 
 //导出所有方法
 //PolicyManage
@@ -71,14 +72,17 @@ function receiveDeletePolicyData(param,data){
 //获取保单列表
 export function queryPolicyList(param){
 	return function(dispatch){
-		dispatch(requestPolicyList(param));
+		//dispatch(requestPolicyList(param));
+		dispatch(loadingOpen());
 		return fetch('../assets/json/policyList.json',{
 			method: 'get'
 		}).then(response=>response.text())
 		.then(data=>{
+			dispatch(loadingCancel());
 			dispatch(receivePolicyList(param,JSON.parse(data)));
 		}).catch(err=>{
-			dispatch(receivePolicyList(param,err));
+			dispatch(loadingCancel());
+			//dispatch(receivePolicyList(param,err));
 		});
 	};
 };

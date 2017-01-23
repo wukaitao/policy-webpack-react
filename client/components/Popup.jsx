@@ -1,6 +1,9 @@
 ﻿import React,{PropTypes} from 'react';
 //声明组件
 const Popup = React.createClass({
+	componentWillUpdate(){
+		console.log('popup componentWillUpdate');
+	},
 	openDialog(param){
 		this.props.dialogOpen(param);
 	},
@@ -16,6 +19,8 @@ const Popup = React.createClass({
 		else this.props.dialogCancel(param);
 	},
 	render(){
+		console.log('popup render.');
+		const data = this.props.pageStatus;
 		const loadingHtml = (
 			<div className="cover">
 				<div className="loading">
@@ -49,10 +54,9 @@ const Popup = React.createClass({
 				</div>
 			</div>
 		);
-		return false;
 		return (
 			<footer className="foot popup">
-				{loadingHtml}
+				{data&&data.isLoading ? loadingHtml : null}
 			</footer>
 		)
 	}
