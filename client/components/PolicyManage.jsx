@@ -7,6 +7,14 @@ const PolicyManage = React.createClass({
 		//默认加载列表
 		this.getPolicyList(1,true);
 	},
+	componentWillUpdate(){
+		console.log('存在期:componentWillUpdate');
+		//监听页面变化
+		this.props.route.callbackRootRoute({
+			isLoading: false,
+			name: 'Nicky.Wu'
+		});
+	},
 	isTemplateManager(){
 		//是否管理员
 		return true;

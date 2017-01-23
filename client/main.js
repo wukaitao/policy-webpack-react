@@ -26,24 +26,29 @@ const App = React.createClass({
 		//登录判断
 		console.log('judgeLogin');
 	},
+	onRouteChange(newState){
+		//页面状态变化
+		console.log('newState:');
+		console.log(newState);
+	},
 	render(){
 		return(
 			<Router history={hashHistory}>
 				<Route path='/' component={Main}>
 					<IndexRoute component={Login} onEnter={this.judgeLogin}/>
-					<Route path='/login' component={Login} onEnter={this.judgeLogin}/>
-					<Route path='/policymanage' component={PolicyManage} onEnter={this.requireAuth}/>
-					<Route path='/policyadd' component={PolicyEdit} onEnter={this.requireAuth}/>
-					<Route path='/policyview/:id' component={PolicyEdit} onEnter={this.requireAuth} yui="yes"/>
-					<Route path='/policyedit/:id' component={PolicyEdit} onEnter={this.requireAuth}/>
-					<Route path='/policycopy/:id' component={PolicyEdit} onEnter={this.requireAuth}/>
-					<Route path='/pointchoose' component={PointChoose} onEnter={this.requireAuth}/>
-					<Route path='/pointdrag' component={PointDrag} onEnter={this.requireAuth}/>
-					<Route path='/pointmanage' component={PointManage} onEnter={this.requireAuth}/>
-					<Route path='/cateadd/:type' component={PointCreate} onEnter={this.requireAuth}/>
-					<Route path='/cateedit/:id' component={PointCreate} onEnter={this.requireAuth}/>
-					<Route path='/pointadd/:type/:parentId' component={PointCreate} onEnter={this.requireAuth}/>
-					<Route path='/pointedit/:pointId' component={PointCreate} onEnter={this.requireAuth}/>
+					<Route path='/login' component={Login} onEnter={this.judgeLogin} callbackRootRoute={this.onRouteChange}/>
+					<Route path='/policymanage' component={PolicyManage} onEnter={this.requireAuth} callbackRootRoute={this.onRouteChange}/>
+					<Route path='/policyadd' component={PolicyEdit} onEnter={this.requireAuth} callbackRootRoute={this.onRouteChange}/>
+					<Route path='/policyview/:id' component={PolicyEdit} onEnter={this.requireAuth} yui="yes" callbackRootRoute={this.onRouteChange}/>
+					<Route path='/policyedit/:id' component={PolicyEdit} onEnter={this.requireAuth} callbackRootRoute={this.onRouteChange}/>
+					<Route path='/policycopy/:id' component={PolicyEdit} onEnter={this.requireAuth} callbackRootRoute={this.onRouteChange}/>
+					<Route path='/pointchoose' component={PointChoose} onEnter={this.requireAuth} callbackRootRoute={this.onRouteChange}/>
+					<Route path='/pointdrag' component={PointDrag} onEnter={this.requireAuth} callbackRootRoute={this.onRouteChange}/>
+					<Route path='/pointmanage' component={PointManage} onEnter={this.requireAuth} callbackRootRoute={this.onRouteChange}/>
+					<Route path='/cateadd/:type' component={PointCreate} onEnter={this.requireAuth} callbackRootRoute={this.onRouteChange}/>
+					<Route path='/cateedit/:id' component={PointCreate} onEnter={this.requireAuth} callbackRootRoute={this.onRouteChange}/>
+					<Route path='/pointadd/:type/:parentId' component={PointCreate} onEnter={this.requireAuth} callbackRootRoute={this.onRouteChange}/>
+					<Route path='/pointedit/:pointId' component={PointCreate} onEnter={this.requireAuth} callbackRootRoute={this.onRouteChange}/>
 					<Route path='/testdrag' component={DustbinSingleTarget}/>
 				</Route>
 			</Router>
