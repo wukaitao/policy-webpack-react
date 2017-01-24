@@ -26,7 +26,11 @@ export function login(param){
 		}).then(response=>response.text())
 		.then(data=>{
 			const result = JSON.parse(data);
-			result.statusCode==0&&dispatch(receiveLogin(param,result.data));
+			if(result.statusCode==0){
+				localStorage.setItem('pageLogin','true');
+				localStorage.setItem('isTemplateManager',escape(result.data.templateFlag));
+				dispatch(receiveLogin(param,result.data));
+			};
 			dispatch(loadingCancel());
 		}).catch(err=>{
 			dispatch(loadingCancel());
@@ -42,7 +46,11 @@ export function logout(){
 		}).then(response=>response.text())
 		.then(data=>{
 			const result = JSON.parse(data);
-			result.statusCode==0&&dispatch(receiveLogout(result.data));
+			if(result.statusCode==0){
+				localStorage.setItem('pageLogin','false');
+				localStorage.setItem('isTemplateManager',escape('0'));
+				dispatch(receiveLogout(result.data));
+			};
 			dispatch(loadingCancel());
 		}).catch(err=>{
 			dispatch(loadingCancel());

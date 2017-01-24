@@ -2,6 +2,14 @@
 import addons from 'react-addons';
 //声明组件
 const Popup = React.createClass({
+	getDefaultProps(){
+		//console.log('创建期:getDefaultProps');
+		//console.log('aa');
+	},
+	getInitialState(){
+		//console.log('创建期:getInitialState');
+		return {};
+	},
 	shouldComponentUpdate(){
 		//对render进行过滤阻止
 		return true;

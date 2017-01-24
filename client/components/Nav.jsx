@@ -8,8 +8,7 @@ const Nav = React.createClass({
 	getInitialState(){
 		//console.log('创建期:getInitialState');
 		return {
-			isLogin: true,
-			userName: 'Nicky.Wu'
+			isLogin: true
 		};
 	},
 	componentWillMount(){
@@ -18,8 +17,21 @@ const Nav = React.createClass({
 	componentDidMount(){
 		//console.log('创建期:componentDidMount');
 	},
-	componentWillReceiveProps(){
-		//console.log('存在期:componentDidMount');
+	componentWillReceiveProps(nextProps){
+		//监听props和state变化
+		if(!nextProps.pageStatus.isLogin&&this.state.isLogin){
+			this.setState({
+				isLogin: false
+			});
+			this.props.popup.dialogOpen({
+				type: 'toast',
+				icon: 'icon-circle-check',
+				message: '退出成功',
+				callback: function(){
+					hashHistory.push('/login');
+				}
+			});
+		};
 	},
 	shouldComponentUpdate(){
 		//console.log('存在期:shouldComponentUpdate');

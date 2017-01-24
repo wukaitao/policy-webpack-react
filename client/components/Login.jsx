@@ -3,19 +3,17 @@ import {Link,hashHistory} from 'react-router';
 import md5 from 'md5';
 //声明组件
 const Login = React.createClass({
-	componentDidUpdate(){
-		//监听props和state变化
-		console.log('yes.');
-		if(this.props.pageStatus.isLogin){
-			this.props.popup.dialogOpen({
-				type: 'alert',
-				message: '用户名必须是以数字或字母开头，4-12位字符'
-			});
-			hashHistory.push('/policymanage');
-			return;
+	getInitialState(){
+		return {
+			isLogin: false
 		};
-		/*
-		if(this.props.pageStatus.isLogin){
+	},
+	componentWillReceiveProps(nextProps){
+		//监听props和state变化
+		if(nextProps.pageStatus.isLogin&&!this.state.isLogin){
+			this.setState({
+				isLogin: true
+			});
 			this.props.popup.dialogOpen({
 				type: 'toast',
 				icon: 'icon-circle-check',
@@ -25,7 +23,10 @@ const Login = React.createClass({
 				}
 			});
 		};
-		*/
+	},
+	shouldComponentUpdate(){
+		//避免重新渲染页面
+		return false;
 	},
 	login(event){
 		event.preventDefault();

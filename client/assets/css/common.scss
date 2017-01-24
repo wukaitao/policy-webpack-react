@@ -12,7 +12,7 @@ a{
 	text-decoration: none;
 }
 /*common start*/
-ul,ol,li,dl,dt,dd{
+ul,ol,li,dl,dt,dd,p{
     margin: 0px;
     padding: 0px;
     list-style: none;
@@ -131,7 +131,6 @@ i{
         color: #2679c5;
     }
     p{
-        margin: 0px;
         padding: 12px 0px;
         line-height: 16px;
         height: 100%;
