@@ -2,6 +2,10 @@
 import addons from 'react-addons';
 //声明组件
 const Popup = React.createClass({
+	shouldComponentUpdate(){
+		//对render进行过滤阻止
+		return true;
+	},
 	componentWillUpdate(){
 		//console.log('popup componentWillUpdate');
 	},
@@ -24,7 +28,7 @@ const Popup = React.createClass({
 		const data = this.props.pageStatus;
 		const classSet = addons.classSet;
 		const dialogClass = classSet({
-			'hide': !data.dialog.show,
+			'show': data.dialog.show,
 			'dialog': true
 		});
 		const iToastClass = data.dialog.icon=='' ? 'icon-circle-cross' : data.dialog.icon;

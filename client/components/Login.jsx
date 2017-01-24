@@ -5,10 +5,27 @@ import md5 from 'md5';
 const Login = React.createClass({
 	componentDidUpdate(){
 		//监听props和state变化
+		console.log('yes.');
 		if(this.props.pageStatus.isLogin){
-			console.log('登录成功.');
+			this.props.popup.dialogOpen({
+				type: 'alert',
+				message: '用户名必须是以数字或字母开头，4-12位字符'
+			});
 			hashHistory.push('/policymanage');
+			return;
 		};
+		/*
+		if(this.props.pageStatus.isLogin){
+			this.props.popup.dialogOpen({
+				type: 'toast',
+				icon: 'icon-circle-check',
+				message: '登录成功',
+				callback: function(){
+					hashHistory.push('/policymanage');
+				}
+			});
+		};
+		*/
 	},
 	login(event){
 		event.preventDefault();
@@ -18,22 +35,31 @@ const Login = React.createClass({
 		this.refs.userName.value = this.refs.userName.value.replace(/^\s+|\s+$/g,'');
 		this.refs.password.value = this.refs.password.value.replace(/^\s+|\s+$/g,'')
 		if(!userNameReg.test(this.refs.userName.value)){
-			console.log('用户名必须是以数字或字母开头，4-12位字符');
+			this.props.popup.dialogOpen({
+				type: 'alert',
+				message: '用户名必须是以数字或字母开头，4-12位字符'
+			});
 			return;
 		}else if(!passwordReg.test(this.refs.password.value)){
-			console.log('密码必须是6-20位字母、数字、下划线');
+			this.props.popup.dialogOpen({
+				type: 'alert',
+				message: '密码必须是6-20位字母、数字、下划线'
+			});
 			return;
 		};
 		//后端校验(模拟)admin3 5tgbSDFG
 		if(this.refs.userName.value!='admin'||this.refs.password.value!='123456'){
-			console.log('账号不存在或者密码错误');
+			this.props.popup.dialogOpen({
+				type: 'alert',
+				message: '账号不存在或者密码错误'
+			});
 			return;
 		};
 		const param = {
 			userName: this.refs.userName.value,
 			password: md5(this.refs.password.value)
 		};
-		this.props.login(param);
+		this.props.page.login(param);
 	},
 	render(){
 		return(

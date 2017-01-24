@@ -1,5 +1,5 @@
 ﻿import * as types from './actionType.js';
-import {loadingOpen,loadingCancel} from './popup.js';
+import {loadingOpen,loadingCancel,dialogOpen,dialogCancel} from './popup.js';
 
 //导出所有方法
 //PointManage

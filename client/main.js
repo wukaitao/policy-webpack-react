@@ -51,16 +51,16 @@ console.log(combile);
 const App = React.createClass({
 	requireAuth(nextState,replace){
 		//登录认证
-		console.log('requireAuth');
+		//console.log('requireAuth');
 	},
 	judgeLogin(nextState,replace){
 		//登录判断
-		console.log('judgeLogin');
+		//console.log('judgeLogin');
 	},
 	onRouteChange(newState){
 		//页面状态变化
-		console.log('newState:');
-		console.log(newState);
+		//console.log('newState:');
+		//console.log(newState);
 	},
 	render(){
 		return(

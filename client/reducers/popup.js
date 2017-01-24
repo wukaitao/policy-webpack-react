@@ -5,7 +5,7 @@ const initState = {
 			isSave: false,//保存状态
 			isLoading: false,//用于蒙层loading
 			isRequesting: false,//用于按钮置灰
-			isLogin: true,//localStorage.getItem('pageLogin')=='true',//登录状态
+			isLogin: localStorage.getItem('pageLogin')=='true',//登录状态
 			isTemplateManager: unescape(localStorage.getItem('isTemplateManager'))=='1',//是否为模板管理人员
 			userName: '',//用户昵称
 			dialog: {
@@ -32,32 +32,28 @@ const initState = {
 export function pageStatus(state=initState.pageStatus,action){
 	switch(action.type){
 		case types.DialogOpen:
-			return Object.assign({},state,{dialog: action.param});
-			//break;
+			const result = Object.assign({},state,{
+				dialog: Object.assign({},state.dialog,action.param)
+			});
+			return result;
 		case types.DialogCancel:
 			return Object.assign({},state,{dialog: initState.pageStatus.dialog});
-			//break;
 		case types.LoadingOpen:
 			return Object.assign({},state,{isLoading: true});
-			//break;
 		case types.LoadingCancel:
 			return Object.assign({},state,{isLoading: false});
-			//break;
 		case types.Login:
-			console.log('ready.');
 			return Object.assign({},state,{
 				isLogin: true,
 				isTemplateManager: action.data.templateFlag=='1',
 				userName: action.data.userName
 			});
-			//break;
 		case types.Logout:
 			return Object.assign({},state,{
 				isLogin: false,
 				isTemplateManager: false,
 				userName: ''
 			});
-			//break;
 		default:
 			return state;
 	};

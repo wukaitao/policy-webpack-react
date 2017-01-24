@@ -16,15 +16,24 @@ export function loadingCancel(){
 };
 //Dialog open
 export function dialogOpen(param){
-	return {
-		type: types.DialogOpen,
-		param
+	return function(dispatch){
+		param.show = true;
+		if(param.type=='toast'){
+			window.setTimeout(function(){
+				let callback = param.callback||function(){};
+				callback.call(param);
+				dispatch(dialogCancel());
+			},2000);
+		};
+		dispatch({
+			type: types.DialogOpen,
+			param
+		});
 	};
 };
 //Dialog cancel
-export function dialogCancel(param){
+export function dialogCancel(){
 	return {
-		type: types.DialogCancel,
-		param
+		type: types.DialogCancel
 	};
 };

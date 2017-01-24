@@ -30,10 +30,12 @@ const Nav = React.createClass({
 	},
 	componentDidUpdate(){
 		//监听props和state变化
+		/*
 		if(!this.isLoginPage()&&!this.props.pageStatus.isLogin){
 			console.log('退出成功.');
 			hashHistory.push('/login');
 		};
+		*/
 	},
 	componentWillUnmount(){
 		//console.log('销毁期:componentWillUnmount');
