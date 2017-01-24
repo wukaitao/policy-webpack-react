@@ -20,7 +20,7 @@ const PointManage = React.createClass({
 	},
 	render(){
 		const self = this;
-		const data = this.props.allPointData.data;
+		const data = this.props.allPointData;
 		const classNodeHtml = data.map((item,index)=>{
 			let resultHtml = item.nodeType==2 ? (
 			    <dl key={index}>

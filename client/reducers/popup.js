@@ -5,7 +5,7 @@ const initState = {
 			isSave: false,//保存状态
 			isLoading: false,//用于蒙层loading
 			isRequesting: false,//用于按钮置灰
-			isLogin: localStorage.getItem('pageLogin')=='true',//登录状态
+			isLogin: true,//localStorage.getItem('pageLogin')=='true',//登录状态
 			isTemplateManager: unescape(localStorage.getItem('isTemplateManager'))=='1',//是否为模板管理人员
 			userName: '',//用户昵称
 			dialog: {

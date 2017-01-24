@@ -1,11 +1,7 @@
 ﻿import * as types from '../actions/actionType.js';
 
 const initState = {
-	allPointData: {
-		data: [],
-		statusCode: 'static',
-		msg: '请求初始化'
-	},
+	allPointData: [],
 	templateNodeAddData: {
 		data: {},
 		statusCode: 'static',
@@ -22,26 +18,7 @@ const initState = {
 export function allPointData(state=initState.allPointData,action){
 	switch(action.type){
 		case types.AllPointData:
-			if(action.status=='beforeSend'){
-				return state;
-			}else if(action.status=='success'){
-				const data = action.data.data;
-				data.forEach((item)=>{
-					item.benefitKeyDesc = unescape(item.benefitKeyDesc);
-					item.benefitValueDesc = unescape(item.benefitValueDesc);
-					item.nodeTitle = unescape(item.nodeTitle);
-					item.children.forEach((subItem)=>{
-						subItem.benefitKeyDesc = unescape(subItem.benefitKeyDesc);
-						subItem.benefitValueDesc = unescape(subItem.benefitValueDesc);
-						subItem.nodeTitle = unescape(subItem.nodeTitle);
-					});
-				});
-				action.data.data = data;
-				console.log(action.data);
-				return action.data;
-			}else if(action.status=='error'){
-				return state;
-			};
+			return action.data;
 		default:
 			return state;
 	};
