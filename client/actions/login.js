@@ -1,63 +1,51 @@
 ﻿import * as types from './actionType.js';
+import {loadingOpen,loadingCancel,dialogOpen,dialogCancel} from './popup.js';
 
 //导出所有方法
-//Login
 //action->reducer
-function requestLogin(param){
-	return {
-		type: types.Login,
-		status: 'beforeSend',
-		param
-	};
-}
-;
 function receiveLogin(param,data){
 	return {
 		type: types.Login,
-		status: 'success',
 		param,
 		data
-	};
-};
-function failLogin(param,err){
-	return {
-		type: types.Login,
-		status: 'error',
-		param,
-		err
 	};
 };
 function receiveLogout(data){
 	return {
 		type: types.Logout,
-		status: 'success',
 		data
 	};
 };
 //dispatch->action
-//登录
+//Login
 export function login(param){
 	return function(dispatch){
-		dispatch(requestLogin(param));
+		dispatch(loadingOpen());
 		return fetch('../assets/json/policyLogin.json',{
 			method: 'get'
 		}).then(response=>response.text())
 		.then(data=>{
-			dispatch(receiveLogin(param,JSON.parse(data)));
+			const result = JSON.parse(data);
+			result.statusCode==0&&dispatch(receiveLogin(param,result.data));
+			dispatch(loadingCancel());
 		}).catch(err=>{
-			dispatch(failLogin(param,err));
+			dispatch(loadingCancel());
 		});
 	};
 };
-//退出
+//Logout
 export function logout(){
 	return function(dispatch){
+		dispatch(loadingOpen());
 		return fetch('../assets/json/policyLogout.json',{
 			method: 'get'
 		}).then(response=>response.text())
 		.then(data=>{
-			dispatch(receiveLogout(JSON.parse(data)));
+			const result = JSON.parse(data);
+			result.statusCode==0&&dispatch(receiveLogout(result.data));
+			dispatch(loadingCancel());
 		}).catch(err=>{
+			dispatch(loadingCancel());
 		});
 	};
 };

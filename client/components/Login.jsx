@@ -1,15 +1,14 @@
 ﻿import React from 'react';
-import {Link} from 'react-router';
+import {Link,hashHistory} from 'react-router';
 import md5 from 'md5';
 //声明组件
 const Login = React.createClass({
 	componentDidUpdate(){
 		//监听props和state变化
-		if(this.props.loginData.statusCode==0){
-			//请求成功
+		if(this.props.pageStatus.isLogin){
 			console.log('登录成功.');
-			this.props.router.replace('/policymanage');
-		}
+			hashHistory.push('/policymanage');
+		};
 	},
 	login(event){
 		event.preventDefault();

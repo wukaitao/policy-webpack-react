@@ -4,28 +4,11 @@ import {loadingOpen,loadingCancel} from './popup.js';
 //导出所有方法
 //PolicyManage
 //action->reducer
-function requestPolicyList(param){
-	return {
-		type: types.PolicyListData,
-		status: 'beforeSend',
-		param
-	};
-}
-;
 function receivePolicyList(param,data){
 	return {
 		type: types.PolicyListData,
-		status: 'success',
 		param,
 		data
-	};
-};
-function failPolicyList(param,err){
-	return {
-		type: types.PolicyListData,
-		status: 'error',
-		param,
-		err
 	};
 };
 function receivePolicyRelationList(param,data){
@@ -72,17 +55,23 @@ function receiveDeletePolicyData(param,data){
 //获取保单列表
 export function queryPolicyList(param){
 	return function(dispatch){
-		//dispatch(requestPolicyList(param));
 		dispatch(loadingOpen());
 		return fetch('../assets/json/policyList.json',{
 			method: 'get'
 		}).then(response=>response.text())
 		.then(data=>{
+			const result = JSON.parse(data);
+			if(result.statusCode==0){
+				const pageCount = result.data.totalCount==0 ? 1 : 
+					  result.data.totalCount%20==0 ? result.data.totalCount/20 : 
+					  parseInt(result.data.totalCount/20)+1;
+				result.data.pageCount = pageCount;
+				result.data.basicList.forEach(item=>item.isPosting=false);
+				dispatch(receivePolicyList(param,result.data));
+			};
 			dispatch(loadingCancel());
-			dispatch(receivePolicyList(param,JSON.parse(data)));
 		}).catch(err=>{
 			dispatch(loadingCancel());
-			//dispatch(receivePolicyList(param,err));
 		});
 	};
 };

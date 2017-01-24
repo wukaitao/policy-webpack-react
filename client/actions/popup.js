@@ -1,7 +1,6 @@
 ﻿import * as types from './actionType.js';
 
 //导出所有方法
-//Dialog
 //dispatch->action->reducer
 //Loading open
 export function loadingOpen(){

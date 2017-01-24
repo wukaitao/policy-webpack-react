@@ -22,7 +22,7 @@ const PolicyManage = React.createClass({
 	getPolicyList(page,flag){
 		//获取列表
 		if(!flag) return;
-		console.log(page);
+		//console.log(page);
 		const param = {
 			currentPage: page,
 			policyMemberIdPattern: 'policy'
@@ -60,7 +60,7 @@ const PolicyManage = React.createClass({
 		this.props.queryPolicyRelationList(param);
 	},
 	render(){
-		const data = this.props.policyListData.data;
+		const data = this.props.policyListData;
 		const classSet = addons.classSet;
 		const btnFirstClass = classSet({
 			'btn-primary': data.currentPage!=1,

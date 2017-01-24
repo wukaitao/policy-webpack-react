@@ -2,11 +2,7 @@
 
 const initState = {
 	policyListData: {
-		data: {
-			basicList: []
-		},
-		statusCode: 'static',
-		msg: '请求初始化'
+		basicList: []
 	},
 	policyRelationListData: {
 		data: [],
@@ -39,18 +35,7 @@ const initState = {
 export function policyListData(state=initState.policyListData,action){
 	switch(action.type){
 		case types.PolicyListData:
-			if(action.status=='beforeSend'){
-				return state;
-			}else if(action.status=='success'){
-				const pageCount = action.data.data.totalCount==0 ? 1 : 
-								  action.data.data.totalCount%20==0 ? action.data.data.totalCount/20 : 
-								  parseInt(action.data.data.totalCount/20)+1;
-				action.data.data.pageCount = pageCount;
-				action.data.data.basicList.forEach(item=>item.isPosting=false);
-				return Object.assign({},state,action.data);
-			}else if(action.status=='error'){
-				return state;
-			};
+			return Object.assign({},state,action.data);
 		default:
 			return state;
 	};

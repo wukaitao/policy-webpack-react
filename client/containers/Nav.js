@@ -6,7 +6,7 @@ import * as LoginActions from '../actions/login.js';
 //将state.account绑定到props.account
 const mapStateToProps = state =>{
 	return {
-		logoutData: state.logoutData
+		pageStatus: state.pageStatus
 	};
 };
 //将action的所有方法绑定到props上
