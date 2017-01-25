@@ -49,8 +49,8 @@ export function queryAllPoint(param){
 					});
 				});
 				result.data = data;
+				dispatch(receiveAllPoint(result.data));
 			};
-			dispatch(receiveAllPoint(result.data));
 			dispatch(loadingCancel());
 		}).catch(err=>{
 			dispatch(loadingCancel());

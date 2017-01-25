@@ -14,7 +14,6 @@ function receivePolicyList(param,data){
 function receivePolicyRelationList(param,data){
 	return {
 		type: types.PolicyRelationList,
-		status: 'success',
 		param,
 		data
 	};
@@ -22,7 +21,6 @@ function receivePolicyRelationList(param,data){
 function receivePolicyDetail(param,data){
 	return {
 		type: types.PolicyDetail,
-		status: 'success',
 		param,
 		data
 	};
@@ -30,7 +28,6 @@ function receivePolicyDetail(param,data){
 function receiveHospitalList(param,data){
 	return {
 		type: types.HospitalList,
-		status: 'success',
 		param,
 		data
 	};
@@ -46,7 +43,6 @@ function receiveSubmitPDFData(param,data){
 function receiveDeletePolicyData(param,data){
 	return {
 		type: types.DeletePolicy,
-		status: 'success',
 		param,
 		data
 	};
@@ -60,9 +56,9 @@ export function queryPolicyList(param){
 			method: 'get'
 		}).then(response=>response.text())
 		.then(data=>{
-			const result = JSON.parse(data);
+			var result = JSON.parse(data);
 			if(result.statusCode==0){
-				const pageCount = result.data.totalCount==0 ? 1 : 
+				var pageCount = result.data.totalCount==0 ? 1 : 
 					  result.data.totalCount%20==0 ? result.data.totalCount/20 : 
 					  parseInt(result.data.totalCount/20)+1;
 				result.data.pageCount = pageCount;
@@ -90,19 +86,51 @@ export function queryPolicyRelationList(param){
 //获取保单详情
 export function queryPolicyDetail(param){
 	return function(dispatch){
+		dispatch(loadingOpen());
 		return fetch('../assets/json/policyDetails.json',{
 			method: 'get'
 		}).then(response=>response.text())
 		.then(data=>{
-			dispatch(receivePolicyDetail(param,JSON.parse(data)));
-			fetch('../assets/json/hosList.json',{
-				method: 'get'
-			}).then(response=>response.text())
-			.then(data=>{
-				dispatch(receiveHospitalList(param,JSON.parse(data)));
-			}).catch(err=>{
-			});
+			var result = JSON.parse(data);
+			if(result.statusCode==0){
+				var data = result.data;
+				data.policyName = unescape(data.policyName);
+				if(data.path=='copy'){
+					data.policyName = data.policyName + '-复制';
+				};
+				data.policyTitle = unescape(data.policyTitle);
+				data.benefitList.sort((a,b)=>a.orderId-b.orderId);
+				data.benefitList.forEach((p)=>{
+					p.showEdit = false;
+					p.benefitKeyDesc = unescape(p.benefitKeyDesc);
+					p.benefitValueDesc = unescape(p.benefitValueDesc);
+					p.chosen=true;
+					p.children.sort((a,b)=>a.orderId-b.orderId);
+					p.children.forEach((c)=>{
+						c.showEdit = false;
+						c.benefitKeyDesc = unescape(c.benefitKeyDesc);
+						c.benefitValueDesc = unescape(c.benefitValueDesc);
+						c.chosen=true;
+						c.isPrev=c.nodeType==4;
+					});
+				});
+				result.data = data;
+				dispatch(receivePolicyDetail(param,result.data));
+				fetch('../assets/json/hosList.json',{
+					method: 'get'
+				}).then(response=>response.text())
+				.then(data=>{
+					var result = JSON.parse(data);
+					if(result.statusCode==0){
+						dispatch(receiveHospitalList(param,result.data));
+					};
+					dispatch(loadingCancel());
+				}).catch(err=>{
+					dispatch(loadingCancel());
+				});
+			};
 		}).catch(err=>{
+			dispatch(loadingCancel());
 		});
 	};
 };
@@ -133,4 +161,40 @@ export function deletePolicy(param){
 //生成pdf
 export function createPdf(param){
 	window.location.href = '../assets/json/downLoadPDF?policyId='+param.policyId;
+};
+//初始化保单节点
+export function initPolicyChosen(){
+	return function(dispatch){
+		dispatch(loadingOpen());
+		return fetch('../assets/json/getTreeNode.json',{
+			method: 'get'
+		}).then(response=>response.text())
+		.then(data=>{
+			var result = JSON.parse(data);
+			if(result.statusCode==0){
+				/*
+				const data = result.data;
+				data.forEach((item)=>{
+					item.benefitKeyDesc = unescape(item.benefitKeyDesc);
+					item.benefitValueDesc = unescape(item.benefitValueDesc);
+					item.nodeTitle = unescape(item.nodeTitle);
+					item.children.forEach((subItem)=>{
+						subItem.benefitKeyDesc = unescape(subItem.benefitKeyDesc);
+						subItem.benefitValueDesc = unescape(subItem.benefitValueDesc);
+						subItem.nodeTitle = unescape(subItem.nodeTitle);
+					});
+				});
+				result.data = data;
+				*/
+				//console.log(result.data);
+				dispatch({
+					type: types.PolicyInitChosen,
+					data: result.data
+				});
+			};
+			dispatch(loadingCancel());
+		}).catch(err=>{
+			dispatch(loadingCancel());
+		});
+	};
 };

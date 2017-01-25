@@ -1,6 +1,6 @@
 ﻿import React,{PropTypes} from 'react';
 import addons from 'react-addons';
-import {Link} from 'react-router';
+import {Link,hashHistory} from 'react-router';
 //声明组件
 const PolicyEdit = React.createClass({
 	propTypes: {
@@ -34,7 +34,9 @@ const PolicyEdit = React.createClass({
 		};
 		this.props.queryPolicyDetail(param);
 	},
-	back(){},
+	back(){
+		hashHistory.push('/policymanage');
+	},
 	show(){},
 	save(flag){},
 	searchHospital(){},
@@ -51,18 +53,12 @@ const PolicyEdit = React.createClass({
 	hasExpRight(){return false;},
 	isDisabledHosSelectedAllRight(){return false;},
 	isDisabledHosSelectedAllLeft(){return false;},
-	//test end
-//	render(){
-//		return false;
-//	},
 	render(){
-		const statusCode = this.props.policyDetailData.statusCode;
-		if(statusCode=='static'||!this.props.hospitalListData.data.length) return false;
 		const self = this;
 		const classSet = addons.classSet;
-		const data = this.props.policyDetailData.data;
-		const hospitalList = this.props.hospitalListData.data;
-		//改变hospitalListData
+		const data = this.props.policyDetail;
+		const hospitalList = this.props.hospitalList;
+		//改变hospitalList
 		hospitalList.forEach(function(p){
 			p.chosen = false;
 			//0:共付;1:无赔付;2:所有;
@@ -183,8 +179,10 @@ const PolicyEdit = React.createClass({
 							<td className="type">
 								医院类型选择：
 								<span className="tab-container">
-									<span className={coinsuranceClass} onClick={this.curHospitalType='coinsuranceList'}>共付医院</span>
-									<span className={deductibleClass} onClick={this.curHospitalType='deductibleList'}>无赔付医院</span>
+									<span className={coinsuranceClass}>共付医院</span>
+									{/*onClick={this.curHospitalType='coinsuranceList'}*/}
+									<span className={deductibleClass}>无赔付医院</span>
+									{/*onClick={this.curHospitalType='deductibleList'}*/}
 								</span>
 							</td>
 							<td/>
@@ -220,9 +218,10 @@ const PolicyEdit = React.createClass({
 												'exp': item.IS_EXPENSIVE,
 												'hospital': true
 											);
-											const html = item.payType==2 ? <li key={index} className={liClass} onClick={item.chosen=!item.chosen}>{item.HOS_NAME}</li> : null;
+											const html = item.payType==2 ? <li key={index} className={liClass}>{item.HOS_NAME}</li> : null;
 											return html;
 										})}
+										{/*onClick={item.chosen=!item.chosen}*/}
 									</ul>
 								</div>
 							</td>
@@ -394,12 +393,12 @@ const PolicyEdit = React.createClass({
 							<tr>
 								<td valign="top">
 									<ul className="detail">
-										<li v-bind:className="{'exp':one.IS_EXPENSIVE}"  v-for="one in hospitalListData" v-if="one.payType==0">{{one.HOS_NAME | toCn}}</li>
+										<li v-bind:className="{'exp':one.IS_EXPENSIVE}"  v-for="one in hospitalList" v-if="one.payType==0">{{one.HOS_NAME | toCn}}</li>
 									</ul>
 								</td>
 								<td valign="top">
 									<ul className="detail">
-										<li v-bind:className="{'exp':one.IS_EXPENSIVE}" v-for="one in hospitalListData" v-if="one.payType==1">{{one.HOS_NAME | toCn}}</li>
+										<li v-bind:className="{'exp':one.IS_EXPENSIVE}" v-for="one in hospitalList" v-if="one.payType==1">{{one.HOS_NAME | toCn}}</li>
 									</ul>
 								</td>
 							</tr>
@@ -456,10 +455,10 @@ const PolicyEdit = React.createClass({
 								<td>
 									<div className="hospital-container">
 										<ul v-show="curHospitalType=='coinsuranceList'">
-											<li className="hospital" v-bind:className="{'selected':one.chosen,'exp':one.IS_EXPENSIVE}" v-on:click="one.chosen=!one.chosen;" v-for="one in hospitalListData" v-if="one.payType==0">{{one.HOS_NAME | toCn}}</li>
+											<li className="hospital" v-bind:className="{'selected':one.chosen,'exp':one.IS_EXPENSIVE}" v-on:click="one.chosen=!one.chosen;" v-for="one in hospitalList" v-if="one.payType==0">{{one.HOS_NAME | toCn}}</li>
 										</ul>
 										<ul v-show="curHospitalType=='deductibleList'">
-											<li className="hospital" v-bind:className="{'selected':one.chosen,'exp':one.IS_EXPENSIVE}" v-on:click="one.chosen=!one.chosen;" v-for="one in hospitalListData" v-if="one.payType==1">{{one.HOS_NAME | toCn}}</li>
+											<li className="hospital" v-bind:className="{'selected':one.chosen,'exp':one.IS_EXPENSIVE}" v-on:click="one.chosen=!one.chosen;" v-for="one in hospitalList" v-if="one.payType==1">{{one.HOS_NAME | toCn}}</li>
 										</ul>
 									</div>
 								</td>

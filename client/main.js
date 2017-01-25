@@ -7,7 +7,7 @@ import Main from './components/Main.jsx';
 import Login from './containers/Login.js';
 import PolicyManage from './containers/PolicyManage.js';
 import PolicyEdit from './containers/PolicyEdit.js';
-import PointChoose from './components/PointChoose.jsx';
+import PointChoose from './containers/PointChoose.js';
 import PointDrag from './components/PointDrag.jsx';
 import PointManage from './containers/PointManage.js';
 import PointCreate from './containers/PointCreate.js';

@@ -7,8 +7,8 @@ import * as popup from './popup.js';
 const rootReducer = combineReducers({
 	policyListData: policy.policyListData,
 	policyRelationListData: policy.policyRelationListData,
-	policyDetailData: policy.policyDetailData,
-	hospitalListData: policy.hospitalListData,
+	policyDetail: policy.policyDetail,
+	hospitalList: policy.hospitalList,
 	submitPDFData: policy.submitPDFData,
 	deletePolicyData: policy.deletePolicyData,
 	allPointData: point.allPointData,

@@ -1,21 +1,27 @@
 ﻿import React,{PropTypes} from 'react';
 import addons from 'react-addons';
-import {Link} from 'react-router';
+import {Link,hashHistory} from 'react-router';
 //声明组件
 const PointChoose = React.createClass({
+	componentWillMount(){
+		//默认加载内容
+		this.props.page.initPolicyChosen();
+	},
 	back(){},
+	choose(){},
+	chosenSome(){},
 	chosenAll(p){},
 	render(){
 		const self = this;
-		const data = this.props.policyDetailData.data;
+		const data = this.props.policyDetail;
 		const classSet = addons.classSet;
 		const customNodeHeaderClass = classSet({
-			'chosenSome': this.chosenSome.bind(this,1),
-			'chosenAll': this.chosenAll1
+			'chosenSome': true,//this.chosenSome.bind(this,1),
+			'chosenAll': true//this.chosenAll1
 		});
 		const hospitalNodeHeaderClass = classSet({
-			'chosenSome': this.chosenSome.bind(this,5),
-			'chosenAll': this.chosenAll5
+			'chosenSome': true,//this.chosenSome.bind(this,5),
+			'chosenAll': true//this.chosenAll5
 		});
 		const classNodeHtml = <div>分类节点</div>;
 		const customNodeHtml = (

@@ -42,14 +42,14 @@ const PolicyManage = React.createClass({
 		const param = {
 			currentPage: this.props.policyListData.currentPage,
 			policyIdArray: []
-		};/*
+		};
 		if(!param.policyIdArray.length){
 			this.props.popup.dialogOpen({
 				type: 'alert',
 				message: '请选择要删除的保单'
 			});
 			return;
-		};*/
+		};
 		this.props.popup.dialogOpen({
 			type: 'confirm',
 			message: '删除保单将不可恢复，请确认是否删除所选保单.',
