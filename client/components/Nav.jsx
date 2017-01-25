@@ -8,7 +8,7 @@ const Nav = React.createClass({
 	getInitialState(){
 		//console.log('创建期:getInitialState');
 		return {
-			isLogin: true
+			isLogin: !this.isLoginPage()
 		};
 	},
 	componentWillMount(){
@@ -41,19 +41,12 @@ const Nav = React.createClass({
 		//console.log('存在期:componentWillUpdate');
 	},
 	componentDidUpdate(){
-		//监听props和state变化
-		/*
-		if(!this.isLoginPage()&&!this.props.pageStatus.isLogin){
-			console.log('退出成功.');
-			hashHistory.push('/login');
-		};
-		*/
 	},
 	componentWillUnmount(){
 		//console.log('销毁期:componentWillUnmount');
 	},
 	logout(){
-		this.props.logout();
+		this.props.page.logout();
 	},
 	isLoginPage(){
 		return !this.props.path||this.props.path=='/'||this.props.path=='/login';

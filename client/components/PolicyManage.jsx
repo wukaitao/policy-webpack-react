@@ -27,29 +27,45 @@ const PolicyManage = React.createClass({
 			currentPage: page,
 			policyMemberIdPattern: 'policy'
 		};
-		this.props.queryPolicyList(param);
+		this.props.page.queryPolicyList(param);
 	},
 	postPolicy(one){
 		//提交保单
 		const param = {
 			policyId: one.policyId
 		};
-		this.props.submitPDF(param);
+		this.props.page.submitPDF(param);
 	},
 	delSelectedPolicy(){
 		//删除保单
+		const self = this;
 		const param = {
-			currentPage: this.props.policyListData.data.currentPage,
+			currentPage: this.props.policyListData.currentPage,
 			policyIdArray: []
-		};
-		this.props.deletePolicy(param);
+		};/*
+		if(!param.policyIdArray.length){
+			this.props.popup.dialogOpen({
+				type: 'alert',
+				message: '请选择要删除的保单'
+			});
+			return;
+		};*/
+		this.props.popup.dialogOpen({
+			type: 'confirm',
+			message: '删除保单将不可恢复，请确认是否删除所选保单.',
+			style: {width:360,height:150},
+			callback: function(){
+				console.log('删除保单动作...');
+				self.props.page.deletePolicy(param);
+			}
+		});
 	},
 	createPdf(id){
 		//生成pdf
 		const param = {
 			policyId: id
 		};
-		this.props.createPdf(param);
+		this.props.page.createPdf(param);
 	},
 	showTobPolicyRelation(id,policyName){
 		//保单关系列表
@@ -57,7 +73,7 @@ const PolicyManage = React.createClass({
 			policyId: id,
 			policyName: policyName
 		};
-		this.props.queryPolicyRelationList(param);
+		this.props.page.queryPolicyRelationList(param);
 	},
 	render(){
 		const data = this.props.policyListData;

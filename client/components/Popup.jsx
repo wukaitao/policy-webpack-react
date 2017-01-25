@@ -10,6 +10,12 @@ const Popup = React.createClass({
 		//console.log('创建期:getInitialState');
 		return {};
 	},
+	componentWillReceiveProps(nextProps){
+		//监听props和state变化
+		if(this.props.pageStatus.dialog.result){
+			this.props.pageStatus.dialog.callback.call(this);
+		};
+	},
 	shouldComponentUpdate(){
 		//对render进行过滤阻止
 		return true;

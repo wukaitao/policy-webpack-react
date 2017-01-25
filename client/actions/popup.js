@@ -18,10 +18,10 @@ export function loadingCancel(){
 export function dialogOpen(param){
 	return function(dispatch){
 		param.show = true;
+		param.callback = param.callback||function(){};
 		if(param.type=='toast'){
 			window.setTimeout(function(){
-				let callback = param.callback||function(){};
-				callback.call(param);
+				param.callback.call(param);
 				dispatch(dialogCancel());
 			},2000);
 		};
@@ -32,8 +32,20 @@ export function dialogOpen(param){
 	};
 };
 //Dialog cancel
-export function dialogCancel(){
-	return {
-		type: types.DialogCancel
+export function dialogCancel(param={}){
+	return function(dispatch){
+		dispatch({
+			type: types.DialogCancel,
+			param
+		});
+		if(param.result){
+			window.setTimeout(function(){
+				param.result = false;
+				dispatch({
+					type: types.DialogCancel,
+					param
+				});
+			},10);
+		};
 	};
 };

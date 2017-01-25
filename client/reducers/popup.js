@@ -32,12 +32,18 @@ const initState = {
 export function pageStatus(state=initState.pageStatus,action){
 	switch(action.type){
 		case types.DialogOpen:
-			const result = Object.assign({},state,{
-				dialog: Object.assign({},state.dialog,action.param)
+			var result = Object.assign({},state,{
+				dialog: Object.assign({},initState.pageStatus.dialog,action.param)
 			});
 			return result;
 		case types.DialogCancel:
-			return Object.assign({},state,{dialog: initState.pageStatus.dialog});
+			var resultTrue = Object.assign({},state,{
+				dialog: Object.assign({},state.dialog,action.param)
+			});
+			var resultFalse = Object.assign({},state,{
+				dialog: Object.assign({},initState.pageStatus.dialog,action.param)
+			});
+			return action.param.result ? resultTrue : resultFalse;
 		case types.LoadingOpen:
 			return Object.assign({},state,{isLoading: true});
 		case types.LoadingCancel:
