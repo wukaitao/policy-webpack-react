@@ -119,8 +119,20 @@ const PolicyManage = React.createClass({
 					<td className="text-center">
 						{item.isTemplate ? 
 							null : item.policyStatus==0 ? 
-							<span><span>待提交</span>{item.isPosting?<span className="btn btn-disabled">提交中.</span>:<span className="btn" onClick={this.postPolicy.bind(this,item)}>提交</span>}</span> : item.policyStatus==1 ? 
-							<span><span>已提交</span>{item.isPosting?<span className="btn btn-disabled">提交中.</span>:<span className="btn" onClick={this.postPolicy.bind(this,item)}>再提交</span>}</span>: null
+							<span>
+								<span style={{color: "#999"}}>待提交</span>
+								{item.isPosting?
+									<span className="btn btn-disabled">提交中.</span>:
+									<span className="btn" onClick={this.postPolicy.bind(this,item)}>提交</span>
+								}
+							</span> : item.policyStatus==1 ?
+							<span>
+								<span style={{color: "#999"}}>已提交</span>
+								{item.isPosting?
+									<span className="btn btn-disabled">提交中.</span>:
+									<span className="btn" onClick={this.postPolicy.bind(this,item)}>再提交</span>
+								}
+							</span>: null
 						}
 					</td>
 					<td className="text-center">

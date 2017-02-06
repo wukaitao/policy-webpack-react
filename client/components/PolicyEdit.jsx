@@ -29,7 +29,7 @@ const PolicyEdit = React.createClass({
 	},
 	getPolicyDetail(){
 		const param = {
-			policyId: 11,
+			policyId: 12,
 			path: 'edit'
 		};
 		this.props.queryPolicyDetail(param);
@@ -62,7 +62,7 @@ const PolicyEdit = React.createClass({
 		hospitalList.forEach(function(p){
 			p.chosen = false;
 			//0:共付;1:无赔付;2:所有;
-			//编辑tob的时候根据返回的共付和无赔付list来改变payType
+			//编辑policy的时候根据返回的共付和无赔付list来改变payType
 			if(data.coinsuranceArray && data.coinsuranceArray.indexOf(p.HOS_ID) != -1) p.payType = 0;
 			else if(data.deductibleArray && data.deductibleArray.indexOf(p.HOS_ID) != -1) p.payType = 1;
 			else p.payType = 2;
@@ -98,6 +98,7 @@ const PolicyEdit = React.createClass({
 			'btn-disabled': !this.hasExpRight,
 			'btn': true
 		});
+		if(!data.benefitList) return null;
 		const baseHtml = (
 			<table>
 				<colgroup>
@@ -252,7 +253,155 @@ const PolicyEdit = React.createClass({
 				</table>
 			</article>
 		);
-		const nodeHtml = '';
+		const nodeHtml = (
+			<div>
+				{data.benefitList.map((item,index)=>{
+					const isNodeType2 = item.nodeType==2;
+					const isNodeType1 = item.nodeType==1;
+					const isNodeType5 = item.nodeType==5;
+					const trEditClass = classSet({
+						'hide' : !item.showEdit
+					});
+					const trViewClass = classSet({
+						'hide' : item.showEdit
+					});
+					const html = isNodeType2 ? (
+						<div key={index}>
+							<nav className="nodeType2">
+								<div>{item.nodeTitle}</div>
+								<hr style={{marginTop: "15px"}}/>
+								<button className="btn">预览</button>
+							</nav>
+							<table>
+								<tbody>
+									<tr>
+										<td className="label">描述文字：</td>
+										<td className="label">责任限额：</td>
+									</tr>
+									<tr className={trViewClass}>
+										<td>
+											<div className="detail" dangerouslySetInnerHTML={{__html: item.benefitKeyDesc}}/>
+										</td>
+										<td>
+											<div className="detail" dangerouslySetInnerHTML={{__html: item.benefitValueDesc}}/>
+										</td>
+									</tr>
+									<tr className={trEditClass}>
+										<td className="editor"></td>
+										<td className="editor"></td>
+									</tr>
+								</tbody>
+							</table>
+							{
+								item.children.map((subItem,subIndex)=>{
+									const trSubEditClass = classSet({
+										'hide': !subItem.showEdit
+									});
+									const trSubViewClass = classSet({
+										'hide': subItem.showEdit
+									});
+									const benefitValueDescClass = classSet({
+										'detail': true,
+										'hide': subItem.isPrev
+									});
+									return (
+										<article key={subIndex} style={{marginLeft: "2em"}}>
+											<nav>
+												<div>{subItem.nodeTitle}</div>
+												<hr/>
+												<button className="btn">预览</button>
+											</nav>
+											<table>
+												<tbody>
+													<tr>
+														<td className="label">描述文字：</td>
+														<td className="label">
+															责任限额：
+															{/*<span v-if="!!subIndex" v-show="!point.showEdit&&point.isPrev" style="float: right;color: #000">
+																<input type="checkbox" v-model="point.isPrev" disabled="disabled"/>
+																与上一节点相同
+															</span>
+															<span v-if="!!subIndex" v-show="point.showEdit" style="float: right;color: #000;">
+																<input type="checkbox" v-model="point.isPrev" v-on:change="changeIsPrev(point);"/>
+																与上一节点相同
+															</span>*/}
+														</td>
+													</tr>
+													<tr className={trSubViewClass}>
+														<td>
+															<div className="detail" dangerouslySetInnerHTML={{__html: subItem.benefitKeyDesc}}></div>
+														</td>
+														<td>
+															<div dangerouslySetInnerHTML={{__html: subItem.benefitValueDesc}} className={benefitValueDescClass}></div>
+														</td>
+													</tr>
+													<tr className={trSubEditClass}>
+														<td className="editor"></td>
+														<td className="editor"></td>
+													</tr>
+												</tbody>
+											</table>
+										</article>
+									);
+								})
+							}
+						</div>
+					) : isNodeType1 ? (
+						<article key={index}>
+							<nav className="nodeType1">
+								<div>{item.nodeTitle}</div>
+								<hr/>
+								<button className="btn">预览</button>
+							</nav>
+							<table>
+								<tbody>
+									<tr>
+										<td className="label">自定义节点：</td>
+									</tr>
+									<tr className={trViewClass}>
+										<td>
+											<div className="detail" dangerouslySetInnerHTML={{__html: item.benefitKeyDesc}}/>
+										</td>
+									</tr>
+									<tr className={trEditClass}>
+										<td className="editor"></td>
+									</tr>
+								</tbody>
+							</table>
+						</article>
+					) : isNodeType5 ? (
+						<article key={index}>
+							<nav className="nodeType5">
+								<div>{item.nodeTitle}</div>
+								<hr/>
+								<button className="btn">预览</button>
+							</nav>
+							<table>
+								<tbody>
+									<tr>
+										<td className="label">医院节点标题：</td>
+										<td className="label">医院节点描述：</td>
+									</tr>
+									<tr className={trViewClass}>
+										<td>
+											<div className="detail" dangerouslySetInnerHTML={{__html: item.benefitKeyDesc}}/>
+										</td>
+										<td>
+											<div className="detail" dangerouslySetInnerHTML={{__html: item.benefitValueDesc}}/>
+										</td>
+									</tr>
+									<tr className={trEditClass}>
+										<td className="editor"></td>
+										<td className="editor"></td>
+									</tr>
+								</tbody>
+							</table>
+						</article>
+					) : null;
+					return html;
+				})}
+			</div>
+		);
 		return (
 			<section className="main policy-edit">
 				<header>
@@ -271,200 +420,8 @@ const PolicyEdit = React.createClass({
 						</nav>
 						{baseHtml}
 					</article>
+					{nodeHtml}
 					{hospitalHtml}
-					{/*<div v-for="(parent,index) in policyCur.benefitList">
-						<div v-if="parent.nodeType==2" :id="'o'+parent.libId">
-							<nav className="nodeType2">
-								<div>{{parent.nodeTitle | toCn}}</div>
-								<hr style="margin-top: 15px;">
-								<button className="btn" v-if="showEditBtn()" onClick="show(parent,{count:2,id:'o'+parent.libId+'editor0'+'-o'+parent.libId+'editor1',nodeIndex:index+'',bind:'benefitKeyDesc-benefitValueDesc'})">{{parent.showEdit?'预览':'编辑'}}</button>
-							</nav>
-							<table>
-								<tr>
-									<td className="label">描述文字：</td>
-									<td className="label">责任限额：</td>
-								</tr>
-								<tr v-show="!parent.showEdit">
-									<td>
-										<div className="detail" v-html="parent.benefitKeyDesc"></div>
-									</td>
-									<td>
-										<div className="detail" v-html="parent.benefitValueDesc"></div>
-									</td>
-								</tr>
-								<tr v-show="parent.showEdit">
-									<td :id="'o'+parent.libId+'editor0'" className="editor"></td>
-									<td :id="'o'+parent.libId+'editor1'" className="editor"></td>
-								</tr>
-							</table>
-							<article style="margin-left: 2em;" v-for="(point,subIndex) in parent.children">
-								<nav>
-									<div>{{point.nodeTitle | toCn}}</div>
-									<hr>
-									<button className="btn" v-if="showEditBtn()" onClick="show(point,{count:2,id:'p'+point.libId+'editor0'+'-p'+point.libId+'editor1',nodeIndex:index+'-'+subIndex,bind:'benefitKeyDesc-benefitValueDesc'})">{{point.showEdit?'预览':'编辑'}}</button>
-								</nav>
-								<table>
-									<tr>
-										<td className="label">描述文字：</td>
-										<td className="label">
-											责任限额：
-											<span v-if="!!subIndex" v-show="!point.showEdit&&point.isPrev" style="float: right;color: #000">
-												<input type="checkbox" v-model="point.isPrev" disabled="disabled"/>
-												与上一节点相同
-											</span>
-											<span v-if="!!subIndex" v-show="point.showEdit" style="float: right;color: #000;">
-												<input type="checkbox" v-model="point.isPrev" v-on:change="changeIsPrev(point);"/>
-												与上一节点相同
-											</span>
-										</td>
-									</tr>
-									<tr v-show="!point.showEdit">
-										<td>
-											<div className="detail" v-html="point.benefitKeyDesc"></div>
-										</td>
-										<td>
-											<div className="detail" v-show="!point.isPrev" v-html="point.benefitValueDesc"></div>
-										</td>
-									</tr>
-									<tr v-show="point.showEdit">
-										<td :id="'p'+point.libId+'editor0'" className="editor"></td>
-										<td v-show="!point.isPrev" :id="'p'+point.libId+'editor1'" className="editor"></td>
-									</tr>
-								</table>
-							</article>
-						</div>
-						<article v-if="parent.nodeType==1" :id="'o'+parent.libId">
-							<nav className="nodeType1">
-								<div>{{parent.nodeTitle | toCn}}</div>
-								<hr>
-								<button className="btn" v-if="showEditBtn()" onClick="show(parent,{count:1,id:'o'+parent.libId+'editor0',nodeIndex:index+'',bind:'benefitKeyDesc'})">{{parent.showEdit?'预览':'编辑'}}</button>
-							</nav>
-							<table>
-								<tr>
-									<td className="label">自定义节点：</td>
-								</tr>
-								<tr v-show="!parent.showEdit">
-									<td>
-										<div className="detail" v-html="parent.benefitKeyDesc"></div>
-									</td>
-								</tr>
-								<tr v-show="parent.showEdit">
-									<td :id="'o'+parent.libId+'editor0'" className="editor"></td>
-								</tr>
-							</table>
-						</article>
-						<article v-if="parent.nodeType==5" :id="'o'+parent.libId">
-							<nav className="nodeType5">
-								<div>{{parent.nodeTitle | toCn}}</div>
-								<hr>
-								<button className="btn" v-if="showEditBtn()" onClick="show(parent,{count:2,id:'o'+parent.libId+'editor0'+'-o'+parent.libId+'editor1',nodeIndex:index+'',bind:'benefitKeyDesc-benefitValueDesc'})">{{parent.showEdit?'预览':'编辑'}}</button>
-							</nav>
-							<table>
-								<tr>
-									<td className="label">医院节点标题：</td>
-									<td className="label">医院节点描述：</td>
-								</tr>
-								<tr v-show="!parent.showEdit">
-									<td>
-										<div className="detail" v-html="parent.benefitKeyDesc"></div>
-									</td>
-									<td>
-										<div className="detail" v-html="parent.benefitValueDesc"></div>
-									</td>
-								</tr>
-								<tr v-show="parent.showEdit">
-									<td :id="'o'+parent.libId+'editor0'" className="editor"></td>
-									<td :id="'o'+parent.libId+'editor1'" className="editor"></td>
-								</tr>
-							</table>
-						</article>
-					</div>
-					<article>
-						<nav>
-							<div>医院选择</div>
-							<hr>
-							<button className="btn" v-if="showEditBtn()" onClick="show('editHospital',{count:0,id:'',nodeIndex:'',bind:''})">{{editHospital?'预览':'编辑'}}</button>
-						</nav>
-						<table v-show="!editHospital">
-							<tr>
-								<td className="label">共付医院：</td>
-								<td className="label">无赔付医院：</td>
-							</tr>
-							<tr>
-								<td valign="top">
-									<ul className="detail">
-										<li v-bind:className="{'exp':one.IS_EXPENSIVE}"  v-for="one in hospitalList" v-if="one.payType==0">{{one.HOS_NAME | toCn}}</li>
-									</ul>
-								</td>
-								<td valign="top">
-									<ul className="detail">
-										<li v-bind:className="{'exp':one.IS_EXPENSIVE}" v-for="one in hospitalList" v-if="one.payType==1">{{one.HOS_NAME | toCn}}</li>
-									</ul>
-								</td>
-							</tr>
-						</table>
-						<table v-show="editHospital" className="table-hospital" :compute="setBtnStatus">
-							<colgroup>
-								<col width="40%"/><col width="20%"/><col width="40%"/>
-							</colgroup>
-							<tr>
-								<td className="type">
-									医院类型选择：
-									<span className="tab-container">
-										<span className="tab" v-bind:className="{'selected':curHospitalType=='coinsuranceList'}" onClick="curHospitalType='coinsuranceList';">共付医院</span>
-										<span className="tab" v-bind:className="{'selected':curHospitalType=='deductibleList'}" onClick="curHospitalType='deductibleList';">无赔付医院</span>
-									</span>
-								</td>
-								<td></td>
-								<td className="toolbar">
-									<span className="searchbox">
-										<input type="text" placeholder="请输入医院名称" v-model="keyWord"/>
-										<i onClick={this.searchHospital} className="icon-search"></i>
-									</span>
-								</td>
-							</tr>
-							<tr>
-								<td className="title label">
-									所有医院
-									<span className="choose">
-										<input type="checkbox" :disabled="isDisabledHosSelectedAllLeft" v-model="hosSelectedAllLeft"/>全选
-									</span>
-								</td>
-								<td></td>
-								<td className="title label">
-									选中医院
-									<span className="choose">
-										<input type="checkbox" :disabled="isDisabledHosSelectedAllRight" v-model="hosSelectedAllRight"/>全选
-									</span>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<div className="hospital-container">
-										<ul>
-											<li className="hospital" v-bind:className="{'selected':one.chosen,'exp':one.IS_EXPENSIVE}" v-on:click="one.chosen=!one.chosen;" v-for="one in searchHospital()" v-if="one.payType==2">{{one.HOS_NAME | toCn}}</li>
-										</ul>
-									</div>
-								</td>
-								<td className="text-center">
-									<span className="btn" :className="{'btn-disabled':!hasChosenLeft}" onClick="addHospital();"> &gt;&gt; </span>
-									<span className="btn" :className="{'btn-disabled':!hasChosenRight}" onClick="removeHospital();"> &lt;&lt; </span>
-									<span className="btn" :className="{'btn-disabled':!hasExpLeft}" onClick="addExpHospital();">添加所有昂贵医院 </span>
-									<span className="btn" :className="{'btn-disabled':!hasExpRight}" onClick="removeExpHospital();">移除所有昂贵医院 </span>
-								</td>
-								<td>
-									<div className="hospital-container">
-										<ul v-show="curHospitalType=='coinsuranceList'">
-											<li className="hospital" v-bind:className="{'selected':one.chosen,'exp':one.IS_EXPENSIVE}" v-on:click="one.chosen=!one.chosen;" v-for="one in hospitalList" v-if="one.payType==0">{{one.HOS_NAME | toCn}}</li>
-										</ul>
-										<ul v-show="curHospitalType=='deductibleList'">
-											<li className="hospital" v-bind:className="{'selected':one.chosen,'exp':one.IS_EXPENSIVE}" v-on:click="one.chosen=!one.chosen;" v-for="one in hospitalList" v-if="one.payType==1">{{one.HOS_NAME | toCn}}</li>
-										</ul>
-									</div>
-								</td>
-							</tr>
-						</table>
-				</article>*/}
 				</section>
 				<footer>
 					<button className="btn" onClick={this.back}>返回</button>

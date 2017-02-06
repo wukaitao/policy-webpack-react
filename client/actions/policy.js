@@ -102,12 +102,14 @@ export function queryPolicyDetail(param){
 				data.benefitList.sort((a,b)=>a.orderId-b.orderId);
 				data.benefitList.forEach((p)=>{
 					p.showEdit = false;
+					p.nodeTitle = unescape(p.nodeTitle);
 					p.benefitKeyDesc = unescape(p.benefitKeyDesc);
 					p.benefitValueDesc = unescape(p.benefitValueDesc);
 					p.chosen=true;
 					p.children.sort((a,b)=>a.orderId-b.orderId);
 					p.children.forEach((c)=>{
 						c.showEdit = false;
+						c.nodeTitle = unescape(c.nodeTitle);
 						c.benefitKeyDesc = unescape(c.benefitKeyDesc);
 						c.benefitValueDesc = unescape(c.benefitValueDesc);
 						c.chosen=true;
