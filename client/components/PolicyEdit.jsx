@@ -78,18 +78,13 @@ const PolicyEdit = React.createClass({
 		});
 	},
 	changeChosen(obj){
+		console.log(obj);
 		obj.chosen = !obj.chosen;
+		console.log(obj);
+		console.log(this.props.hospitalList);
 	},
-	//test start
-	//editHospital(){return false;},
-	//curHospitalType(){return 'coinsuranceList';},
-	//hasChosenLeft(){return false;},
-	//hasChosenRight(){return false;},
-	//hasExpLeft(){return false;},
-	//hasExpRight(){return false;},
-	//isDisabledHosSelectedAllRight(){return false;},
-	//isDisabledHosSelectedAllLeft(){return false;},
 	render(){
+		console.log('render.');
 		const self = this;
 		const classSet = addons.classSet;
 		const data = this.props.policyDetail;
@@ -97,28 +92,17 @@ const PolicyEdit = React.createClass({
 		if(!data.benefitList||!hospitalList) return null;
 		//改变hospitalList
 		hospitalList.forEach(function(item){
-			//console.log(data.coinsuranceArray);
 			item.chosen = false;
 			//0:共付;1:无赔付;2:所有;
 			//编辑policy的时候根据返回的共付和无赔付list来改变payType
-			/*
 			if(data.coinsuranceArray && data.coinsuranceArray.indexOf(item.HOS_ID) != -1) item.payType = 0;
 			else if(data.deductibleArray && data.deductibleArray.indexOf(item.HOS_ID) != -1) item.payType = 1;
 			else item.payType = 2;
-			*/
-			if(data.coinsuranceArray && data.coinsuranceArray.indexOf(item.HOS_ID) != -1){
-				item.payType = 0;
-			}else if(data.deductibleArray && data.deductibleArray.indexOf(item.HOS_ID) != -1){
-				item.payType = 1;
-			}else{
-				item.payType = 2;
-			};
 		});
-		hospitalList.forEach(item=>{
-			if(item.payType==0){
-				console.log(item.HOS_ID);
-			};
+		var aa=JSON.parse(JSON.stringify(hospitalList)).filter(item=>{
+			return item.IS_EXPENSIVE==1;
 		});
+		console.log(aa.length);
 		const editHospitalClass = classSet({
 			'hide': !this.state.editHospital,
 			'table-hospital': true
@@ -207,9 +191,9 @@ const PolicyEdit = React.createClass({
 							<td>
 								<ul className="detail">
 									{hospitalList.map((item,index)=>{
-										let liClass = classSet(
+										let liClass = classSet({
 											'exp': item.IS_EXPENSIVE
-										);
+										});
 										let html = item.payType==0 ? <li key={index} className={liClass}>{item.HOS_NAME}</li> : null;
 										return html;
 									})}
@@ -218,9 +202,9 @@ const PolicyEdit = React.createClass({
 							<td>
 								<ul className="detail">
 									{hospitalList.map((item,index)=>{
-										let liClass = classSet(
+										let liClass = classSet({
 											'exp': item.IS_EXPENSIVE
-										);
+										});
 										let html = item.payType==1 ? <li key={index} className={liClass}>{item.HOS_NAME}</li> : null;
 										return html;
 									})}
@@ -269,13 +253,14 @@ const PolicyEdit = React.createClass({
 							<td>
 								<div className="hospital-container">
 									<ul>
-										{hospitalList.map((item,index)=>{
-											let liClass = classSet(
+										{hospitalList.filter(item=>item.payType==2).map((item,index)=>{
+											console.log('map');
+											const liClass = classSet({
 												'selected': item.chosen,
 												'exp': item.IS_EXPENSIVE,
 												'hospital': true
-											);
-											let html = item.payType==2 ? <li data-id={index} key={index} className={liClass} onClick={this.changeChosen.bind(this,item)}>{item.HOS_NAME}</li> : null;
+											});
+											const html = <li key={index} className={liClass} onClick={this.changeChosen.bind(this,item)}>{item.HOS_NAME}</li>;
 											return html;
 										})}
 									</ul>
@@ -291,12 +276,12 @@ const PolicyEdit = React.createClass({
 								<div className="hospital-container">
 									<ul>
 										{hospitalList.map((item,index)=>{
-											let liClass = classSet(
+											const liClass = classSet({
 												'selected': item.chosen,
 												'exp': item.IS_EXPENSIVE,
 												'hospital': true
-											);
-											let html = (self.state.curHospitalType=='coinsuranceList'&&item.payType==0)||self.state.curHospitalType=='deductibleList'&&item.payType==1 ? 
+											});
+											const html = (self.state.curHospitalType=='coinsuranceList'&&item.payType==0)||(self.state.curHospitalType=='deductibleList'&&item.payType==1) ? 
 													(<li key={index} className={liClass} onClick={this.changeChosen.bind(this,item)}>{item.HOS_NAME}</li>) : null;
 											return html;
 										})}
