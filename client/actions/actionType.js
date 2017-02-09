@@ -1,4 +1,5 @@
-﻿export const AllPointData = 'AllPointData';//查询所有节点数据
+﻿//请求Action(Request)
+export const AllPointData = 'AllPointData';//查询所有节点数据
 
 export const ModifyPoint = 'ModifyPoint';//修改节点
 export const ModifyCate = 'ModifyCate';//修改分类
@@ -25,3 +26,7 @@ export const LoadingCancel = 'LoadingCancel';//关闭Loading蒙层
 
 export const Login = 'Login';//登录
 export const Logout = 'Logout';//退出
+
+//操作Action(Event)
+//保单编辑
+export const ChooseHospital = 'ChooseHospital';//选中医院

@@ -12,9 +12,10 @@ const Main = React.createClass({
 	},
 	render(){
 		const path = this.props.routes[1].path;
+		let test = {flag:'true'};
 		return(
 			<div className="wrap">
-				<Nav path={path}/>
+				<Nav path={path} test={test}/>
 				{this.props.children}
 				<Popup/>
 			</div>

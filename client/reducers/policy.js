@@ -114,6 +114,12 @@ export function hospitalList(state=initState.hospitalList,action){
 	switch(action.type){
 		case types.HospitalList:
 			return action.data;
+		case types.ChooseHospital:
+			state.forEach(item=>{
+				item.HOS_ID==action.one.HOS_ID&&(item.chosen=!item.chosen);
+			});
+			console.log(state);
+			return JSON.parse(JSON.stringify(state));
 		default:
 			return state;
 	};

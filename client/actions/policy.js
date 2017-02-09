@@ -200,3 +200,10 @@ export function initPolicyChosen(){
 		});
 	};
 };
+//选中医院
+export function chooseHospital(param){
+	return {
+		type: types.ChooseHospital,
+		one: param.one
+	};
+};

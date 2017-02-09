@@ -19,7 +19,8 @@ const PolicyEdit = React.createClass({
 			hasExpLeft: false,
 			hasExpRight: false,
 			isDisabledHosSelectedAllLeft: false,
-			isDisabledHosSelectedAllRight: false
+			isDisabledHosSelectedAllRight: false,
+			pageEdit: false//测试,用以驱动页面渲染
 		};
 	},
 	componentWillMount(){
@@ -77,11 +78,9 @@ const PolicyEdit = React.createClass({
 			curHospitalType: type
 		});
 	},
-	changeChosen(obj){
-		console.log(obj);
-		obj.chosen = !obj.chosen;
-		console.log(obj);
-		console.log(this.props.hospitalList);
+	changeChosen(one){
+		const param = {one};
+		this.props.chooseHospital(param);
 	},
 	render(){
 		console.log('render.');
@@ -92,6 +91,7 @@ const PolicyEdit = React.createClass({
 		if(!data.benefitList||!hospitalList) return null;
 		//改变hospitalList
 		hospitalList.forEach(function(item){
+			//以下props的改变应该放在reducer实现
 			item.chosen = false;
 			//0:共付;1:无赔付;2:所有;
 			//编辑policy的时候根据返回的共付和无赔付list来改变payType
