@@ -507,6 +507,9 @@
                 box-sizing: border-box;
                 background-color: #fff;
                 overflow: auto;
+                .hospital{
+                    cursor: pointer;
+                }
                 .selected{
                     background-color: #2679c5;
                     color: #fff;

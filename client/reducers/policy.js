@@ -101,7 +101,6 @@ export function policyDetail(state=initState.policyDetail,action){
 					});
 				}
 			});
-			//console.log(l);
 			return Object.assign({},state,{
 				benefitList: l
 			});
@@ -113,12 +112,19 @@ export function policyDetail(state=initState.policyDetail,action){
 export function hospitalList(state=initState.hospitalList,action){
 	switch(action.type){
 		case types.HospitalList:
+			const policyDetail = action.policyDetail;
+			action.data.forEach(function(item){
+				item.chosen = false;
+				//0:共付;1:无赔付;2:所有;
+				if(policyDetail.coinsuranceArray && policyDetail.coinsuranceArray.indexOf(item.HOS_ID) != -1) item.payType = 0;
+				else if(policyDetail.deductibleArray && policyDetail.deductibleArray.indexOf(item.HOS_ID) != -1) item.payType = 1;
+				else item.payType = 2;
+			});
 			return action.data;
 		case types.ChooseHospital:
 			state.forEach(item=>{
 				item.HOS_ID==action.one.HOS_ID&&(item.chosen=!item.chosen);
 			});
-			console.log(state);
 			return JSON.parse(JSON.stringify(state));
 		default:
 			return state;

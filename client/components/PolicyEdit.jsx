@@ -89,20 +89,6 @@ const PolicyEdit = React.createClass({
 		const data = this.props.policyDetail;
 		const hospitalList = this.props.hospitalList;
 		if(!data.benefitList||!hospitalList) return null;
-		//改变hospitalList
-		hospitalList.forEach(function(item){
-			//以下props的改变应该放在reducer实现
-			item.chosen = false;
-			//0:共付;1:无赔付;2:所有;
-			//编辑policy的时候根据返回的共付和无赔付list来改变payType
-			if(data.coinsuranceArray && data.coinsuranceArray.indexOf(item.HOS_ID) != -1) item.payType = 0;
-			else if(data.deductibleArray && data.deductibleArray.indexOf(item.HOS_ID) != -1) item.payType = 1;
-			else item.payType = 2;
-		});
-		var aa=JSON.parse(JSON.stringify(hospitalList)).filter(item=>{
-			return item.IS_EXPENSIVE==1;
-		});
-		console.log(aa.length);
 		const editHospitalClass = classSet({
 			'hide': !this.state.editHospital,
 			'table-hospital': true
@@ -254,7 +240,6 @@ const PolicyEdit = React.createClass({
 								<div className="hospital-container">
 									<ul>
 										{hospitalList.filter(item=>item.payType==2).map((item,index)=>{
-											console.log('map');
 											const liClass = classSet({
 												'selected': item.chosen,
 												'exp': item.IS_EXPENSIVE,

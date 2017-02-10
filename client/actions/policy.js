@@ -85,7 +85,8 @@ export function queryPolicyRelationList(param){
 };
 //获取保单详情
 export function queryPolicyDetail(param){
-	return function(dispatch){
+	return function(dispatch,getState){
+		//console.log(getState());
 		dispatch(loadingOpen());
 		return fetch('../assets/json/policyDetails.json',{
 			method: 'get'
@@ -124,7 +125,13 @@ export function queryPolicyDetail(param){
 				.then(data=>{
 					var result = JSON.parse(data);
 					if(result.statusCode==0){
-						dispatch(receiveHospitalList(param,result.data));
+						//dispatch(receiveHospitalList(param,result.data));
+						dispatch({
+							type: types.HospitalList,
+							data: result.data,
+							policyDetail: getState().policyDetail,
+							param
+						});
 					};
 					dispatch(loadingCancel());
 				}).catch(err=>{
@@ -174,21 +181,6 @@ export function initPolicyChosen(){
 		.then(data=>{
 			var result = JSON.parse(data);
 			if(result.statusCode==0){
-				/*
-				const data = result.data;
-				data.forEach((item)=>{
-					item.benefitKeyDesc = unescape(item.benefitKeyDesc);
-					item.benefitValueDesc = unescape(item.benefitValueDesc);
-					item.nodeTitle = unescape(item.nodeTitle);
-					item.children.forEach((subItem)=>{
-						subItem.benefitKeyDesc = unescape(subItem.benefitKeyDesc);
-						subItem.benefitValueDesc = unescape(subItem.benefitValueDesc);
-						subItem.nodeTitle = unescape(subItem.nodeTitle);
-					});
-				});
-				result.data = data;
-				*/
-				//console.log(result.data);
 				dispatch({
 					type: types.PolicyInitChosen,
 					data: result.data
