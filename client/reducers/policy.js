@@ -139,30 +139,52 @@ export function policyDetail(state=initState.policyDetail,action){
 export function hospitalList(state=initState.hospitalList,action){
 	switch(action.type){
 		case types.HospitalList:
-			if(action.eventType=='init'){
-				//请求(初始化)
-				const policyDetail = action.policyDetail;
-				action.data.forEach(function(item){
-					item.chosen = false;
-					//0:共付;1:无赔付;2:所有;
-					if(policyDetail.coinsuranceArray && policyDetail.coinsuranceArray.indexOf(item.HOS_ID) != -1) item.payType = 0;
-					else if(policyDetail.deductibleArray && policyDetail.deductibleArray.indexOf(item.HOS_ID) != -1) item.payType = 1;
-					else item.payType = 2;
-				});
-				//test start
-				initState.hospitalList = action.data;
-				//test end
-				return action.data;
-			}else if(action.eventType=='filter'){
-				//搜索(过滤)
-				console.log(action.param.keyword);
-				return JSON.parse(JSON.stringify(initState.hospitalList)).filter(item=>{
-					return item.HOS_NAME.indexOf(action.param.keyword)!=-1;
-				});
-			};
+			const policyDetail = action.policyDetail;
+			action.data.forEach(function(item){
+				item.chosen = false;
+				//0:共付;1:无赔付;2:所有;
+				if(policyDetail.coinsuranceArray && policyDetail.coinsuranceArray.indexOf(item.HOS_ID) != -1) item.payType = 0;
+				else if(policyDetail.deductibleArray && policyDetail.deductibleArray.indexOf(item.HOS_ID) != -1) item.payType = 1;
+				else item.payType = 2;
+			});
+			return action.data;
 		case types.ChooseHospital:
 			state.forEach(item=>{
 				item.HOS_ID==action.one.HOS_ID&&(item.chosen=!item.chosen);
+			});
+			return JSON.parse(JSON.stringify(state));
+		case types.AddHospital:
+			state.forEach(item=>{
+				if(item.payType=='2'&&item.chosen){
+					item.payType = action.payType;
+					item.chosen = false;
+				};
+			});
+			return JSON.parse(JSON.stringify(state));
+		case types.RemoveHospital:
+			state.forEach(item=>{
+				var flag = (item.payType=='0'&&item.chosen&&action.curHospitalType == 'coinsuranceList')||(item.payType=='1'&&item.chosen&&action.curHospitalType == 'deductibleList');
+				if(flag){
+					item.payType = '2';
+					item.chosen = false;
+				};
+			});
+			return JSON.parse(JSON.stringify(state));
+		case types.AddExpHospital:
+			state.forEach(item=>{
+				if(item.IS_EXPENSIVE&&item.payType=='2'){
+					item.payType = action.curHospitalType=='coinsuranceList'?'0':'1';
+					item.chosen = false;
+				};
+			});
+			return JSON.parse(JSON.stringify(state));
+		case types.RemoveExpHospital:
+			state.forEach(item=>{
+				var flag = (action.curHospitalType=='coinsuranceList'&&item.payType=='0')||(action.curHospitalType=='deductibleList'&&item.payType=='1');
+				if(item.IS_EXPENSIVE&&flag){
+					item.payType = '2';
+					item.chosen = false;
+				};
 			});
 			return JSON.parse(JSON.stringify(state));
 		default:

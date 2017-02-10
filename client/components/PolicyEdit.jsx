@@ -7,7 +7,6 @@ const PolicyEdit = React.createClass({
 		//组件的props安全
 	},
 	getInitialState(){
-		//console.log('PolicyEdit+getInitialState');
 		//页面状态
 		return {
 			//coinsuranceList:共付医院;deductibleList:无赔付医院
@@ -20,6 +19,7 @@ const PolicyEdit = React.createClass({
 			hasExpRight: false,
 			isDisabledHosSelectedAllLeft: false,
 			isDisabledHosSelectedAllRight: false,
+			keyword: '',//搜索医院关键字
 			pageEdit: false//测试,用以驱动页面渲染
 		};
 	},
@@ -73,24 +73,74 @@ const PolicyEdit = React.createClass({
 		//查看且为模板管理人员的时候隐藏
 		return this.props.route.path!='/policyview/:id';
 	},
+	changeBtnStatus(){
+		//切换医院选择按钮状态
+		const self = this;
+		setTimeout(function(){
+			const payType = self.state.curHospitalType=='coinsuranceList'?'0':'1';
+			self.setState({
+				hasChosenLeft: self.props.hospitalList.filter(function(item){return item.payType=='2'&&item.chosen&&item.HOS_NAME.indexOf(self.state.keyword)!=-1}).length,
+				hasChosenRight: self.props.hospitalList.filter(function(item){return item.payType==payType&&item.chosen}).length,
+				hasExpLeft: self.props.hospitalList.filter(function(item){return item.payType=='2'&&item.IS_EXPENSIVE}).length,
+				hasExpRight: self.props.hospitalList.filter(function(item){return item.payType==payType&&item.IS_EXPENSIVE}).length,
+				isDisabledHosSelectedAllLeft: !self.props.hospitalList.filter(item=>item.payType=='2'&&item.HOS_NAME.indexOf(self.state.keyword)!=-1).length,
+				isDisabledHosSelectedAllRight: !self.props.hospitalList.filter(function(item){return item.payType==payType}).length
+			});
+		});
+	},
 	changeCurHospitalType(type){
+		//切换当前医院选择类型
 		this.setState({
 			curHospitalType: type
 		});
+		this.changeBtnStatus();
 	},
 	changeChosen(one){
+		//切换医院选择
 		const param = {one};
 		this.props.chooseHospital(param);
+		this.changeBtnStatus();
 	},
 	filterHospital(){
-		//console.log(this.refs.keyword.value);
-		const param = {
+		//筛选医院
+		this.setState({
 			keyword: this.refs.keyword.value
+		});
+		this.changeBtnStatus();
+	},
+	addHospital(){
+		//添加医院
+		const payType = this.state.curHospitalType=='coinsuranceList'?'0':'1';
+		const param = {payType};
+		this.props.addHospital(param);
+		this.changeBtnStatus();
+	},
+	removeHospital(){
+		//移除医院
+		const param = {
+			curHospitalType: this.state.curHospitalType
 		};
-		this.props.filterHospital(param);
+		this.props.removeHospital(param);
+		this.changeBtnStatus();
+	},
+	addExpHospital(){
+		//添加所有昂贵医院
+		const param = {
+			curHospitalType: this.state.curHospitalType
+		};
+		this.props.addExpHospital(param);
+		this.changeBtnStatus();
+	},
+	removeExpHospital(){
+		//移除所有昂贵医院
+		const param = {
+			curHospitalType: this.state.curHospitalType
+		};
+		this.props.removeExpHospital(param);
+		this.changeBtnStatus();
 	},
 	render(){
-		console.log('render.');
+		//console.log('render.');
 		const self = this;
 		const classSet = addons.classSet;
 		const data = this.props.policyDetail;
@@ -246,7 +296,7 @@ const PolicyEdit = React.createClass({
 							<td>
 								<div className="hospital-container">
 									<ul>
-										{hospitalList.filter(item=>item.payType==2).map((item,index)=>{
+										{hospitalList.filter(item=>item.payType==2&&item.HOS_NAME.indexOf(this.state.keyword)!=-1).map((item,index)=>{
 											const liClass = classSet({
 												'selected': item.chosen,
 												'exp': item.IS_EXPENSIVE,

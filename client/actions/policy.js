@@ -66,7 +66,6 @@ export function queryPolicyDetail(param){
 							type: types.HospitalList,
 							data: result.data,
 							policyDetail: getState().policyDetail,
-							eventType: 'init',
 							param
 						});
 					};
@@ -145,11 +144,31 @@ export function chooseHospital(param){
 		one: param.one
 	};
 };
-//筛选医院
-export function filterHospital(param){
+//添加医院
+export function addHospital(param){
 	return {
-		type: types.HospitalList,
-		eventType: 'filter',
-		param
+		type: types.AddHospital,
+		payType: param.payType
+	};
+};
+//移除医院
+export function removeHospital(param){
+	return {
+		type: types.RemoveHospital,
+		curHospitalType: param.curHospitalType
+	};
+};
+//添加所有昂贵医院
+export function addExpHospital(param){
+	return {
+		type: types.AddExpHospital,
+		curHospitalType: param.curHospitalType
+	};
+};
+//移除所有昂贵医院
+export function removeExpHospital(param){
+	return {
+		type: types.RemoveExpHospital,
+		curHospitalType: param.curHospitalType
 	};
 };

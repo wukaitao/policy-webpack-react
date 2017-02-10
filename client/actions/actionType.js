@@ -30,3 +30,7 @@ export const Logout = 'Logout';//退出
 //操作Action(Event)
 //保单编辑
 export const ChooseHospital = 'ChooseHospital';//选中医院
+export const AddHospital = 'AddHospital';//添加医院
+export const RemoveHospital = 'RemoveHospital';//移除医院
+export const AddExpHospital = 'AddExpHospital';//添加所有昂贵医院
+export const RemoveExpHospital = 'RemoveExpHospital';//移除所有昂贵医院
