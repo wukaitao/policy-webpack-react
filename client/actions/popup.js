@@ -16,7 +16,7 @@ export function loadingCancel(){
 };
 //Dialog open
 export function dialogOpen(param){
-	return function(dispatch){
+	return (dispatch,getState)=>{
 		param.show = true;
 		param.callback = param.callback||function(){};
 		if(param.type=='toast'){
@@ -33,7 +33,7 @@ export function dialogOpen(param){
 };
 //Dialog cancel
 export function dialogCancel(param={}){
-	return function(dispatch){
+	return (dispatch,getState)=>{
 		dispatch({
 			type: types.DialogCancel,
 			param

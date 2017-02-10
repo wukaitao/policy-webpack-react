@@ -18,6 +18,16 @@ const initState = {
 export function allPointData(state=initState.allPointData,action){
 	switch(action.type){
 		case types.AllPointData:
+			action.data.forEach((item)=>{
+				item.benefitKeyDesc = unescape(item.benefitKeyDesc);
+				item.benefitValueDesc = unescape(item.benefitValueDesc);
+				item.nodeTitle = unescape(item.nodeTitle);
+				item.children.forEach((subItem)=>{
+					subItem.benefitKeyDesc = unescape(subItem.benefitKeyDesc);
+					subItem.benefitValueDesc = unescape(subItem.benefitValueDesc);
+					subItem.nodeTitle = unescape(subItem.nodeTitle);
+				});
+			});
 			return action.data;
 		default:
 			return state;

@@ -27,6 +27,11 @@ const initState = {
 export function policyListData(state=initState.policyListData,action){
 	switch(action.type){
 		case types.PolicyListData:
+			const pageCount = action.data.totalCount==0 ? 1 : 
+				  action.data.totalCount%20==0 ? action.data.totalCount/20 : 
+				  parseInt(action.data.totalCount/20)+1;
+			action.data.pageCount = pageCount;
+			action.data.basicList.forEach(item=>item.isPosting=false);
 			return Object.assign({},state,action.data);
 		default:
 			return state;
@@ -52,6 +57,28 @@ export function policyRelationListData(state=initState.policyRelationListData,ac
 export function policyDetail(state=initState.policyDetail,action){
 	switch(action.type){
 		case types.PolicyDetail:
+			action.data.policyName = unescape(action.data.policyName);
+			if(action.data.path=='copy'){
+				action.data.policyName = action.data.policyName + '-复制';
+			};
+			action.data.policyTitle = unescape(action.data.policyTitle);
+			action.data.benefitList.sort((a,b)=>a.orderId-b.orderId);
+			action.data.benefitList.forEach((item)=>{
+				item.showEdit = false;
+				item.nodeTitle = unescape(item.nodeTitle);
+				item.benefitKeyDesc = unescape(item.benefitKeyDesc);
+				item.benefitValueDesc = unescape(item.benefitValueDesc);
+				item.chosen=true;
+				item.children.sort((a,b)=>a.orderId-b.orderId);
+				item.children.forEach((subItem)=>{
+					subItem.showEdit = false;
+					subItem.nodeTitle = unescape(subItem.nodeTitle);
+					subItem.benefitKeyDesc = unescape(subItem.benefitKeyDesc);
+					subItem.benefitValueDesc = unescape(subItem.benefitValueDesc);
+					subItem.chosen=true;
+					subItem.isPrev=subItem.nodeType==4;
+				});
+			});
 			return Object.assign({},state,action.data);
 		case types.PolicyInitChosen:
 			//获取节点树形列表
@@ -64,36 +91,36 @@ export function policyDetail(state=initState.policyDetail,action){
 				}));
 			},[]);
 			//遍历完整节点树
-			action.data.forEach((p)=>{
-				p.showEdit = false;
-				p.benefitKeyDesc = unescape(p.benefitKeyDesc);
-				p.benefitValueDesc = unescape(p.benefitValueDesc);
-				p.nodeTitle = unescape(p.nodeTitle);
+			action.data.forEach((item)=>{
+				item.showEdit = false;
+				item.benefitKeyDesc = unescape(item.benefitKeyDesc);
+				item.benefitValueDesc = unescape(item.benefitValueDesc);
+				item.nodeTitle = unescape(item.nodeTitle);
 				//list中不包含当前父节点则全部加入
-				if(idList.indexOf(p.libId)==-1){
-					let pt=JSON.parse(JSON.stringify(p));
+				if(idList.indexOf(item.libId)==-1){
+					let pt=JSON.parse(JSON.stringify(item));
 					pt.chosen=false;
-					pt.children.forEach((c)=>{
-						c.showEdit = false;
-						c.benefitKeyDesc = unescape(c.benefitKeyDesc);
-						c.benefitValueDesc = unescape(c.benefitValueDesc);
-						c.nodeTitle = unescape(c.nodeTitle);
-						c.chosen=false;
-						c.isPrev=c.nodeType==4;
+					pt.children.forEach((subItem)=>{
+						subItem.showEdit = false;
+						subItem.benefitKeyDesc = unescape(subItem.benefitKeyDesc);
+						subItem.benefitValueDesc = unescape(subItem.benefitValueDesc);
+						subItem.nodeTitle = unescape(subItem.nodeTitle);
+						subItem.chosen=false;
+						subItem.isPrev=subItem.nodeType==4;
 					});
 					l.push(pt);
 				}else{
 					//找到当前父节点parent
 					let parent;
-					l.some((o)=>o.libId==p.libId&&(parent=o));
+					l.some((o)=>o.libId==item.libId&&(parent=o));
 					//遍历完整节点树中当前父节点
-					p.children.forEach((c)=>{
-						c.showEdit = false;
-						c.benefitKeyDesc = unescape(c.benefitKeyDesc);
-						c.benefitValueDesc = unescape(c.benefitValueDesc);
-						c.nodeTitle = unescape(c.nodeTitle);
-						c.isPrev=c.nodeType==4;
-						if(idList.indexOf(c.libId)==-1){
+					item.children.forEach((subItem)=>{
+						subItem.showEdit = false;
+						subItem.benefitKeyDesc = unescape(subItem.benefitKeyDesc);
+						subItem.benefitValueDesc = unescape(subItem.benefitValueDesc);
+						subItem.nodeTitle = unescape(subItem.nodeTitle);
+						subItem.isPrev=subItem.nodeType==4;
+						if(idList.indexOf(subItem.libId)==-1){
 							let pt=JSON.parse(JSON.stringify(c));
 							pt.chosen=false;
 							parent.children.push(pt);

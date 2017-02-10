@@ -2,24 +2,9 @@
 import {loadingOpen,loadingCancel,dialogOpen,dialogCancel} from './popup.js';
 
 //导出所有方法
-//action->reducer
-function receiveLogin(param,data){
-	return {
-		type: types.Login,
-		param,
-		data
-	};
-};
-function receiveLogout(data){
-	return {
-		type: types.Logout,
-		data
-	};
-};
-//dispatch->action
-//Login
+//登录
 export function login(param){
-	return function(dispatch){
+	return (dispatch,getState)=>{
 		dispatch(loadingOpen());
 		return fetch('../assets/json/policyLogin.json',{
 			method: 'get'
@@ -29,7 +14,11 @@ export function login(param){
 			if(result.statusCode==0){
 				localStorage.setItem('pageLogin','true');
 				localStorage.setItem('isTemplateManager',escape(result.data.templateFlag));
-				dispatch(receiveLogin(param,result.data));
+				dispatch({
+					type: types.Login,
+					param,
+					data: result.data
+				});
 			};
 			dispatch(loadingCancel());
 		}).catch(err=>{
@@ -37,9 +26,9 @@ export function login(param){
 		});
 	};
 };
-//Logout
+//退出
 export function logout(){
-	return function(dispatch){
+	return (dispatch,getState)=>{
 		dispatch(loadingOpen());
 		return fetch('../assets/json/policyLogout.json',{
 			method: 'get'
@@ -49,7 +38,10 @@ export function logout(){
 			if(result.statusCode==0){
 				localStorage.setItem('pageLogin','false');
 				localStorage.setItem('isTemplateManager',escape('0'));
-				dispatch(receiveLogout(result.data));
+				dispatch({
+					type: types.Logout,
+					data: result.data
+				});
 			};
 			dispatch(loadingCancel());
 		}).catch(err=>{
