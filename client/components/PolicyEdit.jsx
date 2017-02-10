@@ -82,6 +82,13 @@ const PolicyEdit = React.createClass({
 		const param = {one};
 		this.props.chooseHospital(param);
 	},
+	filterHospital(){
+		//console.log(this.refs.keyword.value);
+		const param = {
+			keyword: this.refs.keyword.value
+		};
+		this.props.filterHospital(param);
+	},
 	render(){
 		console.log('render.');
 		const self = this;
@@ -215,7 +222,7 @@ const PolicyEdit = React.createClass({
 							<td/>
 							<td className="toolbar">
 								<span className="searchbox">
-									<input type="text" placeholder="请输入医院名称" ref="keyWord"/>
+									<input type="text" placeholder="请输入医院名称" onChange={this.filterHospital} ref="keyword"/>
 									<i onClick={this.searchHospital} className="icon-search"></i>
 								</span>
 							</td>

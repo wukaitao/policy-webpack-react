@@ -66,6 +66,7 @@ export function queryPolicyDetail(param){
 							type: types.HospitalList,
 							data: result.data,
 							policyDetail: getState().policyDetail,
+							eventType: 'init',
 							param
 						});
 					};
@@ -142,5 +143,13 @@ export function chooseHospital(param){
 	return {
 		type: types.ChooseHospital,
 		one: param.one
+	};
+};
+//筛选医院
+export function filterHospital(param){
+	return {
+		type: types.HospitalList,
+		eventType: 'filter',
+		param
 	};
 };
