@@ -22,7 +22,6 @@ const PolicyManage = React.createClass({
 	getPolicyList(page,flag){
 		//获取列表
 		if(!flag) return;
-		//console.log(page);
 		const param = {
 			currentPage: page,
 			policyMemberIdPattern: 'policy'

@@ -3,14 +3,10 @@
 const initState = {
 	allPointData: [],
 	templateNodeAddData: {
-		data: {},
-		statusCode: 'static',
-		msg: '请求初始化'
+		data: {}
 	},
 	templateNodeUpdateData: {
-		data: {},
-		statusCode: 'static',
-		msg: '请求初始化'
+		data: {}
 	}
 };
 //reducer其实也是一个方法而已，三处是state和action,返回值是新的state
@@ -37,14 +33,7 @@ export function allPointData(state=initState.allPointData,action){
 export function templateNodeAddData(state=initState.templateNodeAddData,action){
 	switch(action.type){
 		case types.SaveCreatePointData:
-			if(action.status=='beforeSend'){
-				return state;
-			}else if(action.status=='success'){
-				console.log(action.data);
-				return action.data;
-			}else if(action.status=='error'){
-				return state;
-			};
+			return action.data;
 		default:
 			return state;
 	};
@@ -53,14 +42,7 @@ export function templateNodeAddData(state=initState.templateNodeAddData,action){
 export function templateNodeUpdateData(state=initState.templateNodeUpdateData,action){
 	switch(action.type){
 		case types.SaveModifyPointData:
-			if(action.status=='beforeSend'){
-				return state;
-			}else if(action.status=='success'){
-				console.log(action.data);
-				return action.data;
-			}else if(action.status=='error'){
-				return state;
-			};
+			return action.data;
 		default:
 			return state;
 	};

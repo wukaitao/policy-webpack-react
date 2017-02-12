@@ -131,6 +131,31 @@ export function policyDetail(state=initState.policyDetail,action){
 			return Object.assign({},state,{
 				benefitList: l
 			});
+		case types.ChangePolicyName:
+			state.policyName = action.policyName;
+			return JSON.parse(JSON.stringify(state));
+		case types.ChangeShow:
+			const nodeIndex = action.nodeIndex;
+			if(nodeIndex.length==1){
+				state.benefitList[nodeIndex[0]].showEdit = !state.benefitList[nodeIndex[0]].showEdit;
+			}else if(nodeIndex.length==2){
+				state.benefitList[nodeIndex[0]].children[nodeIndex[1]].showEdit = !state.benefitList[nodeIndex[0]].children[nodeIndex[1]].showEdit;
+			};
+			return JSON.parse(JSON.stringify(state));
+		case types.ChangeContent:
+			if(action.changeType=='title'){
+				state.policyTitle = action.value;
+			}else if(action.changeType=='case'){
+				state.benefitList[action.nodeIndex[0]][action.bind] = action.value;
+				action.isSave&&(state.benefitList[action.nodeIndex[0]].showEdit=false);
+			}else if(action.changeType=='point'){
+				state.benefitList[action.nodeIndex[0]].children[action.nodeIndex[1]][action.bind] = action.value;
+				action.isSave&&(state.benefitList[action.nodeIndex[0]].children[action.nodeIndex[1]].showEdit=false);
+			};
+			return JSON.parse(JSON.stringify(state));
+		case types.ChangeIsPrev:
+			state.benefitList[action.nodeIndex[0]].children[action.nodeIndex[1]].isPrev = !state.benefitList[action.nodeIndex[0]].children[action.nodeIndex[1]].isPrev;
+			return JSON.parse(JSON.stringify(state));
 		default:
 			return state;
 	};
@@ -185,6 +210,17 @@ export function hospitalList(state=initState.hospitalList,action){
 					item.payType = '2';
 					item.chosen = false;
 				};
+			});
+			return JSON.parse(JSON.stringify(state));
+		case types.HosSelectedAllLeft:
+			state.forEach(item=>{
+				item.payType=='2'&&(item.chosen=action.flag);
+			});
+			return JSON.parse(JSON.stringify(state));
+		case types.HosSelectedAllRight:
+			state.forEach(item=>{
+				var flag = (action.curHospitalType=='coinsuranceList'&&item.payType=='0')||(action.curHospitalType=='deductibleList'&&item.payType=='1');
+				flag&&(item.chosen=action.flag);
 			});
 			return JSON.parse(JSON.stringify(state));
 		default:

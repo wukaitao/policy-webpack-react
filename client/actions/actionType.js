@@ -29,8 +29,14 @@ export const Logout = 'Logout';//退出
 
 //操作Action(Event)
 //保单编辑
+export const ChangePolicyName = 'ChangePolicyName';//policy名称
+export const ChangeShow = 'ChangeShow';//切换节点显示状态
+export const ChangeContent = 'ChangeContent';//policy内容
+export const ChangeIsPrev = 'ChangeIsPrev';//切换责任限额
 export const ChooseHospital = 'ChooseHospital';//选中医院
 export const AddHospital = 'AddHospital';//添加医院
 export const RemoveHospital = 'RemoveHospital';//移除医院
 export const AddExpHospital = 'AddExpHospital';//添加所有昂贵医院
 export const RemoveExpHospital = 'RemoveExpHospital';//移除所有昂贵医院
+export const HosSelectedAllLeft = 'HosSelectedAllLeft';//全选所有医院
+export const HosSelectedAllRight = 'HosSelectedAllRight';//全选选中医院

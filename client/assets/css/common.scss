@@ -35,10 +35,10 @@ table{
     text-overflow: ellipsis;
 }
 .show{
-    display: block;
+    display: block !important;
 }
 .hide{
-    display: none;
+    display: none !important;
 }
 i{
     vertical-align: baseline;

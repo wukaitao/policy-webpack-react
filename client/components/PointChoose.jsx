@@ -7,6 +7,19 @@ const PointChoose = React.createClass({
 		//默认加载内容
 		this.props.page.initPolicyChosen();
 	},
+	componentDidMount(){
+		//this.props.router.setRouteLeaveHook(
+		//	this.props.route,
+		//	this.routerWillLeave
+		//);
+	},
+	routerWillLeave(nextLocation){
+		//返回false会停留当前页面
+		//否则,返回一个字符串,会显示给用户,让其自己决定
+		//if(!this.state.isSaved){
+		//	return '内容还没有保存,确定要离开?';
+		//};
+	},
 	back(){},
 	choose(){},
 	chosenSome(){},

@@ -33,7 +33,6 @@ export function addTemplateNode(param){
 		.then(data=>{
 			dispatch({
 				type: types.SaveCreatePointData,
-				status: 'success',
 				param,
 				data: JSON.parse(data)
 			});
@@ -50,7 +49,6 @@ export function updateTemplateNode(param){
 		.then(data=>{
 			dispatch({
 				type: types.SaveModifyPointData,
-				status: 'success',
 				param,
 				data: JSON.parse(data)
 			});

@@ -1,37 +1,74 @@
 ﻿import React,{PropTypes} from 'react';
 import addons from 'react-addons';
 import {Link,hashHistory} from 'react-router';
+let ueList = [];
+//保存编辑器数据到state中
+function saveEditorContent(self,isDestroy){
+	ueList.forEach(item=>{
+		if(!self.props.pageStatus.isSave){
+			//在保存policy后不再保存到props
+			const id = item.id;
+			const nodeIndex = item.nodeIndex;
+			const bind = item.bind;
+			const value = item.ue.getContent();
+			//policy标题
+			if(id=='baseeditor0'){
+				const param = {
+					changeType: 'title',
+					value
+				};
+				self.props.page.changeContent(param);
+			//自定义节点/医院节点/分类节点
+			}else if(nodeIndex.length==1){
+				//self.tobCur.benefitList[nodeIndex[0]].showEdit = false;
+				const param = {
+					changeType: 'case',
+					value,
+					nodeIndex,
+					bind
+				};
+				self.props.page.changeContent(param,true);
+			//子节点
+			}else if(nodeIndex.length==2){
+				const param = {
+					changeType: 'point',
+					value,
+					nodeIndex,
+					bind
+				};
+				self.props.page.changeContent(param,true);
+			};
+		};
+		isDestroy&&item.ue.destroy();
+	});
+	isDestroy&&(ueList=[]);
+};
 //声明组件
 const PolicyEdit = React.createClass({
-	propTypes: {
-		//组件的props安全
-	},
 	getInitialState(){
 		//页面状态
 		return {
 			//coinsuranceList:共付医院;deductibleList:无赔付医院
 			curHospitalType: 'coinsuranceList',
 			editBase: false,
-			editHospital: true,
+			editHospital: false,
 			hasChosenLeft: false,
 			hasChosenRight: false,
 			hasExpLeft: false,
 			hasExpRight: false,
 			isDisabledHosSelectedAllLeft: false,
 			isDisabledHosSelectedAllRight: false,
-			keyword: '',//搜索医院关键字
-			pageEdit: false//测试,用以驱动页面渲染
+			keyword: ''//搜索医院关键字
 		};
 	},
 	componentWillMount(){
 		//默认加载内容
-		this.getPolicyDetail();
+		const self = this;
+		this.getPolicyDetail(function(){
+			self.changeBtnStatus();
+		});
 	},
 	componentDidMount(){
-		//this.props.router.setRouteLeaveHook(
-		//	this.props.route,
-		//	this.routerWillLeave
-		//);
 		//固定菜单
 		$(window).scroll(function(){
 			let scollTop = $(window).scrollTop();
@@ -41,38 +78,232 @@ const PolicyEdit = React.createClass({
 			else $('.toTop').fadeOut('show');
 		});
 	},
-	routerWillLeave(nextLocation){
-		//返回false会停留当前页面
-		//否则,返回一个字符串,会显示给用户,让其自己决定
-		//if(!this.state.isSaved){
-		//	return '内容还没有保存,确定要离开?';
-		//};
-	},
-	getPolicyDetail(){
-		const param = {
-			policyId: 12,
-			path: 'edit'
-		};
-		this.props.queryPolicyDetail(param);
+	getPolicyDetail(callback){
+		const policyId = this.props.routeParams.id?this.props.routeParams.id:'';
+		const path = this.props.route.path=='/policycopy/:id'?'copy':
+					 this.props.route.path=='/policyedit/:id'?'edit':
+					 this.props.route.path=='/policyview/:id'?'view':'add';
+		const param = {policyId,path};
+		this.props.page.queryPolicyDetail(param,callback);
 	},
 	back(){
 		hashHistory.push('/policymanage');
 	},
-	show(obj,param){
-		console.log(param);
+	show(one,param){
+		const self = this;
+		const count = param.count;
+		const id = param.id.split('-');
+		const nodeIndex = param.nodeIndex.split('-');
+		const bind = param.bind.split('-');
+		//切换节点显示状态
+		if(one=='editBase'){
+			//基础信息
+			self.setState({
+				editBase: !self.state.editBase
+			});
+		}else if(one=='editHospital'){
+			//选择医院
+			self.setState({
+				editHospital: !self.state.editHospital
+			});
+		}else{
+			//节点
+			self.props.page.changeShow({nodeIndex});
+		};
+		//编辑器和props之间内容交互
+		if(!count) return;
+		setTimeout(function(){
+			//预览-保存编辑器数据到state中
+			if((typeof one=='object'&&!one.showEdit)||(typeof one=='string'&&!self.state[one])){
+				if(one=='editBase'){
+					//policy标题
+					const value = ueList.filter(item=>item.id=='baseeditor0')[0].ue.getContent();
+					const param = {
+						changeType: 'title',
+						value
+					};
+					self.props.page.changeContent(param);
+				}else if(nodeIndex.length==1){
+					//自定义节点/医院节点/分类节点
+					for(let i=0;i<count;i++){
+						const oUe = ueList.filter(item=>item.id=='o'+one.libId+'editor'+i)[0];
+						const param = {
+							changeType: 'case',
+							value: oUe.ue.getContent(),
+							nodeIndex,
+							bind: oUe.bind
+						};
+						self.props.page.changeContent(param);
+					};
+				}else if(nodeIndex.length==2){
+					//子节点
+					for(let i=0;i<count;i++){
+						const oUe = ueList.filter(item=>item.id=='p'+one.libId+'editor'+i)[0];
+						const param = {
+							changeType: 'point',
+							value: oUe.ue.getContent(),
+							nodeIndex,
+							bind: oUe.bind
+						};
+						self.props.page.changeContent(param);
+					};
+				};
+			//编辑-渲染编辑器
+			}else if((typeof one=='object'&&one.showEdit)||(typeof one=='string'&&self.state[one])){
+				let lUe = [];
+				//policy标题
+				if(one=='editBase') lUe = ueList.filter(item=>item.id=='baseeditor0');
+				//自定义节点/医院节点/分类节点/子节点
+				else if(nodeIndex.length==1||nodeIndex.length==2) lUe = ueList.filter(item=>item.id==id[0]||item.id==id[1]);
+				//如果存在编辑器则直接显示
+				if(!!lUe.length) return;
+				//如果不存在编辑器则渲染编辑器
+				for(let i=0;i<count;i++){
+					(function(){
+						let value = '';
+						//policy标题
+						if(one=='editBase') value = self.props.policyDetail[bind[i]];
+						//自定义节点/医院节点/分类节点
+						else if(nodeIndex.length==1) value = self.props.policyDetail.benefitList[nodeIndex[0]][bind[i]];
+						//子节点
+						else if(nodeIndex.length==2) value = self.props.policyDetail.benefitList[nodeIndex[0]].children[nodeIndex[1]][bind[i]];
+						let editor = UE.getEditor(id[i],{
+							initialFrameWidth: '100%',
+							initialFrameHeight: 150,
+							scaleEnabled: true
+						});
+						editor.ready(function(){
+							this.setContent(value);
+						});
+						ueList.push({
+							id: id[i],
+							nodeIndex: nodeIndex,
+							bind: bind[i],
+							ue: editor
+						});
+					})();
+				};
+			};
+		});
 	},
-	save(flag){},
-	searchHospital(){},
+	save(isTemplate){
+		const self = this;
+		//更新orderId
+		//if(!drag) this.props.page.policyRefreshOrder(types.PolicyRefreshOrder,{isResetNodeType: false});
+		//保存编辑器数据到props中
+		saveEditorContent(self);
+		//保存policy
+		let data = JSON.parse(JSON.stringify(this.props.policyDetail));
+		let hospitalList = JSON.parse(JSON.stringify(this.props.hospitalList));
+		let path = this.props.route.path=='/policycopy/:id'?'copy':
+					 this.props.route.path=='/policyedit/:id'?'edit':
+					 this.props.route.path=='/policyview/:id'?'view':'add';
+		let param = {
+			policyName: data.policyName,
+			policyTitle: escape(data.policyTitle),
+			coinsuranceArray: [],
+			deductibleArray: [],
+			nodeArray: [],
+			isTemplate: isTemplate ? 1 : 0,
+			path
+		};
+		//policyId
+		!!this.props.routeParams.id && (param.policyId=this.props.routeParams.id);
+		//coinsuranceArray/deductibleArray
+		hospitalList.forEach(item=>{
+			item.payType==0 && param.coinsuranceArray.push(item.HOS_ID);
+			item.payType==1 && param.deductibleArray.push(item.HOS_ID);
+		});
+		//nodeArray
+		data.benefitList.forEach(item=>{
+			param.nodeArray.push({
+				benefitKeyDesc: escape(item.benefitKeyDesc),
+				benefitValueDesc: escape(item.benefitValueDesc),
+				libId: item.libId,
+				nodeType: item.nodeType,
+				orderId: item.orderId,
+				parentId: item.parentId,
+				mergeNodeNum: 0
+			});
+			if(!!item.children&&!!item.children.length){
+				item.children.forEach(function(subItem,subIndex){
+					let mergeNodeNum = 0;
+					if(subItem.nodeType=='3'){
+						mergeNodeNum = 1;
+						for(let i=subIndex+1;i<item.children.length;i++){
+							if(item.children[i].nodeType=='3'){
+								break;
+							};
+							mergeNodeNum++;
+						};
+					};
+					param.nodeArray.push({
+						benefitKeyDesc: escape(subItem.benefitKeyDesc),
+						benefitValueDesc: escape(subItem.benefitValueDesc),
+						libId: subItem.libId,
+						nodeType: subItem.nodeType,
+						orderId: subItem.orderId,
+						parentId: subItem.parentId,
+						mergeNodeNum: mergeNodeNum
+					});
+				});
+			};
+		});
+		param.coinsuranceArray = JSON.stringify(param.coinsuranceArray);
+		param.deductibleArray = JSON.stringify(param.deductibleArray);
+		param.nodeArray = JSON.stringify(param.nodeArray);
+		//校验
+		if(data.policyName.replace(/^\s+|\s+$/g,'')==''){
+			this.props.popup.dialogOpen({
+				type: 'alert',
+				message: 'POLICY名称不能为空'
+			});
+			return;
+		}else if(data.policyTitle.replace(/^\s+|\s+$/g,'')==''){
+			this.props.popup.dialogOpen({
+				type: 'alert',
+				message: 'POLICY标题不能为空'
+			});
+			return;
+		};
+		this.props.page.policySave(param);
+	},
 	toTop(){
 		//页面滚动到顶部
 		$('body').animate({scrollTop:0},'slow');
 	},
-	showPolicyBtn(){return true;},
-	showTemplateBtn(){return true;},
+	showPolicyBtn(){
+		//新建/复制(tob/模板)/编辑(tob)的时候true
+		const path = this.props.route.path;
+		const flagOne = ['/policyadd','/policycopy/:id'].indexOf(path)!=-1;
+		const flagTwo = path=='/policyedit/:id';
+		const flagThree = !this.props.pageStatus.isTemplate;
+		return flagOne||(flagTwo&&flagThree);
+	},
+	showTemplateBtn(){
+		//新建/复制(policy/模板)/编辑(模板)的时候true
+		const path = this.props.route.path;
+		const flagOne = ['/policyadd','/policycopy/:id'].indexOf(path)!=-1;
+		const flagTwo = path=='/policyedit/:id'&&this.props.policyDetail.isTemplate;
+		const flagThree = this.props.pageStatus.isTemplateManager;
+		return (flagOne||flagTwo)&&flagThree;
+	},
 	showEditBtn(){
 		//查看且为模板管理人员的时候隐藏
 		return this.props.route.path!='/policyview/:id';
 	},
+	changePolicyName(){
+		const param = {
+			policyName: this.refs.policyName.value
+		};
+		this.props.page.changePolicyName(param);
+	},
+	changeIsPrev(nodeIndex){
+		//切换责任限额
+		const param = {nodeIndex};
+		this.props.page.changeIsPrev(param);
+	},
+	//医院部分
 	changeBtnStatus(){
 		//切换医院选择按钮状态
 		const self = this;
@@ -98,8 +329,37 @@ const PolicyEdit = React.createClass({
 	changeChosen(one){
 		//切换医院选择
 		const param = {one};
-		this.props.chooseHospital(param);
+		this.props.page.chooseHospital(param);
 		this.changeBtnStatus();
+		//切换全选选中状态
+		const self = this;
+		setTimeout(function(){
+			//所有
+			const leftPart = self.props.hospitalList.filter(item=>item.payType=='2'&&item.HOS_NAME.indexOf(self.state.keyword)!=-1);
+			if(!leftPart.length) self.refs.hosSelectedAllLeft.checked=false;
+			else{
+				self.refs.hosSelectedAllLeft.checked=true;
+				for(let item of leftPart){
+					if(!item.chosen){
+						self.refs.hosSelectedAllLeft.checked=false;
+						break;
+					};
+				};
+			};
+			//选中
+			const payType = self.state.curHospitalType=='coinsuranceList'?'0':'1';
+			const rightPart = self.props.hospitalList.filter(item=>item.payType==payType);
+			if(!rightPart.length) self.refs.hosSelectedAllRight.checked=false;
+			else{
+				self.refs.hosSelectedAllRight.checked=true;
+				for(let item of rightPart){
+					if(!item.chosen){
+						self.refs.hosSelectedAllRight.checked=false;
+						break;
+					};
+				};
+			};
+		});
 	},
 	filterHospital(){
 		//筛选医院
@@ -112,7 +372,7 @@ const PolicyEdit = React.createClass({
 		//添加医院
 		const payType = this.state.curHospitalType=='coinsuranceList'?'0':'1';
 		const param = {payType};
-		this.props.addHospital(param);
+		this.props.page.addHospital(param);
 		this.changeBtnStatus();
 	},
 	removeHospital(){
@@ -120,7 +380,7 @@ const PolicyEdit = React.createClass({
 		const param = {
 			curHospitalType: this.state.curHospitalType
 		};
-		this.props.removeHospital(param);
+		this.props.page.removeHospital(param);
 		this.changeBtnStatus();
 	},
 	addExpHospital(){
@@ -128,7 +388,7 @@ const PolicyEdit = React.createClass({
 		const param = {
 			curHospitalType: this.state.curHospitalType
 		};
-		this.props.addExpHospital(param);
+		this.props.page.addExpHospital(param);
 		this.changeBtnStatus();
 	},
 	removeExpHospital(){
@@ -136,16 +396,40 @@ const PolicyEdit = React.createClass({
 		const param = {
 			curHospitalType: this.state.curHospitalType
 		};
-		this.props.removeExpHospital(param);
+		this.props.page.removeExpHospital(param);
+		this.changeBtnStatus();
+	},
+	changeHosSelectedAllLeft(){
+		//全选所有医院
+		const param = {
+			flag: this.refs.hosSelectedAllLeft.checked
+		};
+		this.props.page.changeHosSelectedAllLeft(param);
+		this.changeBtnStatus();
+	},
+	changeHosSelectedAllRight(){
+		//全选选中医院
+		const param = {
+			flag: this.refs.hosSelectedAllRight.checked,
+			curHospitalType: this.state.curHospitalType
+		};
+		this.props.page.changeHosSelectedAllRight(param);
 		this.changeBtnStatus();
 	},
 	render(){
-		//console.log('render.');
 		const self = this;
 		const classSet = addons.classSet;
 		const data = this.props.policyDetail;
 		const hospitalList = this.props.hospitalList;
 		if(!data.benefitList||!hospitalList) return null;
+		const editPolicyTitleClass = classSet({
+			'hide': !this.state.editBase,
+			'editor': true,
+			'edui-default': true
+		});
+		const viewPolicyTitleClass = classSet({
+			'hide': this.state.editBase
+		});
 		const editHospitalClass = classSet({
 			'hide': !this.state.editHospital,
 			'table-hospital': true
@@ -182,7 +466,12 @@ const PolicyEdit = React.createClass({
 				<nav>
 					<div>基础信息</div>
 					<hr/>
-					{this.showEditBtn() ? <button className="btn" onClick={this.show.bind(this,'editBase',{count:1,id:'baseeditor0',nodeIndex:'base',bind:'policyTitle'})}>{this.state.editBase?'预览':'编辑'}</button> : null}
+					{this.showEditBtn() ? <button className="btn" onClick={this.show.bind(this,'editBase',{
+						count: 1,
+						id: 'baseeditor0',
+						nodeIndex: 'base',
+						bind: 'policyTitle'
+					})}>{this.state.editBase?'预览':'编辑'}</button> : null}
 				</nav>
 				<table>
 					<colgroup>
@@ -195,7 +484,7 @@ const PolicyEdit = React.createClass({
 							</td>
 							<td>
 								{this.state.editBase ? (
-									<input type="text" className="ipt" maxLength="250" ref="policyName"/>
+									<input type="text" className="ipt" maxLength="250" value={data.policyName} onChange={this.changePolicyName} ref="policyName"/>
 								) : (
 									<div className="detail" dangerouslySetInnerHTML={{__html: data.policyName}}/>
 								)}
@@ -205,13 +494,10 @@ const PolicyEdit = React.createClass({
 							<td className="label">
 								{data.isTemplate ? '模板标题：' : 'POLICY标题：'}
 							</td>
-							{this.state.editBase ? (
-								<td id="baseeditor0" className="editor"/>
-							) : (
-								<td>
-									<div className="detail" dangerouslySetInnerHTML={{__html: data.policyTitle}}/>
-								</td>
-							)}
+							<td id="baseeditor0" className={editPolicyTitleClass}/>
+							<td className={viewPolicyTitleClass}>
+								<div className="detail" dangerouslySetInnerHTML={{__html: data.policyTitle}}/>
+							</td>
 						</tr>
 					</tbody>
 				</table>
@@ -222,7 +508,12 @@ const PolicyEdit = React.createClass({
 				<nav>
 					<div>医院选择</div>
 					<hr/>
-					{this.showEditBtn() ? <button className="btn" onClick={this.show.bind(this,'editHospital',{count:0,id:'',nodeIndex:'',bind:''})}>{this.state.editHospital?'预览':'编辑'}</button> : null}
+					{this.showEditBtn() ? <button className="btn" onClick={this.show.bind(this,'editHospital',{
+						count: 0,
+						id: '',
+						nodeIndex: '',
+						bind: ''
+					})}>{this.state.editHospital?'预览':'编辑'}</button> : null}
 				</nav>
 				<table className={viewHospitalClass}>
 					<tbody>
@@ -273,7 +564,7 @@ const PolicyEdit = React.createClass({
 							<td className="toolbar">
 								<span className="searchbox">
 									<input type="text" placeholder="请输入医院名称" onChange={this.filterHospital} ref="keyword"/>
-									<i onClick={this.searchHospital} className="icon-search"></i>
+									<i className="icon-search"></i>
 								</span>
 							</td>
 						</tr>
@@ -281,14 +572,14 @@ const PolicyEdit = React.createClass({
 							<td className="title label">
 								所有医院
 								<span className="choose">
-									<input type="checkbox" disabled={this.state.isDisabledHosSelectedAllLeft} ref="hosSelectedAllLeft"/>全选
+									<input type="checkbox" disabled={this.state.isDisabledHosSelectedAllLeft} onChange={this.changeHosSelectedAllLeft} ref="hosSelectedAllLeft"/>全选
 								</span>
 							</td>
 							<td></td>
 							<td className="title label">
 								选中医院
 								<span className="choose">
-									<input type="checkbox" disabled={this.state.isDisabledHosSelectedAllRight} ref="hosSelectedAllRight"/>全选
+									<input type="checkbox" disabled={this.state.isDisabledHosSelectedAllRight} onChange={this.changeHosSelectedAllRight} ref="hosSelectedAllRight"/>全选
 								</span>
 							</td>
 						</tr>
@@ -352,7 +643,12 @@ const PolicyEdit = React.createClass({
 							<nav className="nodeType2">
 								<div>{item.nodeTitle}</div>
 								<hr style={{marginTop: "15px"}}/>
-								{this.showEditBtn() ? <button className="btn">编辑</button> : null}
+								{this.showEditBtn() ? <button className="btn" onClick={this.show.bind(this,item,{
+									count: 2,
+									id: 'o'+item.libId+'editor0'+'-o'+item.libId+'editor1',
+									nodeIndex: index+'',
+									bind: 'benefitKeyDesc-benefitValueDesc'
+								})}>{item.showEdit?'预览':'编辑'}</button> : null}
 							</nav>
 							<table>
 								<tbody>
@@ -369,8 +665,8 @@ const PolicyEdit = React.createClass({
 										</td>
 									</tr>
 									<tr className={trEditClass}>
-										<td className="editor"></td>
-										<td className="editor"></td>
+										<td className="editor" id={'o'+item.libId+'editor0'}></td>
+										<td className="editor" id={'o'+item.libId+'editor1'}></td>
 									</tr>
 								</tbody>
 							</table>
@@ -386,12 +682,28 @@ const PolicyEdit = React.createClass({
 										'detail': true,
 										'hide': subItem.isPrev
 									});
+									const disabledPrevClass = classSet({
+										'hide': !(!subItem.showEdit&&subItem.isPrev)
+									});
+									const abledPrevClass = classSet({
+										'hide': !subItem.showEdit
+									});
+									const tdEditorClass = classSet({
+										'hide': subItem.isPrev&&!!subIndex,
+										'editor': true,
+										'edui-default': true
+									});
 									return (
 										<article key={subIndex} style={{marginLeft: "2em"}}>
 											<nav>
 												<div>{subItem.nodeTitle}</div>
 												<hr/>
-												{this.showEditBtn() ? <button className="btn">编辑</button> : null}
+												{this.showEditBtn() ? <button className="btn" onClick={this.show.bind(this,subItem,{
+													count: 2,
+													id: 'p'+subItem.libId+'editor0'+'-p'+subItem.libId+'editor1',
+													nodeIndex: index+'-'+subIndex,
+													bind: 'benefitKeyDesc-benefitValueDesc'
+												})}>{subItem.showEdit?'预览':'编辑'}</button> : null}
 											</nav>
 											<table>
 												<tbody>
@@ -399,14 +711,18 @@ const PolicyEdit = React.createClass({
 														<td className="label">描述文字：</td>
 														<td className="label">
 															责任限额：
-															{/*<span v-if="!!subIndex" v-show="!point.showEdit&&point.isPrev" style="float: right;color: #000">
-																<input type="checkbox" v-model="point.isPrev" disabled="disabled"/>
-																与上一节点相同
-															</span>
-															<span v-if="!!subIndex" v-show="point.showEdit" style="float: right;color: #000;">
-																<input type="checkbox" v-model="point.isPrev" v-on:change="changeIsPrev(point);"/>
-																与上一节点相同
-															</span>*/}
+															{!!subIndex?(
+																<span className="isPrev">
+																	<span className={disabledPrevClass}>
+																		<input type="checkbox" checked={subItem.isPrev} disabled="disabled"/>
+																		与上一节点相同
+																	</span>
+																	<span className={abledPrevClass}>
+																		<input type="checkbox" checked={subItem.isPrev} onChange={this.changeIsPrev.bind(this,[index,subIndex])}/>
+																		与上一节点相同
+																	</span>
+																</span>
+															):null}
 														</td>
 													</tr>
 													<tr className={trSubViewClass}>
@@ -418,8 +734,8 @@ const PolicyEdit = React.createClass({
 														</td>
 													</tr>
 													<tr className={trSubEditClass}>
-														<td className="editor"></td>
-														<td className="editor"></td>
+														<td className="editor" id={'p'+subItem.libId+'editor0'}></td>
+														<td className={tdEditorClass} id={'p'+subItem.libId+'editor1'}></td>
 													</tr>
 												</tbody>
 											</table>
@@ -433,7 +749,12 @@ const PolicyEdit = React.createClass({
 							<nav className="nodeType1">
 								<div>{item.nodeTitle}</div>
 								<hr/>
-								{this.showEditBtn() ? <button className="btn">编辑</button> : null}
+								{this.showEditBtn() ? <button className="btn" onClick={this.show.bind(this,item,{
+									count: 1,
+									id: 'o'+item.libId+'editor0',
+									nodeIndex: index+'',
+									bind: 'benefitKeyDesc'
+								})}>{item.showEdit?'预览':'编辑'}</button> : null}
 							</nav>
 							<table>
 								<tbody>
@@ -446,7 +767,7 @@ const PolicyEdit = React.createClass({
 										</td>
 									</tr>
 									<tr className={trEditClass}>
-										<td className="editor"></td>
+										<td className="editor" id={'o'+item.libId+'editor0'}></td>
 									</tr>
 								</tbody>
 							</table>
@@ -456,7 +777,12 @@ const PolicyEdit = React.createClass({
 							<nav className="nodeType5">
 								<div>{item.nodeTitle}</div>
 								<hr/>
-								{this.showEditBtn() ? <button className="btn">编辑</button> : null}
+								{this.showEditBtn() ? <button className="btn" onClick={this.show.bind(this,item,{
+									count:2,
+									id:'o'+item.libId+'editor0'+'-o'+item.libId+'editor1',
+									nodeIndex:index+'',
+									bind:'benefitKeyDesc-benefitValueDesc'
+								})}>{item.showEdit?'预览':'编辑'}</button> : null}
 							</nav>
 							<table>
 								<tbody>
@@ -473,8 +799,8 @@ const PolicyEdit = React.createClass({
 										</td>
 									</tr>
 									<tr className={trEditClass}>
-										<td className="editor"></td>
-										<td className="editor"></td>
+										<td className="editor" id={'o'+item.libId+'editor0'}></td>
+										<td className="editor" id={'o'+item.libId+'editor1'}></td>
 									</tr>
 								</tbody>
 							</table>

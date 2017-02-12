@@ -24,8 +24,10 @@ const config = merge(baseWebpackConfig,{
 	},
 	plugins: [
   		new ExtractTextPlugin('assets/css/[name].[hash].css'),//抽取css样式
-  		new TransferWebpackPlugin([//复制json文件
-  			{from: path.resolve(__dirname,'../client/assets/json'),to: 'assets/json'}//form:绝对目录;to:相对output.path目录
+  		new TransferWebpackPlugin([
+  			//form:绝对目录;to:相对output.path目录
+  			{from: path.resolve(__dirname,'../client/assets/json'),to: 'assets/json'},//复制json文件
+  			{from: path.resolve(__dirname,'../client/assets/lib'),to: 'assets/lib'}//复制lib文件
   		]),
   		new HtmlWebpackPlugin({
   			filename: 'index.html',//文件名
