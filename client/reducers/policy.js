@@ -4,51 +4,52 @@ const initState = {
 	policyListData: {
 		basicList: []
 	},
-	policyRelationListData: {
-		data: [],
-		statusCode: 'static',
-		msg: '请求初始化'
-	},
 	policyDetail: {},
-	hospitalList: [],
-	submitPDFData: {
-		data: {},
-		statusCode: 'static',
-		msg: '请求初始化'
-	},
-	deletePolicyData: {
-		data: {},
-		statusCode: 'static',
-		msg: '请求初始化'
-	}
+	hospitalList: []
 };
 //reducer其实也是一个方法而已，三处是state和action,返回值是新的state
 //获取保单列表结果数据
 export function policyListData(state=initState.policyListData,action){
 	switch(action.type){
 		case types.PolicyListData:
+		case types.DeletePolicy:
 			const pageCount = action.data.totalCount==0 ? 1 : 
 				  action.data.totalCount%20==0 ? action.data.totalCount/20 : 
 				  parseInt(action.data.totalCount/20)+1;
 			action.data.pageCount = pageCount;
-			action.data.basicList.forEach(item=>item.isPosting=false);
+			action.data.basicList.forEach(item=>{
+				item.chosen=false;
+				item.isPosting=false;
+				item.isSending=false;
+			});
 			return Object.assign({},state,action.data);
-		default:
-			return state;
-	};
-};
-//获取关联保单结果数据
-export function policyRelationListData(state=initState.policyRelationListData,action){
-	switch(action.type){
-		case types.PolicyRelationList:
-			if(action.status=='beforeSend'){
-				return state;
-			}else if(action.status=='success'){
-				console.log(action.data);
-				return action.data;
-			}else if(action.status=='error'){
-				return state;
+		case types.ChooseAllPolicy:
+			state.basicList.forEach(item=>item.chosen=action.flag);
+			return JSON.parse(JSON.stringify(state));
+		case types.ChangePolicyChosen:
+			const chosen = state.basicList.find(item=>item.policyId==action.one.policyId).chosen;
+			state.basicList.find(item=>item.policyId==action.one.policyId).chosen=!chosen;
+			return JSON.parse(JSON.stringify(state));
+		case types.ChooseInvert:
+			state.basicList.forEach(item=>item.chosen=!item.chosen);
+			return JSON.parse(JSON.stringify(state));
+		case types.SubmitPDF:
+			if(action.status=='success'||action.status=='error'){
+				state.basicList.find(item=>item.policyId==action.policyId).isPosting=false;
+				if(action.status=='success'){
+					state.basicList.find(item=>item.policyId==action.policyId).policyStatus=1;
+				};
+			}else if(action.status=='before'){
+				state.basicList.find(item=>item.policyId==action.policyId).isPosting=true;
 			};
+			return JSON.parse(JSON.stringify(state));
+		case types.SendPdf:
+			if(action.status=='success'||action.status=='error'){
+				state.basicList.find(item=>item.policyId==action.policyId).isSending=false;
+			}else if(action.status=='before'){
+				state.basicList.find(item=>item.policyId==action.policyId).isSending=true;
+			};
+			return JSON.parse(JSON.stringify(state));
 		default:
 			return state;
 	};
@@ -223,38 +224,6 @@ export function hospitalList(state=initState.hospitalList,action){
 				flag&&(item.chosen=action.flag);
 			});
 			return JSON.parse(JSON.stringify(state));
-		default:
-			return state;
-	};
-};
-//提交保单结果数据
-export function submitPDFData(state=initState.submitPDFData,action){
-	switch(action.type){
-		case types.SubmitPDF:
-			if(action.status=='beforeSend'){
-				return state;
-			}else if(action.status=='success'){
-				console.log(action.data);
-				return action.data;
-			}else if(action.status=='error'){
-				return state;
-			};
-		default:
-			return state;
-	};
-};
-//删除保单结果数据
-export function deletePolicyData(state=initState.deletePolicyData,action){
-	switch(action.type){
-		case types.DeletePolicy:
-			if(action.status=='beforeSend'){
-				return state;
-			}else if(action.status=='success'){
-				console.log(action.data);
-				return action.data;
-			}else if(action.status=='error'){
-				return state;
-			};
 		default:
 			return state;
 	};

@@ -28,16 +28,62 @@ export function queryPolicyList(param){
 //获取关联保单
 export function queryPolicyRelationList(param){
 	return (dispatch,getState)=>{
+		const policyName = param.policyName;
+		delete param.policyName;
+		dispatch(loadingOpen());
 		return fetch('../assets/json/policyRelationList.json',{
 			method: 'get'
 		}).then(response=>response.text())
 		.then(data=>{
-			dispatch({
-				type: types.PolicyRelationList,
-				param,
-				data: JSON.parse(data)
-			});
+			var result = JSON.parse(data);
+			if(result.statusCode==0){
+				let message = '<table class="data-policyInfo">'+
+							      '<colgroup>'+
+							          '<col width="80"/>'+
+							          '<col width="100"/>'+
+							          '<col/>'+
+							          '<col width="100"/>'+
+							          '<col width="100"/>'+
+							      '</colgroup>';
+				message += '<thead>'+
+						       '<tr>'+
+						           '<th>产品编码</th>'+
+						           '<th>计划编码</th>'+
+						           '<th>团体编号</th>'+
+						           '<th>子团体编号</th>'+
+						           '<th>会员数</th>'+
+						       '</tr>'+
+						   '</thead>'+
+						   '<tbody>';
+				result.data.forEach(item=>{
+					message += '<tr>'+
+							       '<td>'+item.productCode+'</td>'+
+							       '<td>'+item.planCode+'</td>'+
+							       '<td>'+item.groupCode+'</td>'+
+							       '<td>'+item.subGroupCode+'</td>'+
+							       '<td>'+item.mbCnt+'</td>'+
+							   '</tr>';
+				});
+				message += '</tbody></table>';
+				dispatch(dialogOpen({
+					type: 'window',
+					message,
+					style: {width:500,height:150,maxHeight:400},
+					title: '关联保单信息 -- '+policyName
+				}));
+			}else{
+				dispatch(dialogOpen({
+					type: 'alert',
+					message: result.msg
+				}));
+			};
+			dispatch(loadingCancel());
 		}).catch(err=>{
+			dispatch(loadingCancel());
+			dispatch(dialogOpen({
+				type: 'alert',
+				message: '网络错误.'
+			}));
 		});
 	};
 };
@@ -119,17 +165,42 @@ export function queryPolicyDetail(param,callback=function(){}){
 //提交保单
 export function submitPDF(param){
 	return (dispatch,getState)=>{
+		dispatch({
+			type: types.SubmitPDF,
+			status: 'before',
+			policyId: param.policyId
+		});
 		return fetch('../assets/json/submitPDF.json',{
 			method: 'get'
 		}).then(response=>response.text())
 		.then(data=>{
+			var result = JSON.parse(data);
+			if(result.statusCode==0){
+				dispatch({
+					type: types.SubmitPDF,
+					status: 'success',
+					policyId: param.policyId
+				});
+				dispatch(dialogOpen({
+					type: 'alert',
+					message: '操作成功'
+				}));
+			}else{
+				dispatch(dialogOpen({
+					type: 'alert',
+					message: result.msg
+				}));
+			};
+		}).catch(err=>{
 			dispatch({
 				type: types.SubmitPDF,
-				status: 'success',
-				param,
-				data: JSON.parse(data)
+				status: 'error',
+				policyId: param.policyId
 			});
-		}).catch(err=>{
+			dispatch(dialogOpen({
+				type: 'alert',
+				message: '网络错误.'
+			}));
 		});
 	};
 };
@@ -140,18 +211,76 @@ export function deletePolicy(param){
 			method: 'get'
 		}).then(response=>response.text())
 		.then(data=>{
-			dispatch({
-				type: types.DeletePolicy,
-				param,
-				data: JSON.parse(data)
-			});
+			var result = JSON.parse(data);
+			if(result.statusCode==0){
+				dispatch({
+					type: types.DeletePolicy,
+					param,
+					data: result.data
+				});
+				dispatch(dialogOpen({
+					type: 'alert',
+					message: '操作成功'
+				}));
+			}else{
+				dispatch(dialogOpen({
+					type: 'alert',
+					message: result.msg
+				}));
+			};
 		}).catch(err=>{
+			dispatch(dialogOpen({
+				type: 'alert',
+				message: '网络错误.'
+			}));
 		});
 	};
 };
 //生成pdf
 export function createPdf(param){
 	window.location.href = '../assets/json/downLoadPDF?policyId='+param.policyId;
+};
+//发送pdf
+export function sendPdf(param){
+	return (dispatch,getState)=>{
+		dispatch({
+			type: types.SendPdf,
+			status: 'before',
+			policyId: param.policyId
+		});
+		return fetch('../assets/json/emailPDF.json',{
+			method: 'get'
+		}).then(response=>response.text())
+		.then(data=>{
+			var result = JSON.parse(data);
+			if(result.statusCode==0){
+				dispatch({
+					type: types.SendPdf,
+					status: 'success',
+					policyId: param.policyId
+				});
+				dispatch(dialogOpen({
+					type: 'alert',
+					message: '操作成功'
+				}));
+			}else{
+				dispatch(dialogOpen({
+					type: 'alert',
+					message: result.msg
+				}));
+			};
+		}).catch(err=>{
+			dispatch({
+				type: types.SendPdf,
+				status: 'error',
+				policyId: param.policyId
+			});
+			dispatch(dialogOpen({
+				type: 'alert',
+				message: '网络错误.'
+			}));
+		});
+	};
 };
 //初始化保单节点
 export function initPolicyChosen(){
@@ -261,5 +390,25 @@ export function policySave(param){
 	return {
 		type: types.PolicySave,
 		param
+	};
+};
+//全选保单
+export function chooseAll(param){
+	return {
+		type: types.ChooseAllPolicy,
+		flag: param.flag
+	};
+};
+//反选保单
+export function chooseInvert(){
+	return {
+		type: types.ChooseInvert
+	};
+};
+//选择保单
+export function changePolicyChosen(param){
+	return {
+		type: types.ChangePolicyChosen,
+		one: param.one
 	};
 };

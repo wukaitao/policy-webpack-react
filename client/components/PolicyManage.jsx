@@ -3,17 +3,18 @@ import addons from 'react-addons';
 import {Link,hashHistory} from 'react-router';
 //声明组件
 const PolicyManage = React.createClass({
-	componentWillMount(){
+	getInitialState(){
+		return {
+			showSearchType: 'policy',
+			isTemplate: false
+		};
+	},
+	componentDidMount(){
 		//默认加载列表
 		this.getPolicyList(1,true);
 	},
 	componentWillUpdate(){
 		console.log('存在期:componentWillUpdate');
-		//监听页面变化
-		//this.props.route.callbackRootRoute({
-		//	isLoading: false,
-		//	name: 'Nicky.Wu'
-		//});
 	},
 	isTemplateManager(){
 		//是否管理员
@@ -22,10 +23,12 @@ const PolicyManage = React.createClass({
 	getPolicyList(page,flag){
 		//获取列表
 		if(!flag) return;
-		const param = {
-			currentPage: page,
-			policyMemberIdPattern: 'policy'
+		let param = {
+			currentPage: page
 		};
+		this.state.isTemplate!==''&&(param.isTemplate=this.state.isTemplate);
+		if(/^[0-9]*$/.test(this.refs.policyKeyword.value)) param.policyMemberIdPattern = this.refs.policyKeyword.value;
+		else param.policyNamePattern = this.refs.policyKeyword.value;
 		this.props.page.queryPolicyList(param);
 	},
 	postPolicy(one){
@@ -38,10 +41,14 @@ const PolicyManage = React.createClass({
 	delSelectedPolicy(){
 		//删除保单
 		const self = this;
-		const param = {
+		let param = {
 			currentPage: this.props.policyListData.currentPage,
 			policyIdArray: []
 		};
+		this.props.policyListData.basicList.forEach(item=>item.chosen&&(param.policyIdArray.push(item.policyId)));
+		this.state.isTemplate!==''&&(param.isTemplate=this.state.isTemplate);
+		if(/^[0-9]*$/.test(this.refs.policyKeyword.value)) param.policyMemberIdPattern = this.refs.policyKeyword.value;
+		else param.policyNamePattern = this.refs.policyKeyword.value;
 		if(!param.policyIdArray.length){
 			this.props.popup.dialogOpen({
 				type: 'alert',
@@ -54,7 +61,6 @@ const PolicyManage = React.createClass({
 			message: '删除保单将不可恢复，请确认是否删除所选保单.',
 			style: {width:360,height:150},
 			callback: function(){
-				console.log('删除保单动作...');
 				self.props.page.deletePolicy(param);
 			}
 		});
@@ -66,13 +72,52 @@ const PolicyManage = React.createClass({
 		};
 		this.props.page.createPdf(param);
 	},
-	showTobPolicyRelation(id,policyName){
+	sendPdf(id){
+		//发送pdf
+		const param = {
+			policyId: id
+		};
+		this.props.page.sendPdf(param);
+	},
+	queryPolicyRelationList(id,policyName){
 		//保单关系列表
 		const param = {
 			policyId: id,
 			policyName: policyName
 		};
 		this.props.page.queryPolicyRelationList(param);
+	},
+	chooseAll(){
+		//全选保单
+		const param = {
+			flag: this.refs.chooseAll.checked
+		};
+		this.props.page.chooseAll(param);
+	},
+	chooseInvert(){
+		//反选保单
+		this.props.page.chooseInvert();
+		this.changeCheckboxStatus();
+	},
+	changePolicyChosen(one){
+		//选择保单
+		const param = {one};
+		this.props.page.changePolicyChosen(param);
+		this.changeCheckboxStatus();
+	},
+	changeCheckboxStatus(){
+		//改变全选状态
+		const self = this;
+		setTimeout(function(){
+			const data = self.props.policyListData.basicList;
+			self.refs.chooseAll.checked=true;
+			for(let item of data){
+				if(!item.chosen){
+					self.refs.chooseAll.checked=false;
+					break;
+				};
+			};
+		});
 	},
 	render(){
 		const data = this.props.policyListData;
@@ -100,7 +145,9 @@ const PolicyManage = React.createClass({
 		const list = data.basicList.length ? data.basicList.map((item,index)=>{
 			return (
 				<tr key={index}>
-					<td className="text-center"><input type="checkbox"/></td>
+					<td className="text-center">
+						<input type="checkbox" checked={item.chosen} onChange={this.changePolicyChosen.bind(this,item)}/>
+					</td>
 					<td className="text-ellipsis" title={item.policyName}>{item.policyName}</td>
 					<td className="text-center">
 						{item.isTemplate?'模板':item.policyId}
@@ -109,7 +156,7 @@ const PolicyManage = React.createClass({
 						{!item.isTemplate&&item.policyKeyMsg ?
 							<span>
 								{item.policyKeyMsg}
-								<i className="icon-eye" onClick={this.showTobPolicyRelation.bind(this,item.policyId,item.tobName)}></i>
+								<i className="icon-eye" onClick={this.queryPolicyRelationList.bind(this,item.policyId,item.policyName)}></i>
 							</span> : null
 						}
 					</td>
@@ -139,6 +186,7 @@ const PolicyManage = React.createClass({
 						{!item.isTemplate||this.isTemplateManager?<Link to={`/policyedit/${item.policyId}`} className="btn">修改</Link>:null}
 						<Link to={`/policycopy/${item.policyId}`} className="btn">复制</Link>
 						<span onClick={this.createPdf.bind(this,item.policyId)} className="btn">生成pdf</span>
+						<span onClick={this.sendPdf.bind(this,item.policyId)} className="btn">发送pdf</span>
 					</td>
 				</tr>
 			);
@@ -154,7 +202,7 @@ const PolicyManage = React.createClass({
 				<div className="toolbar">
 					<div className="toolbar-row">
 						<span className="searchbox">
-							<input type="text" ref="policyKeyword" placeholder="请输入policy名称或memberId" onClick={this.getPolicyList.bind(this,1,true)}/>
+							<input type="text" ref="policyKeyword" placeholder="请输入policy名称或memberId"/>
 							<span className="type">
 								<span>
 									{'policy'}<i className="icon-arrow_drop_down"></i>
@@ -173,14 +221,17 @@ const PolicyManage = React.createClass({
 				</div>
 				<table className="data-table">
 					<colgroup>
-						<col width="40"/><col/>
+						<col width="60"/><col/>
 						<col width="70"/><col width="180"/>
 						<col width="130"/><col width="150"/>
-						<col width="130"/><col width="180"/>
+						<col width="130"/><col width="240"/>
 					</colgroup>
 					<thead>
 						<tr>
-							<th><input type="checkbox"/></th>
+							<th>
+								<input type="checkbox" ref="chooseAll" onChange={this.chooseAll}/>
+								<i onClick={this.chooseInvert} className="icon-search"></i>
+							</th>
 							<th>名称</th>
 							<th>编号</th>
 							<th>保单信息</th>
