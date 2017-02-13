@@ -8,7 +8,7 @@ import * as PopupActions from '../actions/popup.js';
 const mapStateToProps = state =>{
 	return {
 		policyListData: state.policyListData,
-		policyRelationListData: state.policyRelationListData
+		pageStatus: state.pageStatus
 	};
 };
 //将action的所有方法绑定到props上

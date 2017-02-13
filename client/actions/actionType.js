@@ -32,6 +32,8 @@ export const Logout = 'Logout';//退出
 export const ChooseAllPolicy = 'ChooseAllPolicy';//全选保单
 export const ChooseInvert = 'ChooseInvert';//反选保单
 export const ChangePolicyChosen = 'ChangePolicyChosen';//选择保单
+export const ResetSearchType = 'ResetSearchType';//重置搜索类型
+export const ChangeSearchType = 'ChangeSearchType';//切换搜索类型
 //保单编辑
 export const ChangePolicyName = 'ChangePolicyName';//policy名称
 export const ChangeShow = 'ChangeShow';//切换节点显示状态

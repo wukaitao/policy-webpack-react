@@ -413,3 +413,16 @@ export function changePolicyChosen(param){
 		one: param.one
 	};
 };
+//重置搜索类型
+export function resetSearchType(){
+	return {
+		type: types.ResetSearchType
+	};
+};
+//切换搜索类型
+export function changeSearchType(param){
+	return {
+		type: types.ChangeSearchType,
+		one: param.one
+	};
+};

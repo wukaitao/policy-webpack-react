@@ -196,7 +196,7 @@
                 .type{
                     position: relative;
                     display: inline-block;
-                    width: 45px;
+                    width: 55px;
                     height: 24px;
                     text-align: left;
                     margin: 0px -3px 0px 0px;
@@ -204,6 +204,10 @@
                     vertical-align: text-top;
                     color: #333;
                     cursor: pointer;
+                    span{
+                        white-space: nowrap;
+                        vertical-align: middle;
+                    }
                     i{
                         vertical-align: middle;
                     }
@@ -231,11 +235,11 @@
                     cursor: pointer;
                     background-color: #2679c5;
                     color: #fff;
-                    height: 24px;
+                    height: 22px;
                     padding: 0px 10px;
                     border-radius: 0px 5px 5px 0px;
                     vertical-align: top;
-                    line-height: 24px;
+                    line-height: 22px;
                 }
             }
         }

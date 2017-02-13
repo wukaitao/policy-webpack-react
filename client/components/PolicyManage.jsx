@@ -5,16 +5,14 @@ import {Link,hashHistory} from 'react-router';
 const PolicyManage = React.createClass({
 	getInitialState(){
 		return {
-			showSearchType: 'policy',
-			isTemplate: false
+			showSearchType: false
 		};
 	},
 	componentDidMount(){
+		//重置搜索类型
+		this.props.page.resetSearchType();
 		//默认加载列表
 		this.getPolicyList(1,true);
-	},
-	componentWillUpdate(){
-		console.log('存在期:componentWillUpdate');
 	},
 	isTemplateManager(){
 		//是否管理员
@@ -26,7 +24,7 @@ const PolicyManage = React.createClass({
 		let param = {
 			currentPage: page
 		};
-		this.state.isTemplate!==''&&(param.isTemplate=this.state.isTemplate);
+		this.props.pageStatus.oSearch.isTemplate!==''&&(param.isTemplate=this.props.pageStatus.oSearch.isTemplate);
 		if(/^[0-9]*$/.test(this.refs.policyKeyword.value)) param.policyMemberIdPattern = this.refs.policyKeyword.value;
 		else param.policyNamePattern = this.refs.policyKeyword.value;
 		this.props.page.queryPolicyList(param);
@@ -46,7 +44,7 @@ const PolicyManage = React.createClass({
 			policyIdArray: []
 		};
 		this.props.policyListData.basicList.forEach(item=>item.chosen&&(param.policyIdArray.push(item.policyId)));
-		this.state.isTemplate!==''&&(param.isTemplate=this.state.isTemplate);
+		this.props.pageStatus.oSearch.isTemplate!==''&&(param.isTemplate=this.props.pageStatus.oSearch.isTemplate);
 		if(/^[0-9]*$/.test(this.refs.policyKeyword.value)) param.policyMemberIdPattern = this.refs.policyKeyword.value;
 		else param.policyNamePattern = this.refs.policyKeyword.value;
 		if(!param.policyIdArray.length){
@@ -121,7 +119,22 @@ const PolicyManage = React.createClass({
 			};
 		});
 	},
+	changeShowSearchType(event){
+		const isSelf = event.target.className=='searchType';
+		//阻止冒泡事件
+		isSelf&&event.stopPropagation();
+		//切换搜索类型的显示状态
+		this.setState({
+			showSearchType: !isSelf?false:!this.state.showSearchType
+		});
+	},
+	changeSearchType(one){
+		//切换搜索类型
+		const param = {one};
+		this.props.page.changeSearchType(param);
+	},
 	render(){
+		const pageStatus = this.props.pageStatus;
 		const data = this.props.policyListData;
 		const classSet = addons.classSet;
 		const btnFirstClass = classSet({
@@ -168,7 +181,7 @@ const PolicyManage = React.createClass({
 						{item.isTemplate ? 
 							null : item.policyStatus==0 ? 
 							<span>
-								<span style={{color: "#999"}}>待提交</span>
+								<span style={{color: "#333"}}>待提交</span>
 								{item.isPosting?
 									<span className="btn btn-disabled">提交中.</span>:
 									<span className="btn" onClick={this.postPolicy.bind(this,item)}>提交</span>
@@ -199,19 +212,28 @@ const PolicyManage = React.createClass({
 				<option key={i} value={i}>{i}</option>
 			);
 		};
+		const ulSearchTypeClass = classSet({
+			'hide': !this.state.showSearchType
+		});
+		const iSearchTypeClass = classSet({
+			'icon-arrow_drop_up': this.state.showSearchType,
+			'icon-arrow_drop_down': !this.state.showSearchType
+		});
 		return(
-			<section className="main policy-manage">
+			<section className="main policy-manage" onClick={this.changeShowSearchType}>
 				<div className="toolbar">
 					<div className="toolbar-row">
 						<span className="searchbox">
 							<input type="text" ref="policyKeyword" placeholder="请输入policy名称或memberId"/>
 							<span className="type">
-								<span>
-									{'policy'}<i className="icon-arrow_drop_down"></i>
+								<span className="searchType" onClick={this.changeShowSearchType}>
+									{pageStatus.oSearch.name}<i className={iSearchTypeClass}></i>
 								</span>
-								{/*<ul v-if="showSearchType">
-									<li v-for="one in pageStatus.aSearch" @click.stop="changeSearchType(one);">{{one.name}}</li>
-							</ul>*/}
+								<ul className={ulSearchTypeClass}>
+									{pageStatus.aSearch.map((item,index)=>{
+										return <li key={index} onClick={this.changeSearchType.bind(this,item)}>{item.name}</li>;
+									})}
+								</ul>
 							</span>
 							<i onClick={this.getPolicyList.bind(this,1,true)} className="icon-search"></i>
 						</span>
@@ -223,7 +245,7 @@ const PolicyManage = React.createClass({
 				</div>
 				<table className="data-table">
 					<colgroup>
-						<col width="60"/><col/>
+						<col width="40"/><col/>
 						<col width="70"/><col width="180"/>
 						<col width="130"/><col width="150"/>
 						<col width="130"/><col width="240"/>

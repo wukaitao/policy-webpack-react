@@ -22,8 +22,6 @@ const initState = {
 				result: '',//返回结果
 				callback: function(){}//回调函数
 			},
-			policyKeyword: '',//policy搜索关键字
-			currentPage: 1,//policy列表当前页码
 	    	oSearch: {isTemplate:'',name:'全部'},//policy搜索默认选中分类
 	    	aSearch: [{isTemplate:'',name:'全部'},{isTemplate:0,name:'policy'},{isTemplate:1,name:'模板'}]//policy搜索分类
 		}
@@ -59,6 +57,15 @@ export function pageStatus(state=initState.pageStatus,action){
 				isLogin: false,
 				isTemplateManager: false,
 				userName: ''
+			});
+		case types.ResetSearchType:
+			return Object.assign({},state,{
+				oSearch: initState.pageStatus.oSearch,
+				aSearch: initState.pageStatus.aSearch
+			});
+		case types.ChangeSearchType:
+			return Object.assign({},state,{
+				oSearch: action.one
 			});
 		default:
 			return state;
