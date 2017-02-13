@@ -51,7 +51,7 @@ const Popup = React.createClass({
 		const iTipsClass = data.dialog.icon=='' ? 'icon-info' : data.dialog.icon;
 		const iClass = data.dialog.type=='confirm' ? iConfirmClass : 
 					   data.dialog.type=='alert' ? iAlertClass : 
-					   data.dialog.type=='tips' ? iTipsClass : '';
+					   data.dialog.type=='tips' ? iTipsClass : 'hide';
 		const loadingHtml = (
 			<div className="cover">
 				<div className="loading">

@@ -18,7 +18,7 @@ export const HospitalList = 'HospitalList';//获取医院列表
 export const DeletePolicy = 'DeletePolicy';//删除policy
 export const SubmitPDF = 'SubmitPDF';//提交policy
 export const CreatePdf = 'CreatePdf';//生成pdf
-export const PolicyRelationList = 'PolicyRelationList';//policy保单关系列表
+export const SendPdf = 'SendPdf';//发送pdf
 export const DialogOpen = 'DialogOpen';//打开弹窗
 export const DialogCancel = 'DialogCancel';//关闭弹窗
 export const LoadingOpen = 'LoadingOpen';//打开Loading蒙层
@@ -28,6 +28,10 @@ export const Login = 'Login';//登录
 export const Logout = 'Logout';//退出
 
 //操作Action(Event)
+//保单管理
+export const ChooseAllPolicy = 'ChooseAllPolicy';//全选保单
+export const ChooseInvert = 'ChooseInvert';//反选保单
+export const ChangePolicyChosen = 'ChangePolicyChosen';//选择保单
 //保单编辑
 export const ChangePolicyName = 'ChangePolicyName';//policy名称
 export const ChangeShow = 'ChangeShow';//切换节点显示状态

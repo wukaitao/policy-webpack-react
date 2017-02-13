@@ -20,6 +20,8 @@ ul,ol,li,dl,dt,dd,p{
     outline: none;
 }
 button,input,textarea,select{
+    margin: 0px;
+    padding: 0px;
     vertical-align: middle;
     outline: none;
 }
@@ -35,7 +37,7 @@ table{
     text-overflow: ellipsis;
 }
 .show{
-    display: block !important;
+    display: block;
 }
 .hide{
     display: none !important;
