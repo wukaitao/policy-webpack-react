@@ -1,10 +1,16 @@
 ﻿import * as types from './actionType.js';
 import {loadingOpen,loadingCancel,dialogOpen,dialogCancel} from './popup.js';
 
+//test start
+//export function show(param){
+//	console.log(param);
+//};
+//show({name: 'Nicky Wu'});
+//test end
 //导出所有方法
 //PolicyManage
 //获取保单列表
-export function queryPolicyList(param){
+export function queryPolicyList(param,callback=function(){}){
 	return (dispatch,getState)=>{
 		dispatch(loadingOpen());
 		return fetch('../assets/json/policyList.json',{
@@ -18,6 +24,7 @@ export function queryPolicyList(param){
 					param,
 					data: result.data
 				});
+				callback.call(this);
 			};
 			dispatch(loadingCancel());
 		}).catch(err=>{
@@ -213,16 +220,16 @@ export function deletePolicy(param,callback=function(){}){
 		.then(data=>{
 			var result = JSON.parse(data);
 			if(result.statusCode==0){
-				dispatch({
-					type: types.DeletePolicy,
-					param,
-					data: result.data
-				});
 				dispatch(dialogOpen({
-					type: 'alert',
-					message: '操作成功'
+					type: 'toast',
+					message: '删除成功.',
+					icon: 'icon-circle-check',
+					callback: function(){
+						console.log('request policyList...');
+						delete param.policyIdArray;
+						dispatch(queryPolicyList(param,callback));
+					}
 				}));
-				callback.call(this);
 			}else{
 				dispatch(dialogOpen({
 					type: 'alert',
@@ -387,10 +394,31 @@ export function changeIsPrev(param){
 	};
 };
 //保存保单
-export function policySave(param){
-	return {
-		type: types.PolicySave,
-		param
+export function policySave(param,callback=function(){}){
+	const type = param.isTemplate ? '模板' : 'policy';
+	const path = param.path;
+	delete param.path;
+	const urlApi = path=='edit' ? '../assets/json/policyUpdate.json' : '../assets/json/policyAdd.json';
+	return (dispatch,getState)=>{
+		dispatch(loadingOpen());
+		return fetch(urlApi,{
+			method: 'get'
+		}).then(response=>response.text())
+		.then(data=>{
+			var result = JSON.parse(data);
+			if(result.statusCode==0){
+				const message = !result.data.policyId ? '修改'+type+'成功.' :
+								path=='copy' ? '复制'+type+'成功.' : '创建'+type+'成功.';
+				dispatch(dialogOpen({
+					type: 'alert',
+					message
+				}));
+				callback.call(this);
+			};
+			dispatch(loadingCancel());
+		}).catch(err=>{
+			dispatch(loadingCancel());
+		});
 	};
 };
 //全选保单

@@ -266,7 +266,10 @@ const PolicyEdit = React.createClass({
 			});
 			return;
 		};
-		this.props.page.policySave(param);
+		this.props.page.policySave(param,function(){
+			//保存成功回调
+			hashHistory.push('/policymanage');
+		});
 	},
 	toTop(){
 		//页面滚动到顶部
@@ -814,7 +817,7 @@ const PolicyEdit = React.createClass({
 			<section className="main policy-edit">
 				<header>
 					<button className="btn" onClick={this.back}>返回</button>
-					{this.showPolicyBtn ? <button className="btn" onClick={this.save}>保存POLICY</button> : null}
+					{this.showPolicyBtn ? <button className="btn" onClick={this.save.bind(this,false)}>保存POLICY</button> : null}
 					{this.showTemplateBtn ? <button className="btn" onClick={this.save.bind(this,true)}>保存模板</button> : null}
 					{this.showEditBtn() ? <Link to="/pointchoose" className="btn">挑选节点</Link> : null}
 					{this.showEditBtn() ? <Link to="/pointdrag" className="btn">调整排序</Link> : null}
@@ -826,7 +829,7 @@ const PolicyEdit = React.createClass({
 				</section>
 				<footer>
 					<button className="btn" onClick={this.back}>返回</button>
-					{this.showPolicyBtn ? <button className="btn btn-primary" onClick={this.save}>保存POLICY</button> : null}
+					{this.showPolicyBtn ? <button className="btn btn-primary" onClick={this.save.bind(this,false)}>保存POLICY</button> : null}
 					{this.showTemplateBtn ? <button className="btn btn-primary" onClick={this.save.bind(this,true)}>保存模板</button> : null}
 				</footer>
 				<button className="btn toTop" onClick={this.toTop}>Top</button>
