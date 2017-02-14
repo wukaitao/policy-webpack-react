@@ -3,7 +3,7 @@ import {loadingOpen,loadingCancel,dialogOpen,dialogCancel} from './popup.js';
 
 //导出所有方法
 //登录
-export function login(param){
+export function login(param,callback=function(){}){
 	return (dispatch,getState)=>{
 		dispatch(loadingOpen());
 		return fetch('../assets/json/policyLogin.json',{
@@ -13,12 +13,14 @@ export function login(param){
 			const result = JSON.parse(data);
 			if(result.statusCode==0){
 				localStorage.setItem('pageLogin','true');
+				localStorage.setItem('userName',escape(result.data.userName));
 				localStorage.setItem('isTemplateManager',escape(result.data.templateFlag));
 				dispatch({
 					type: types.Login,
 					param,
 					data: result.data
 				});
+				callback.call(this);
 			};
 			dispatch(loadingCancel());
 		}).catch(err=>{
@@ -27,7 +29,7 @@ export function login(param){
 	};
 };
 //退出
-export function logout(){
+export function logout(callback=function(){}){
 	return (dispatch,getState)=>{
 		dispatch(loadingOpen());
 		return fetch('../assets/json/policyLogout.json',{
@@ -37,11 +39,13 @@ export function logout(){
 			const result = JSON.parse(data);
 			if(result.statusCode==0){
 				localStorage.setItem('pageLogin','false');
+				localStorage.setItem('userName','');
 				localStorage.setItem('isTemplateManager',escape('0'));
 				dispatch({
 					type: types.Logout,
 					data: result.data
 				});
+				callback.call(this);
 			};
 			dispatch(loadingCancel());
 		}).catch(err=>{

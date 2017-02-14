@@ -3,34 +3,10 @@ import {Link,hashHistory} from 'react-router';
 import md5 from 'md5';
 //声明组件
 const Login = React.createClass({
-	getInitialState(){
-		return {
-			isLogin: false
-		};
-	},
-	componentWillReceiveProps(nextProps){
-		//监听props和state变化
-		if(nextProps.pageStatus.isLogin&&!this.state.isLogin){
-			this.setState({
-				isLogin: true
-			});
-			this.props.popup.dialogOpen({
-				type: 'toast',
-				icon: 'icon-circle-check',
-				message: '登录成功',
-				callback: function(){
-					hashHistory.push('/policymanage');
-				}
-			});
-		};
-	},
-	shouldComponentUpdate(){
-		//避免重新渲染页面
-		return false;
-	},
 	login(event){
 		event.preventDefault();
 		//前端校验
+		const self = this;
 		const userNameReg = /^[a-zA-Z\d]\w{3,11}[a-zA-Z\d]$/;
 		const passwordReg = /^(\w){6,20}$/;
 		this.refs.userName.value = this.refs.userName.value.replace(/^\s+|\s+$/g,'');
@@ -60,7 +36,16 @@ const Login = React.createClass({
 			userName: this.refs.userName.value,
 			password: md5(this.refs.password.value)
 		};
-		this.props.page.login(param);
+		this.props.page.login(param,function(){
+			self.props.popup.dialogOpen({
+				type: 'toast',
+				icon: 'icon-circle-check',
+				message: '登录成功',
+				callback: function(){
+					hashHistory.push('/policymanage');
+				}
+			});
+		});
 	},
 	render(){
 		return(

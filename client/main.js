@@ -15,16 +15,25 @@ import NotFoundPage from './components/NotFoundPage.jsx';
 require('./assets/css/main.scss');
 
 const store = configureStore();
-//console.log(store.getState());
 
 const App = React.createClass({
-	requireAuth(nextState,replace){
+	requireAuth(nextState,replace,next){
 		//登录认证
-		//console.log('requireAuth');
+		const isLogin = store.getState().pageStatus.isLogin;
+		if(isLogin) next();
+		else{
+			replace('/login');
+			next();
+		};
 	},
-	judgeLogin(nextState,replace){
+	judgeLogin(nextState,replace,next){
 		//登录判断
-		//console.log('judgeLogin');
+		const isLogin = store.getState().pageStatus.isLogin;
+		if(!isLogin) next();
+		else{
+			replace('/policymanage');
+			next();
+		};
 	},
 	render(){
 		return(
@@ -34,7 +43,7 @@ const App = React.createClass({
 					<Route path='/login' component={Login} onEnter={this.judgeLogin}/>
 					<Route path='/policymanage' component={PolicyManage} onEnter={this.requireAuth}/>
 					<Route path='/policyadd' component={PolicyEdit} onEnter={this.requireAuth}/>
-					<Route path='/policyview/:id' component={PolicyEdit} onEnter={this.requireAuth} yui="yes"/>
+					<Route path='/policyview/:id' component={PolicyEdit} onEnter={this.requireAuth}/>
 					<Route path='/policyedit/:id' component={PolicyEdit} onEnter={this.requireAuth}/>
 					<Route path='/policycopy/:id' component={PolicyEdit} onEnter={this.requireAuth}/>
 					<Route path='/pointchoose' component={PointChoose} onEnter={this.requireAuth}/>

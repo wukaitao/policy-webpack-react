@@ -4,18 +4,11 @@ import Nav from '../containers/Nav.js';
 import Popup from '../containers/Popup.js';
 //声明组件
 const Main = React.createClass({
-	getInitialState(){
-		return {
-			isLogin: true,
-			userName: 'Nicky.Wu'
-		};
-	},
 	render(){
 		const path = this.props.routes[1].path;
-		let test = {flag:'true'};
 		return(
 			<div className="wrap">
-				<Nav path={path} test={test}/>
+				<Nav path={path}/>
 				{this.props.children}
 				<Popup/>
 			</div>
