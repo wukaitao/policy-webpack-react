@@ -15,7 +15,6 @@ export const PolicyInitChosen = 'PolicyInitChosen';//初始化节点选择
 export const PolicyFilterChosen = 'PolicyFilterChosen';//过滤节点选择
 export const PolicyRefreshOrder = 'PolicyRefreshOrder';//重新排序
 export const HospitalList = 'HospitalList';//获取医院列表
-export const DeletePolicy = 'DeletePolicy';//删除policy
 export const SubmitPDF = 'SubmitPDF';//提交policy
 export const CreatePdf = 'CreatePdf';//生成pdf
 export const SendPdf = 'SendPdf';//发送pdf
@@ -29,6 +28,7 @@ export const Logout = 'Logout';//退出
 
 //操作Action(Event)
 //保单管理
+export const ChangeSortType = 'ChangeSortType';//保单排序
 export const ChooseAllPolicy = 'ChooseAllPolicy';//全选保单
 export const ChooseInvert = 'ChooseInvert';//反选保单
 export const ChangePolicyChosen = 'ChangePolicyChosen';//选择保单

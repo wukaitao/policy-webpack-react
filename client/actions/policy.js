@@ -454,3 +454,10 @@ export function changeSearchType(param){
 		one: param.one
 	};
 };
+//切换保单排序
+export function changeSortType(param){
+	return {
+		type: types.ChangeSortType,
+		sortType: param.sortType
+	};
+};

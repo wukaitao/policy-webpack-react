@@ -12,7 +12,6 @@ const initState = {
 export function policyListData(state=initState.policyListData,action){
 	switch(action.type){
 		case types.PolicyListData:
-		case types.DeletePolicy:
 			const pageCount = action.data.totalCount==0 ? 1 : 
 				  action.data.totalCount%20==0 ? action.data.totalCount/20 : 
 				  parseInt(action.data.totalCount/20)+1;
@@ -32,6 +31,14 @@ export function policyListData(state=initState.policyListData,action){
 			return JSON.parse(JSON.stringify(state));
 		case types.ChooseInvert:
 			state.basicList.forEach(item=>item.chosen=!item.chosen);
+			return JSON.parse(JSON.stringify(state));
+		case types.ChangeSortType:
+			state.basicList.sort((a,b)=>{
+	  			const atime = new Date(a.updateTime.replace(/-/g,'/')).getTime();
+	  			const btime = new Date(b.updateTime.replace(/-/g,'/')).getTime();
+	 			if(action.sortType=='desc') return atime < btime ? -1 : 1;
+	 			else return atime > btime ? -1 : 1;
+			});
 			return JSON.parse(JSON.stringify(state));
 		case types.SubmitPDF:
 			if(action.status=='success'||action.status=='error'){

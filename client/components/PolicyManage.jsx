@@ -5,7 +5,8 @@ import {Link,hashHistory} from 'react-router';
 const PolicyManage = React.createClass({
 	getInitialState(){
 		return {
-			showSearchType: false
+			showSearchType: false,
+			sortType: 'desc'
 		};
 	},
 	componentDidMount(){
@@ -28,6 +29,10 @@ const PolicyManage = React.createClass({
 		if(/^[0-9]*$/.test(this.refs.policyKeyword.value)) param.policyMemberIdPattern = this.refs.policyKeyword.value;
 		else param.policyNamePattern = this.refs.policyKeyword.value;
 		this.props.page.queryPolicyList(param);
+		//重置排序
+		this.setState({
+			sortType: 'desc'
+		});
 	},
 	postPolicy(one){
 		//提交保单
@@ -61,6 +66,10 @@ const PolicyManage = React.createClass({
 			callback: function(){
 				self.props.page.deletePolicy(param,function(){
 					self.changeCheckboxStatus();
+				});
+				//重置排序
+				self.setState({
+					sortType: 'desc'
 				});
 			}
 		});
@@ -133,10 +142,24 @@ const PolicyManage = React.createClass({
 		const param = {one};
 		this.props.page.changeSearchType(param);
 	},
+	changeSortType(){
+		//切换保单排序
+		this.setState({
+			sortType: this.state.sortType=='desc'?'asc':'desc'
+		});
+		const param = {
+			sortType: this.state.sortType
+		};
+		this.props.page.changeSortType(param);
+	},
 	render(){
 		const pageStatus = this.props.pageStatus;
 		const data = this.props.policyListData;
 		const classSet = addons.classSet;
+		const iSortClass = classSet({
+			'icon-arrow_drop_up': this.state.sortType=='asc',
+			'icon-arrow_drop_down': this.state.sortType=='desc'
+		});
 		const btnFirstClass = classSet({
 			'btn-primary': data.currentPage!=1,
 			'btn-disabled': data.currentPage==1,
@@ -260,7 +283,10 @@ const PolicyManage = React.createClass({
 							<th>编号</th>
 							<th>保单信息</th>
 							<th>最后修改人</th>
-							<th>最后修改日期</th>
+							<th onClick={this.changeSortType}>
+								最后修改日期
+								<i className={iSortClass}></i>
+							</th>
 							<th>状态</th>
 							<th>操作</th>
 						</tr>
