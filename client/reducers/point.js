@@ -1,6 +1,7 @@
 ﻿import * as types from '../actions/actionType.js';
 
 const initState = {
+	allPointDataCache: [],
 	allPointData: [],
 	letterList: [],
 	templateNodeAddData: {
@@ -15,8 +16,11 @@ const initState = {
 export function allPointData(state=initState.allPointData,action){
 	switch(action.type){
 		case types.AllPointData:
-			const letterList = [];
-			action.data.sort((a,b)=>{
+			action.eventType=='init'&&(initState.allPointDataCache=action.data);
+			let letterList = [];
+			let allPointData = action.eventType=='init'?JSON.parse(JSON.stringify(action.data)):JSON.parse(JSON.stringify(initState.allPointDataCache));
+			allPointData = allPointData.filter(item=>unescape(item.nodeTitle).indexOf(action.keyword)!=-1);
+			allPointData.sort((a,b)=>{
 				return makePy(unescape(b.nodeTitle).charAt(0))[0].toUpperCase() < makePy(unescape(a.nodeTitle).charAt(0))[0].toUpperCase() ? 1 : -1;
 			}).forEach((item)=>{
 				item.benefitKeyDesc = unescape(item.benefitKeyDesc);
@@ -44,7 +48,7 @@ export function allPointData(state=initState.allPointData,action){
 					subItem.nodeTitle = unescape(subItem.nodeTitle);
 				});
 			});
-			return action.data;
+			return JSON.parse(JSON.stringify(allPointData));
 		default:
 			return state;
 	};
@@ -53,7 +57,7 @@ export function allPointData(state=initState.allPointData,action){
 export function letterList(state=initState.letterList,action){
 	switch(action.type){
 		case types.ResetLetterList:
-			const letterList = [];
+			let letterList = [];
 			action.data.forEach((item)=>{
 				if(item.nodeType==2){
 					let firstLetter = makePy(item.nodeTitle.charAt(0))[0].toUpperCase();

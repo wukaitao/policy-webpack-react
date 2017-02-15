@@ -15,7 +15,9 @@ export function queryAllPoint(param){
 			if(result.statusCode==0){
 				dispatch({
 					type: types.AllPointData,
-					data: result.data
+					data: result.data,
+					eventType: param.eventType,
+					keyword: param.keyword
 				});
 				setTimeout(()=>{
 					dispatch({
@@ -27,6 +29,22 @@ export function queryAllPoint(param){
 			dispatch(loadingCancel());
 		}).catch(err=>{
 			dispatch(loadingCancel());
+		});
+	};
+};
+//过滤节点树
+export function filterAllPoint(param){
+	return (dispatch,getState)=>{
+		dispatch({
+			type: types.AllPointData,
+			eventType: param.eventType,
+			keyword: param.keyword
+		});
+		setTimeout(()=>{
+			dispatch({
+				type: types.ResetLetterList,
+				data: getState().allPointData
+			});
 		});
 	};
 };

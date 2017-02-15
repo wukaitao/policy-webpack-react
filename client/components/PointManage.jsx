@@ -32,7 +32,11 @@ const PointManage = React.createClass({
 		resizeLetterList();
 	},
 	getAllPoint(){
-		this.props.queryAllPoint();
+		const param = {
+			eventType: 'init',
+			keyword: this.state.keyword
+		};
+		this.props.queryAllPoint(param);
 	},
 	modifycate(id){
 		this.props.router.push('/cateedit/'+id);
@@ -54,7 +58,11 @@ const PointManage = React.createClass({
 		this.setState({
 			keyword: this.refs.keyword.value
 		});
-		//因为需触发其他渲染，因此此处需要对this.props.allPointData进行筛选
+		const param = {
+			eventType: 'filter',
+			keyword: this.refs.keyword.value
+		};
+		this.props.filterAllPoint(param);
 	},
 	pointFilter(one){
 		//筛选节点
