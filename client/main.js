@@ -11,7 +11,7 @@ import PointChoose from './containers/PointChoose.js';
 import PointDrag from './components/PointDrag.jsx';
 import PointManage from './containers/PointManage.js';
 import PointCreate from './containers/PointCreate.js';
-import NotFoundPage from './components/NotFoundPage.jsx';
+import NotFound from './components/NotFound.jsx';
 require('./assets/css/main.scss');
 
 const store = configureStore();
@@ -53,7 +53,7 @@ const App = React.createClass({
 					<Route path='/cateedit/:id' component={PointCreate} onEnter={this.requireAuth}/>
 					<Route path='/pointadd/:type/:parentId' component={PointCreate} onEnter={this.requireAuth}/>
 					<Route path='/pointedit/:pointId' component={PointCreate} onEnter={this.requireAuth}/>" +
-					<Route path='/404' component={NotFoundPage}/>
+					<Route path='/404' component={NotFound}/>
 					<Redirect from='*' to='/404'/>
 				</Route>
 			</Router>

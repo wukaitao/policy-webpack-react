@@ -1,7 +1,7 @@
 ﻿import React,{PropTypes} from 'react';
 import addons from 'react-addons';
 //声明组件
-const NotFoundPage = React.createClass({
+const NotFound = React.createClass({
 	render(){
 		return (
 			<section className="main">
@@ -12,4 +12,4 @@ const NotFoundPage = React.createClass({
 });
 
 //导出组件
-export default NotFoundPage;
+export default NotFound;
