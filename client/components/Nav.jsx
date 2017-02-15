@@ -44,7 +44,8 @@ const Nav = React.createClass({
 				<nav className="nav">
 					<div className="title">POLICY管理系统</div>
 					<div className="welcome">
-						欢迎您，<strong>{data.userName}</strong> | 
+						欢迎您，<strong>{data.userName}</strong>
+						|
 						<span onClick={this.logout} className="logout">退出</span>
 					</div>
 					<div className="menu">

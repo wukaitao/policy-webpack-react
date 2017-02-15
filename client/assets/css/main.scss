@@ -723,11 +723,9 @@
 
 /*pointmanage page start*/
 .point-manage{
-    padding: 0 0 40px;
-    background-color: #f4f4f4;
+    padding: 0px;
     dl{
-        border-bottom: 1px solid darkgray;
-        padding: 30px 20px;
+        padding: 0px 20px 25px;
         dt{
             header{
                 border: 1px solid gray;
@@ -736,9 +734,68 @@
                 padding: 4px 10px;
                 font-weight: bold;
                 font-size: 15px;
-                margin: 10px 0;
-                background-color: #fff;
+                margin: 8px 0;
+                background-color: #ccc;
                 cursor: pointer;
+            }
+            .searchbox{
+                color: #666;
+                float: right;
+                display: inline-block;
+                margin: 5px;
+                padding: 5px;
+                background-color: #efefef;
+                position: relative;
+                .icon{
+                    display: inline-block;
+                    width: 10px;
+                    height: 30px;
+                    line-height: 30px;
+                    margin: -7px 0px;
+                    text-align: center;
+                    font-size: 16px;
+                    vertical-align: text-bottom;
+                    cursor: pointer;
+                }
+                .inputbox{
+                    width: 0px;
+                    display: inline-block;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    vertical-align: middle;
+                }
+                .clear{
+                    position: absolute;
+                    right: 8px;
+                    top: 10px;
+                    width: 16px;
+                    height: 16px;
+                    text-align: center;
+                    line-height: 16px;
+                    font-size: 12px;
+                    cursor: pointer;
+                }
+                input{
+                    height: 24px;
+                    width: 142px;
+                    padding: 0px 18px 0px 2px;
+                    border: 1px solid #ccc;
+                }
+                input:focus{
+                    border-color: #aaa;
+                }
+            }
+            .searchbox:hover{
+                color: #000;
+                background-color: #ddd;
+            }
+            .searchbox.active,
+            .searchbox.active:hover{
+                background-color: #2679c5;
+                color: #fff;
+                .clear{
+                    color: #000;
+                }
             }
         }
         dd{
@@ -750,11 +807,123 @@
             background-color: #fff;
             cursor: pointer;
         }
+        .letter{
+            display: block;
+            border: none;
+            border-radius: 0px;
+            cursor: default;
+            line-height: 22px;
+            margin: 0px -20px;
+            padding: 0px 20px;
+            background-color: #ddd;
+        }
     }
     .btn{
         background-color: #ccc;
         vertical-align: top;
         line-height: inherit;
+    }
+    .add{
+        width: 150px;
+        text-align: center;
+    }
+    .tab-wrap{
+        display: inline-block;
+        box-sizing: border-box;
+        width: 100%;
+        padding: 20px;
+        .tab-container{
+            display: inline-block;
+            vertical-align: middle;
+            .tab{
+                float: left;
+                display: inline-block;
+                padding: 0px 20px;
+                border: 1px solid #ccc;
+                line-height: 30px;
+                font-size: 16px;
+                cursor: pointer;
+                background: -webkit-linear-gradient(#fff, #efefef);
+                background: -o-linear-gradient(#fff, #efefef);
+                background: -moz-linear-gradient(#fff, #efefef);
+                background: linear-gradient(#fff, #efefef);
+            }
+            .tab:first-child{
+                border-radius: 5px 0px 0px 5px;
+                border-right: none;
+            }
+            .tab:last-child{
+                border-radius: 0px 5px 5px 0px;
+                border-left: none;
+            }
+            .selected{
+                border-color: #2679c5;
+                background: #2679c5;
+                font-weight: bold;
+                color: #fff;
+            }
+        }
+        .searchbox{
+            float: right;
+            display: inline-block;
+            padding: 3px 5px;
+            position: relative;
+            input{
+                height: 24px;
+                width: 142px;
+                padding: 0px 18px 0px 2px;
+                border: 1px solid #ccc;
+            }
+            input:focus{
+                border-color: #aaa;
+            }
+            .icon{
+                position: absolute;
+                top: 8px;
+                right: 8px;
+                display: inline-block;
+                width: 16px;
+                height: 16px;
+                font-size: 14px;
+                text-align: center;
+                line-height: 16px;
+            }
+        }
+        .searchbox.active{
+            color: #2679c5;
+            input,input:focus{
+                border-color: #2679c5;
+            }
+        }
+    }
+    .letter-list{
+        position: fixed;
+        top: 100px;
+        bottom: 100px;
+        right: 0px;
+        width: 22px;
+        padding-right: 5px;
+        span{
+            display: block;
+            text-align: center;
+            cursor: pointer;
+        }
+    }
+    .letter-text{
+        width: 100px;
+        height: 100px;
+        border-radius: 5px;
+        font-size: 75px;
+        color: #555;
+        text-align: center;
+        line-height: 100px;
+        background: rgba(145,145,145,0.6);
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        margin: -50px 0px 0px -50px;
+        z-index: 99;
+        display: none;
     }
 }
 /*pointmanage page end*/
@@ -782,3 +951,32 @@
     }
 }
 /*pointedit page end*/
+
+/*notfond page start*/
+.notfound{
+    .notfound-container{
+        width: 320px;
+        margin: 150px auto 0px;
+        text-align: center;
+        .title{
+            line-height: 48px;
+            font-size: 24px;
+            font-weight: bold;
+            i{
+                display: inline-block;
+                vertical-align: middle;
+                font-size: 26px;
+                margin: 0px 10px 0px 0px;
+            }
+        }
+        .content{
+            line-height: 38px;
+            margin: 10px 0px;
+            .second{
+                font-weight: bold;
+                padding: 0px 5px 0px 0px;
+            }
+        }
+    }
+}
+/*notfound page end*/

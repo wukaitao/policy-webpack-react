@@ -17,6 +17,12 @@ export function queryAllPoint(param){
 					type: types.AllPointData,
 					data: result.data
 				});
+				setTimeout(()=>{
+					dispatch({
+						type: types.ResetLetterList,
+						data: getState().allPointData
+					});
+				});
 			};
 			dispatch(loadingCancel());
 		}).catch(err=>{

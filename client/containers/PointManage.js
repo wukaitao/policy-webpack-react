@@ -6,7 +6,8 @@ import * as PointActions from '../actions/point.js';
 //将state.allPointData绑定到props.allPointData
 const mapStateToProps = state =>{
 	return {
-		allPointData: state.allPointData
+		allPointData: state.allPointData,
+		letterList: state.letterList
 	};
 };
 //将action的所有方法绑定到props上

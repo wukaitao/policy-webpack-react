@@ -2,6 +2,7 @@
 
 const initState = {
 	allPointData: [],
+	letterList: [],
 	templateNodeAddData: {
 		data: {}
 	},
@@ -14,10 +15,29 @@ const initState = {
 export function allPointData(state=initState.allPointData,action){
 	switch(action.type){
 		case types.AllPointData:
-			action.data.forEach((item)=>{
+			const letterList = [];
+			action.data.sort((a,b)=>{
+				return makePy(unescape(b.nodeTitle).charAt(0))[0].toUpperCase() < makePy(unescape(a.nodeTitle).charAt(0))[0].toUpperCase() ? 1 : -1;
+			}).forEach((item)=>{
 				item.benefitKeyDesc = unescape(item.benefitKeyDesc);
 				item.benefitValueDesc = unescape(item.benefitValueDesc);
 				item.nodeTitle = unescape(item.nodeTitle);
+				item.keyword = '';
+				item.isShowSearchbox = false;
+				if(item.nodeType==2){
+					let firstLetter = makePy(item.nodeTitle.charAt(0))[0].toUpperCase();
+					if(firstLetter>='A'&&firstLetter<='Z'){
+						if(letterList.indexOf(firstLetter)===-1){
+							letterList.push(firstLetter);
+							item.firstLetter = firstLetter;
+						};
+					}else{
+						if(letterList.indexOf('#')===-1){
+							letterList.push('#');
+							item.firstLetter = '#';
+						};
+					};
+				};
 				item.children.forEach((subItem)=>{
 					subItem.benefitKeyDesc = unescape(subItem.benefitKeyDesc);
 					subItem.benefitValueDesc = unescape(subItem.benefitValueDesc);
@@ -28,6 +48,30 @@ export function allPointData(state=initState.allPointData,action){
 		default:
 			return state;
 	};
+};
+//获取分类节点首字母列表
+export function letterList(state=initState.letterList,action){
+	switch(action.type){
+		case types.ResetLetterList:
+			const letterList = [];
+			action.data.forEach((item)=>{
+				if(item.nodeType==2){
+					let firstLetter = makePy(item.nodeTitle.charAt(0))[0].toUpperCase();
+					if(firstLetter>='A'&&firstLetter<='Z'){
+						if(letterList.indexOf(firstLetter)===-1){
+							letterList.push(firstLetter);
+						};
+					}else{
+						if(letterList.indexOf('#')===-1){
+							letterList.push('#');
+						};
+					};
+				};
+			});
+			return letterList;
+		default:
+			return state;
+	}
 };
 //获取添加节点数据
 export function templateNodeAddData(state=initState.templateNodeAddData,action){
