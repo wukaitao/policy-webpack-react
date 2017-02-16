@@ -1,6 +1,6 @@
-﻿﻿import {bindActionCreators} from 'redux';
+﻿import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import PointCreate from '../components/PointCreate.jsx';
+import PointEdit from '../components/PointEdit.jsx';
 import * as PointActions from '../actions/point.js';
 
 //将state.allPointData绑定到props.allPointData
@@ -17,4 +17,4 @@ const mapDispatchToProps = dispatch => {
 };
 
 //通过react-redux提供的connect方法将我们需要的state数据和action的方法绑定到props上
-export default connect(mapStateToProps,mapDispatchToProps)(PointCreate);
+export default connect(mapStateToProps,mapDispatchToProps)(PointEdit);

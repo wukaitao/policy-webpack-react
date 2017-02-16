@@ -1,4 +1,4 @@
-﻿import React from 'react';
+﻿﻿import React from 'react';
 import ReactDom from 'react-dom';
 import {Router,Route,IndexRoute,Redirect,hashHistory,IndexRedirect} from 'react-router';
 import {Provider} from 'react-redux';
