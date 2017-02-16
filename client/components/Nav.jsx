@@ -27,11 +27,11 @@ const Nav = React.createClass({
 		return {
 			pagePath: this.props.path,
 			loginPath: ['','/','/login'],
-			policyManagePath: ['/policymanage','/policyview/:id'],
+			policyManagePath: ['/policymanage','/policyview/:id','/404'],
 			policyEditPath: ['/policyadd','/policyedit/:id','/policycopy/:id'],
 			policyPointPath: ['/pointchoose','/pointdrag'],
 			pointManagePath: ['/pointmanage'],
-			pointEditPath: ['/cateadd/:type','/cateedit/:id','/pointadd/:type/:parentId','/pointedit/:pointId']
+			pointEditPath: ['/cateadd/:type','/cateedit/:type/:id','/pointadd/:type/:parentId','/pointedit/:pointId']
 		};
 	},
 	isLoginPath(){

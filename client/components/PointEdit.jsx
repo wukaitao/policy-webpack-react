@@ -15,6 +15,10 @@ const PointEdit = React.createClass({
 		const param = {};
 		this.props.updateTemplateNode(param);
 	},
+	componentDidMount(){
+		//加载节点内容
+		//this.props.page.getPointData();
+	},
 	initPagePath(){
 		return {
 			type: this.props.params.type,

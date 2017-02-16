@@ -9,9 +9,12 @@ const rootReducer = combineReducers({
 	policyDetail: policy.policyDetail,
 	hospitalList: policy.hospitalList,
 	allPointData: point.allPointData,
+	pointData: point.pointData,
 	letterList: point.letterList,
+	
 	templateNodeAddData: point.templateNodeAddData,
 	templateNodeUpdateData: point.templateNodeUpdateData,
+	
 	pageStatus: popup.pageStatus
 });
 

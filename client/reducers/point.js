@@ -3,6 +3,7 @@
 const initState = {
 	allPointDataCache: [],
 	allPointData: [],
+	pointData: {},
 	letterList: [],
 	templateNodeAddData: {
 		data: {}
@@ -83,6 +84,18 @@ export function letterList(state=initState.letterList,action){
 			return state;
 	}
 };
+//获取节点数据
+export function pointData(state=initState.pointData,action){
+	switch(action.type){
+		case types.InitPoint:
+			return state;
+		case types.ChoosePoint:
+			return state;
+		default:
+			return state;
+	};
+};
+
 //获取添加节点数据
 export function templateNodeAddData(state=initState.templateNodeAddData,action){
 	switch(action.type){
