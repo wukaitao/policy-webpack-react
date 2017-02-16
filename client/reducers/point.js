@@ -3,7 +3,11 @@
 const initState = {
 	allPointDataCache: [],
 	allPointData: [],
-	pointData: {},
+	pointData: {
+		nodeTitle: '',
+		benefitKeyDesc: '',
+		benefitValueDesc: ''
+	},
 	letterList: [],
 	templateNodeAddData: {
 		data: {}
@@ -84,13 +88,30 @@ export function letterList(state=initState.letterList,action){
 			return state;
 	}
 };
-//获取节点数据
+//获取节点内容
 export function pointData(state=initState.pointData,action){
 	switch(action.type){
-		case types.InitPoint:
-			return state;
-		case types.ChoosePoint:
-			return state;
+		case types.PointData:
+			if(action.param.eventType=='cateadd'||action.param.eventType=='pointadd'){
+				return initState.pointData;
+			}else if(action.param.eventType=='cateedit'){
+				return action.data.filter(item=>item.libId==action.param.id)[0];
+			}else if(action.param.eventType=='pointedit'){
+				const list = action.data.filter(item=>item.nodeType==2);
+				outer:
+				for(let item of list){
+					inner:
+					for(let subItem of item.children){
+						if(subItem.libId==action.param.pointId){
+							return subItem;
+							break outer;
+						};
+					};
+				};
+			};
+		case types.ChangeNodeTitle:
+			state.nodeTitle = action.param.nodeTitle;
+			return JSON.parse(JSON.stringify(state));
 		default:
 			return state;
 	};

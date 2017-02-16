@@ -16,10 +16,50 @@ const PointEdit = React.createClass({
 		this.props.updateTemplateNode(param);
 	},
 	componentDidMount(){
-		//加载节点内容
-		//this.props.page.getPointData();
+		//获取节点内容
+		const self = this;
+		const initPagePath = this.initPagePath();
+		const path = initPagePath.pagePath;
+		const isCateAddPath = path==initPagePath.cateAddPath;
+		const isCateEditPath = path==initPagePath.cateEditPath;
+		const isPointAddPath = path==initPagePath.pointAddPath;
+		const isPointEditPath = path==initPagePath.pointEditPath;
+		const param = {
+			eventType: isCateAddPath?'cateadd':isCateEditPath?'cateedit':isPointAddPath?'pointadd':isPointEditPath?'pointedit':'',
+			type: initPagePath.type,
+			id: initPagePath.id,
+			parentId: initPagePath.parentId,
+			pointId: initPagePath.pointId
+		};
+		this.props.page.getPointData(param);
+		//渲染编辑器
+		setTimeout(()=>{
+			UE.getEditor('editor0',{
+				initialFrameWidth: 550,
+				initialFrameHeight: 250,
+				scaleEnabled: true
+			}).ready(function(){
+				this.setContent(self.props.pointData.benefitKeyDesc);
+			});
+			if(initPagePath.type!=1){
+				UE.getEditor('editor1',{
+					initialFrameWidth: 550,
+					initialFrameHeight: 250,
+					scaleEnabled: true
+				}).ready(function(){
+					this.setContent(self.props.pointData.benefitValueDesc);
+				});
+			};
+		});
+	},
+	componentWillUnmount(){
+		//销毁编辑器
+		UE.getEditor('editor0').destroy();
+		const initPagePath = this.initPagePath();
+		initPagePath.type!=1&&UE.getEditor('editor1').destroy();
 	},
 	initPagePath(){
+		//获取路由信息
 		return {
 			type: this.props.params.type,
 			id: this.props.params.id,
@@ -32,35 +72,48 @@ const PointEdit = React.createClass({
 			pointEditPath: '/pointedit/:pointId'
 		};
 	},
+	changeNodeTitle(){
+		//改变节点标题
+		const param = {
+			nodeTitle: this.refs.nodeTitle.value
+		};
+		this.props.page.changeNodeTitle(param);
+	},
 	render(){
 		const initPagePath = this.initPagePath();
 		const path = initPagePath.pagePath;
 		const actionText = path==initPagePath.cateAddPath||path==initPagePath.pointAddPath ? '创建' : '修改';
 		const typeText = path==initPagePath.pointAddPath||path==initPagePath.pointEditPath ? '节点' :
-						 initPagePath.type== '2' ? '分类' :
-						 initPagePath.type== '1' ? '自定义标题节点' :
-						 initPagePath.type== '5' ? '医院节点' : '';
+						 initPagePath.type== 2 ? '分类' :
+						 initPagePath.type== 1 ? '自定义标题节点' :
+						 initPagePath.type== 5 ? '医院节点' : '';
+		const classSet = addons.classSet;
+		const benefitValueDescClass = classSet({
+			'hide': initPagePath.type==1,
+			'content': true
+		});
+		const data = this.props.pointData;
 		return (
 			<section className="main point-edit">
 				<div className="title">{actionText+typeText}</div>
 				<div className="content">
 				    <div className="label">{typeText}名称</div>
 				    <div className="label">
-				    	<input type="text" className="ipt"/>
+				    	<input type="text" className="ipt" value={data.nodeTitle} onChange={this.changeNodeTitle} ref="nodeTitle"/>
 				    </div>
 				    <div className="label">* 不会在页面显示</div>
 				</div>
 				<div className="content">
 					<div className="label">描述文字</div>
 					<div className="label">
-						<div id="editor"></div>
+						<div id="editor0"></div>
 					</div>
 					<div className="label">* 会在页面显示</div>
 				</div>
-				<div className="content">
+				<div className={benefitValueDescClass}>
 					<div className="label">责任限额</div>
 					<div className="label">
-						<div id="editor2"></div>
+						<div id="editor1"></div>
 					</div>
 					<div className="label">* 会在页面显示</div>
 				</div>

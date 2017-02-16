@@ -51,5 +51,5 @@ export const ResetLetterList = 'ResetLetterList';//重置分类节点首字母�
 export const ToggleSearchbox = 'ToggleSearchbox';//切换子节点搜索框的显示状态
 export const FilterPoint = 'FilterPoint';//筛选分类节点子节点
 //节点编辑
-export const InitPoint = 'InitPoint';//初始化节点数据
-export const ChoosePoint = 'ChoosePoint';//选择节点数据
+export const PointData = 'PointData';//获取节点内容
+export const ChangeNodeTitle = 'ChangeNodeTitle';//改变节点标题

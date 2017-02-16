@@ -67,6 +67,23 @@ export function filterPoint(param){
 		});
 	};
 };
+//获取节点内容
+export function getPointData(param){
+	return (dispatch,getState)=>{
+		dispatch({
+			type: types.PointData,
+			param,
+			data: getState().allPointData
+		});
+	};
+};
+//改变节点标题
+export function changeNodeTitle(param){
+	return {
+		type: types.ChangeNodeTitle,
+		param
+	};
+};
 //保存新建节点
 export function addTemplateNode(param){
 	return (dispatch,getState)=>{
