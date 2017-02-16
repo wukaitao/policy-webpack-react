@@ -1,4 +1,4 @@
-﻿import React from 'react';
+﻿﻿import React from 'react';
 import {Link,hashHistory} from 'react-router';
 //声明组件
 const Nav = React.createClass({
