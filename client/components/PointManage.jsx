@@ -38,9 +38,9 @@ const PointManage = React.createClass({
 		};
 		this.props.queryAllPoint(param);
 	},
-	cateEdit(one){
-		//编辑分类节点/自定义节点/医院节点
-		hashHistory.push('/cateedit/'+one.libId);
+	cateEdit(one,type){
+		//编辑分类/自定义节点/医院节点
+		hashHistory.push('/cateedit/'+type+'/'+one.libId);
 	},
 	pointAdd(one){
 		//新建子节点
@@ -158,7 +158,7 @@ const PointManage = React.createClass({
 		const tabHtml = (
 		  	<div className="tab-wrap">
 		  		<span className="tab-container">
-		  			<span className={tab2Class} onClick={this.changeCurrentTabType.bind(this,'nodeType2')}>分类节点</span>
+		  			<span className={tab2Class} onClick={this.changeCurrentTabType.bind(this,'nodeType2')}>分类</span>
 		  			<span className={tab1Class} onClick={this.changeCurrentTabType.bind(this,'nodeType1')}>自定义标题节点</span>
 		  			<span className={tab5Class} onClick={this.changeCurrentTabType.bind(this,'nodeType5')}>医院节点</span>
 		  		</span>
@@ -192,7 +192,7 @@ const PointManage = React.createClass({
 					    		<dd id={letterId} className="letter">{item.firstLetter}</dd>
 					    	):null}
 					    	<dt>
-					    		<header onClick={self.cateEdit.bind(this,item)}>{item.nodeTitle}</header>
+					    		<header onClick={self.cateEdit.bind(this,item,2)}>{item.nodeTitle}</header>
 						      	<span className={searchPointClass}>
 						      		<i onClick={this.toggleSearchbox.bind(this,item)} className={iToggleClass}></i>
 						      		<span className="inputbox">
@@ -225,7 +225,7 @@ const PointManage = React.createClass({
 					<header>自定义标题</header>
 				</dt>
 				{data.filter(item=>item.nodeType==1).map((item,index)=>{
-					return <dd key={index} onClick={self.cateEdit.bind(this,item)}>{item.nodeTitle}</dd>;
+					return <dd key={index} onClick={self.cateEdit.bind(this,item,1)}>{item.nodeTitle}</dd>;
 				})}
 		    	<dd className="btn">
 		    		<Link to="/cateadd/1" className="btn add">+新建自定义标题节点</Link>
@@ -238,7 +238,7 @@ const PointManage = React.createClass({
 					<header>医院</header>
 				</dt>
 				{data.filter(item=>item.nodeType==5).map((item,index)=>{
-					return <dd key={index} onClick={self.cateEdit.bind(this,item)}>{item.nodeTitle}</dd>;
+					return <dd key={index} onClick={self.cateEdit.bind(this,item,5)}>{item.nodeTitle}</dd>;
 				})}
 		    	<dd className="btn">
 		    		<Link to="/cateadd/5" className="btn add">+新建医院节点</Link>

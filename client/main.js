@@ -50,7 +50,7 @@ const App = React.createClass({
 					<Route path='/pointdrag' component={PointDrag} onEnter={this.requireAuth}/>
 					<Route path='/pointmanage' component={PointManage} onEnter={this.requireAuth}/>
 					<Route path='/cateadd/:type' component={PointEdit} onEnter={this.requireAuth}/>
-					<Route path='/cateedit/:id' component={PointEdit} onEnter={this.requireAuth}/>
+					<Route path='/cateedit/:type/:id' component={PointEdit} onEnter={this.requireAuth}/>
 					<Route path='/pointadd/:type/:parentId' component={PointEdit} onEnter={this.requireAuth}/>
 					<Route path='/pointedit/:pointId' component={PointEdit} onEnter={this.requireAuth}/>" +
 					<Route path='/404' component={NotFound}/>
