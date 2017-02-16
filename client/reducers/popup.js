@@ -17,7 +17,6 @@ const initState = {
 				message: '',//提示语
 				type: '',//弹窗--confirm:确认框;alert:警告;tips:提示;toast:弹幕提示
 				icon: '',//图标--icon-question:询问;icon-notification:警告;icon-info:信息;icon-circle-check:成功;icon-circle-cross:错误;
-				result: '',//返回结果
 				callback: function(){}//回调函数
 			},
 	    	oSearch: {isTemplate:'',name:'全部'},//policy搜索默认选中分类
@@ -28,18 +27,13 @@ const initState = {
 export function pageStatus(state=initState.pageStatus,action){
 	switch(action.type){
 		case types.DialogOpen:
-			var result = Object.assign({},state,{
+			return Object.assign({},state,{
 				dialog: Object.assign({},initState.pageStatus.dialog,action.param)
 			});
-			return result;
 		case types.DialogCancel:
-			var resultTrue = Object.assign({},state,{
+			return Object.assign({},state,{
 				dialog: Object.assign({},state.dialog,action.param)
 			});
-			var resultFalse = Object.assign({},state,{
-				dialog: Object.assign({},initState.pageStatus.dialog,action.param)
-			});
-			return action.param.result ? resultTrue : resultFalse;
 		case types.LoadingOpen:
 			return Object.assign({},state,{isLoading: true});
 		case types.LoadingCancel:

@@ -2,40 +2,23 @@
 import addons from 'react-addons';
 //声明组件
 const Popup = React.createClass({
-	getDefaultProps(){
-		//console.log('创建期:getDefaultProps');
-		//console.log('aa');
-	},
-	getInitialState(){
-		//console.log('创建期:getInitialState');
-		return {};
-	},
-	componentWillReceiveProps(nextProps){
-		//监听props和state变化
-		if(this.props.pageStatus.dialog.result){
-			this.props.pageStatus.dialog.callback.call(this);
-		};
-	},
-	shouldComponentUpdate(){
-		//对render进行过滤阻止
-		return true;
-	},
-	componentWillUpdate(){
-		//console.log('popup componentWillUpdate');
-	},
-	openDialog(param){
-		this.props.dialogOpen(param);
-	},
 	closeDialog(){
 		//关闭弹窗
-		let param = {result: false};
+		const param = {
+			result: false
+		};
 		this.props.dialogCancel(param);
 	},
 	confirmDialog(){
 		//确认操作
-		let param = {result: true};
-		if(this.props.pageStatus.dialog.type=='alert') this.closeDialog();
-		else this.props.dialogCancel(param);
+		const self = this;
+		const param = {
+			result: true
+		};
+		if(this.props.pageStatus.dialog.type=='alert'||this.props.pageStatus.dialog.type=='window') this.closeDialog();
+		else this.props.dialogCancel(param,function(){
+			self.props.pageStatus.dialog.callback.call(this);
+		});
 	},
 	render(){
 		console.log('popup render.');

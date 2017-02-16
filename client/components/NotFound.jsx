@@ -1,5 +1,4 @@
 ﻿import React from 'react';
-import addons from 'react-addons';
 import {Link,hashHistory} from 'react-router';
 //声明组件
 const NotFound = React.createClass({

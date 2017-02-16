@@ -19,33 +19,26 @@ export function dialogOpen(param){
 	return (dispatch,getState)=>{
 		param.show = true;
 		param.callback = param.callback||function(){};
-		if(param.type=='toast'){
-			window.setTimeout(function(){
-				param.callback.call(param);
-				dispatch(dialogCancel());
-			},2000);
-		};
 		dispatch({
 			type: types.DialogOpen,
 			param
 		});
+		param.type=='toast'&&(function(){
+			setTimeout(function(){
+				param.callback.call(param);
+				dispatch(dialogCancel());
+			},2000);
+		})();
 	};
 };
 //Dialog cancel
-export function dialogCancel(param={}){
+export function dialogCancel(param={},callback=function(){}){
 	return (dispatch,getState)=>{
+		param.show = false;
+		param.result&&callback.call(this);
 		dispatch({
 			type: types.DialogCancel,
 			param
 		});
-		if(param.result){
-			window.setTimeout(function(){
-				param.result = false;
-				dispatch({
-					type: types.DialogCancel,
-					param
-				});
-			},10);
-		};
 	};
 };

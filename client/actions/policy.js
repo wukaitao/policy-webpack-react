@@ -1,12 +1,6 @@
 ﻿import * as types from './actionType.js';
 import {loadingOpen,loadingCancel,dialogOpen,dialogCancel} from './popup.js';
 
-//test start
-//export function show(param){
-//	console.log(param);
-//};
-//show({name: 'Nicky Wu'});
-//test end
 //导出所有方法
 //PolicyManage
 //获取保单列表
@@ -225,7 +219,6 @@ export function deletePolicy(param,callback=function(){}){
 					message: '删除成功.',
 					icon: 'icon-circle-check',
 					callback: function(){
-						console.log('request policyList...');
 						delete param.policyIdArray;
 						dispatch(queryPolicyList(param,callback));
 					}
