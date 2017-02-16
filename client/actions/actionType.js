@@ -48,3 +48,5 @@ export const HosSelectedAllLeft = 'HosSelectedAllLeft';//全选所有医院
 export const HosSelectedAllRight = 'HosSelectedAllRight';//全选选中医院
 //节点管理
 export const ResetLetterList = 'ResetLetterList';//重置分类节点首字母列表
+export const ToggleSearchbox = 'ToggleSearchbox';//切换子节点搜索框的显示状态
+export const FilterPoint = 'FilterPoint';//筛选分类节点子节点

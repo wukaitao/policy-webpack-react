@@ -48,6 +48,25 @@ export function filterAllPoint(param){
 		});
 	};
 };
+//切换子节点搜索框的显示状态
+export function toggleSearchbox(param){
+	return (dispatch,getState)=>{
+		dispatch({
+			type: types.ToggleSearchbox,
+			one: param.one
+		});
+	};
+};
+//筛选分类节点子节点
+export function filterPoint(param){
+	return (dispatch,getState)=>{
+		dispatch({
+			type: types.FilterPoint,
+			one: param.one,
+			keyword: param.keyword
+		});
+	};
+};
 //保存新建节点
 export function addTemplateNode(param){
 	return (dispatch,getState)=>{

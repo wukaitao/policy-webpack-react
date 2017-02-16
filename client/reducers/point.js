@@ -49,6 +49,12 @@ export function allPointData(state=initState.allPointData,action){
 				});
 			});
 			return JSON.parse(JSON.stringify(allPointData));
+		case types.ToggleSearchbox:
+			state.forEach(item=>item.libId==action.one.libId&&(item.isShowSearchbox=!item.isShowSearchbox));
+			return JSON.parse(JSON.stringify(state));
+		case types.FilterPoint:
+			state.forEach(item=>item.libId==action.one.libId&&(item.keyword=action.keyword));
+			return JSON.parse(JSON.stringify(state));
 		default:
 			return state;
 	};

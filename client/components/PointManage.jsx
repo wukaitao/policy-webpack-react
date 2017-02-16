@@ -1,6 +1,6 @@
 ﻿import React,{PropTypes} from 'react';
 import addons from 'react-addons';
-import {Link} from 'react-router';
+import {Link,hashHistory} from 'react-router';
 //字母列表高度设置
 function resizeLetterList(){
 	const letterListHeight = $('.letter-list').height();
@@ -38,14 +38,17 @@ const PointManage = React.createClass({
 		};
 		this.props.queryAllPoint(param);
 	},
-	modifycate(id){
-		this.props.router.push('/cateedit/'+id);
+	cateEdit(one){
+		//编辑分类节点/自定义节点/医院节点
+		hashHistory.push('/cateedit/'+one.libId);
 	},
-	createPoint(parentId){
-		this.props.router.push('/pointadd/3/'+parentId);
+	pointAdd(one){
+		//新建子节点
+		hashHistory.push('/pointadd/3/'+one.libId);
 	},
-	modifyPoint(pointId){
-		this.props.router.push('/pointedit/'+pointId);
+	pointEdit(one){
+		//编辑子节点
+		hashHistory.push('/pointedit/'+one.libId);
 	},
 	changeCurrentTabType(type){
 		//切换页签
@@ -66,12 +69,29 @@ const PointManage = React.createClass({
 	},
 	pointFilter(one){
 		//筛选节点
+		const param = {
+			keyword: this.refs['point'+one.libId].value,
+			one
+		};
+		this.props.filterPoint(param);
 	},
-	toggleSearchbox(one){
+	toggleSearchbox(one,event){
 		//切换筛选节点的显示状态
+		const self = this;
+		const param = {one};
+    	$(event.target).siblings().animate({
+    		'width': one.isShowSearchbox?'0px':'164px'
+    	},'fast',function(){
+    		self.props.toggleSearchbox(param);
+    	});
 	},
 	clearKeyword(one){
 		//清除筛选节点的关键字
+		const param = {
+			keyword: '',
+			one
+		};
+		this.props.filterPoint(param);
 	},
 	pageScrollTo(one){
 		//点击字母滚动页面
@@ -119,6 +139,16 @@ const PointManage = React.createClass({
 			'hide': this.state.currentTabType!='nodeType2',
 			'searchbox': true
 		});
+		const classNodeClass = classSet({
+			'hide': this.state.currentTabType!='nodeType2',
+			'case-wrap': true
+		});
+		const customNodeClass = classSet({
+			'hide': this.state.currentTabType!='nodeType1'
+		});
+		const hospitalNodeClass = classSet({
+			'hide': this.state.currentTabType!='nodeType5'
+		});
 		const letterOptionHtml = [];
 		self.props.letterList.forEach((item,index)=>{
 			letterOptionHtml.push(
@@ -139,7 +169,7 @@ const PointManage = React.createClass({
 		  	</div>
 	  	);
 		const classNodeHtml = (
-			<div className="case-wrap">
+			<div className={classNodeClass}>
 				{data.filter(item=>item.nodeType==2).map((item,index)=>{
 					const searchPointClass = classSet({
 						'active': !!item.keyword,
@@ -162,19 +192,19 @@ const PointManage = React.createClass({
 					    		<dd id={letterId} className="letter">{item.firstLetter}</dd>
 					    	):null}
 					    	<dt>
-					    		<header onClick={self.modifycate.bind(this,item.libId)}>{item.nodeTitle}</header>
+					    		<header onClick={self.cateEdit.bind(this,item)}>{item.nodeTitle}</header>
 						      	<span className={searchPointClass}>
 						      		<i onClick={this.toggleSearchbox.bind(this,item)} className={iToggleClass}></i>
 						      		<span className="inputbox">
-							      		<input type="text" placeholder="请输入节点关键字" value={item.keyword} onChange={this.pointFilter.bind(this,item)}/>
+							      		<input type="text" placeholder="请输入节点关键字" value={item.keyword} onChange={this.pointFilter.bind(this,item)} ref={'point'+item.libId}/>
 							      		<span onClick={this.clearKeyword.bind(this,item)} className={iClearClass}></span>
 						      		</span>
 						      	</span>
 					    	</dt>
-					      	{item.children.map((subItem,subIndex)=>{
-				      			return <dd key={subIndex} onClick={self.modifyPoint.bind(this,subItem.libId)}>{subItem.nodeTitle}</dd>;
+					      	{item.children.filter(subItem=>subItem.nodeTitle.indexOf(item.keyword)!=-1).map((subItem,subIndex)=>{
+				      			return <dd key={subIndex} onClick={self.pointEdit.bind(this,subItem)}>{subItem.nodeTitle}</dd>;
 				      		})}
-					    	<dd className="btn" onClick={self.createPoint.bind(this,item.libId)}>+新建节点</dd>
+					    	<dd className="btn" onClick={self.pointAdd.bind(this,item)}>+新建节点</dd>
 					    </dl>
 					);
 				})}
@@ -190,12 +220,12 @@ const PointManage = React.createClass({
 			</div>
 		);
 		const customNodeHtml = (
-			<dl>
+			<dl className={customNodeClass}>
 				<dt>
 					<header>自定义标题</header>
 				</dt>
 				{data.filter(item=>item.nodeType==1).map((item,index)=>{
-					return <dd key={index} onClick={self.modifycate.bind(this,item.libId)}>{item.nodeTitle}</dd>;
+					return <dd key={index} onClick={self.cateEdit.bind(this,item)}>{item.nodeTitle}</dd>;
 				})}
 		    	<dd className="btn">
 		    		<Link to="/cateadd/1" className="btn add">+新建自定义标题节点</Link>
@@ -203,12 +233,12 @@ const PointManage = React.createClass({
 			</dl>
 		);
 		const hospitalNodeHtml = (
-			<dl>
+			<dl className={hospitalNodeClass}>
 				<dt>
 					<header>医院</header>
 				</dt>
 				{data.filter(item=>item.nodeType==5).map((item,index)=>{
-					return <dd key={index} onClick={self.modifycate.bind(this,item.libId)}>{item.nodeTitle}</dd>;
+					return <dd key={index} onClick={self.cateEdit.bind(this,item)}>{item.nodeTitle}</dd>;
 				})}
 		    	<dd className="btn">
 		    		<Link to="/cateadd/5" className="btn add">+新建医院节点</Link>
@@ -218,11 +248,9 @@ const PointManage = React.createClass({
 		return (
 			<section className="main point-manage">
 				{tabHtml}
-				{
-					this.state.currentTabType=='nodeType2'?classNodeHtml:
-					this.state.currentTabType=='nodeType1'?customNodeHtml:
-					this.state.currentTabType=='nodeType5'?hospitalNodeHtml:null
-				}
+				{classNodeHtml}
+				{customNodeHtml}
+				{hospitalNodeHtml}
 			</section>
 		);
 	}

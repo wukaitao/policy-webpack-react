@@ -749,12 +749,11 @@
                 .icon{
                     display: inline-block;
                     width: 10px;
-                    height: 30px;
-                    line-height: 30px;
-                    margin: -7px 0px;
+                    height: 24px;
+                    line-height: 24px;
                     text-align: center;
                     font-size: 16px;
-                    vertical-align: text-bottom;
+                    vertical-align: middle;
                     cursor: pointer;
                 }
                 .inputbox{
@@ -777,7 +776,7 @@
                 }
                 input{
                     height: 24px;
-                    width: 142px;
+                    width: 164px;
                     padding: 0px 18px 0px 2px;
                     border: 1px solid #ccc;
                 }
