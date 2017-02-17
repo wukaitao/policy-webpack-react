@@ -3,17 +3,10 @@ import addons from 'react-addons';
 import {Link,hashHistory} from 'react-router';
 //声明组件
 const PointEdit = React.createClass({
-	componentWillMount(){
-		//this.saveAddTemplateNode();
-		//this.saveUpdateTemplateNode();
-	},
-	saveAddTemplateNode(){
-		const param = {};
-		this.props.addTemplateNode(param);
-	},
-	saveUpdateTemplateNode(){
-		const param = {};
-		this.props.updateTemplateNode(param);
+	getInitialState(){
+		return {
+			isRequesting: false
+		};
 	},
 	componentDidMount(){
 		//获取节点内容
@@ -79,6 +72,79 @@ const PointEdit = React.createClass({
 		};
 		this.props.page.changeNodeTitle(param);
 	},
+	save(){
+		//保存
+		if(this.state.isRequesting)return;
+		const self = this;
+		const initPagePath = this.initPagePath();
+		const path = initPagePath.pagePath;
+		const isCateAddPath = path==initPagePath.cateAddPath;
+		const isCateEditPath = path==initPagePath.cateEditPath;
+		const isPointAddPath = path==initPagePath.pointAddPath;
+		const isPointEditPath = path==initPagePath.pointEditPath;
+		const isCustomPath = initPagePath.type==1;
+		const typeText = path==initPagePath.pointAddPath||path==initPagePath.pointEditPath ? '节点' :
+						 initPagePath.type== 2 ? '分类' :
+						 initPagePath.type== 1 ? '自定义标题节点' :
+						 initPagePath.type== 5 ? '医院节点' : '';
+		var param = {
+			nodeTitle: escape(this.refs.nodeTitle.value),
+			benefitKeyDesc: escape(UE.getEditor('editor0').getContent()),
+			benefitValueDesc: isCustomPath?'':escape(UE.getEditor('editor1').getContent())
+		};
+		//校验
+		if(!param.nodeTitle){
+			this.props.popup.dialogOpen({
+				type: 'alert',
+				message: typeText+'名称不能为空'
+			});
+			return;
+		}else if(!param.benefitKeyDesc){
+			this.props.popup.dialogOpen({
+				type: 'alert',
+				message: '描述文字不能为空'
+			});
+			return;
+		}else if(!isCustomPath&&!param.benefitValueDesc){
+			this.props.popup.dialogOpen({
+				type: 'alert',
+				message: '责任限额不能为空'
+			});
+			return;
+		};
+		//入参
+		if(isPointEditPath){
+			//修改节点
+			param.libId = this.props.pointData.libId;
+			param.eventType = 'pointedit';
+		}else if(isPointAddPath){
+			//新增节点
+			param.nodeType = 3;
+			param.orderId = 99999;
+			param.parentId = initPagePath.parentId;
+			param.eventType = 'pointadd';
+		}else if(isCateEditPath){
+			//修改分类
+			param.libId = this.props.pointData.libId;
+			param.nodeType = this.props.pointData.nodeType;
+			param.eventType = 'cateedit';
+		}else if(isCateAddPath){
+			//新增分类
+			param.nodeType = initPagePath.type;
+			param.orderId = 99999;
+			param.parentId = 0;
+			param.eventType = 'cateadd';
+		};
+		//保存
+		this.setState({isRequesting: true});
+		this.props.page.savePoint(param,function(){
+			hashHistory.push('pointmanage');
+		},function(){
+			self.setState({
+				isRequesting: false
+			});
+		});
+	},
 	render(){
 		const initPagePath = this.initPagePath();
 		const path = initPagePath.pagePath;
@@ -92,6 +158,12 @@ const PointEdit = React.createClass({
 			'hide': initPagePath.type==1,
 			'content': true
 		});
+		const btnClass = classSet({
+			'btn-disabled': this.state.isRequesting,
+			'btn-primary': !this.state.isRequesting,
+			'btn': true
+		});
+		const btnText = this.state.isRequesting?'保存中...':'保存';
 		const data = this.props.pointData;
 		return (
 			<section className="main point-edit">
@@ -118,8 +190,8 @@ const PointEdit = React.createClass({
 					<div className="label">* 会在页面显示</div>
 				</div>
 				<div className="content">
-					<div className="label">
-						<button type="button" className="btn btn-primary">保存</button>
+					<div className="btn-area">
+						<button type="button" className={btnClass} onClick={this.save}>{btnText}</button>
 					</div>
 				</div>
 			</section>
