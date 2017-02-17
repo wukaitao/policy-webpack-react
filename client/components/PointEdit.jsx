@@ -72,6 +72,9 @@ const PointEdit = React.createClass({
 		};
 		this.props.page.changeNodeTitle(param);
 	},
+	back(){
+		hashHistory.push('pointmanage');
+	},
 	save(){
 		//保存
 		if(this.state.isRequesting)return;
@@ -191,6 +194,7 @@ const PointEdit = React.createClass({
 				</div>
 				<div className="content">
 					<div className="btn-area">
+						<button type="button" className="btn" onClick={this.back}>返回</button>
 						<button type="button" className={btnClass} onClick={this.save}>{btnText}</button>
 					</div>
 				</div>
