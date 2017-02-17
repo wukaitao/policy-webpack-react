@@ -3,11 +3,9 @@ import addons from 'react-addons';
 import {Link,hashHistory} from 'react-router';
 //声明组件
 const PointChoose = React.createClass({
-	componentWillMount(){
+	componentDidMount(){
 		//默认加载内容
 		this.props.page.initPolicyChosen();
-	},
-	componentDidMount(){
 		//this.props.router.setRouteLeaveHook(
 		//	this.props.route,
 		//	this.routerWillLeave
@@ -20,7 +18,10 @@ const PointChoose = React.createClass({
 		//	return '内容还没有保存,确定要离开?';
 		//};
 	},
-	back(){},
+	back(){
+		//返回
+		hashHistory.goBack();
+	},
 	choose(){},
 	chosenSome(){},
 	chosenAll(p){},
@@ -36,7 +37,7 @@ const PointChoose = React.createClass({
 			'chosenSome': true,//this.chosenSome.bind(this,5),
 			'chosenAll': true//this.chosenAll5
 		});
-		const classNodeHtml = <div>分类节点</div>;
+		const classNodeHtml = <div></div>;
 		const customNodeHtml = (
 			<dl>
 				<dt>
@@ -71,10 +72,16 @@ const PointChoose = React.createClass({
 		);
 		return (
 			<section className="main point-choose">
-				{classNodeHtml}
-				{customNodeHtml}
-				{hospitalNodeHtml}
-				<button className="btn btn-primary" onClick={this.back}>挑选完成</button>
+				<section>
+					<div className="title">挑选节点</div>
+					{classNodeHtml}
+					{customNodeHtml}
+					{hospitalNodeHtml}
+				</section>
+				<footer>
+					<button className="btn" onClick={this.back}>返回</button>
+					<button className="btn btn-primary" onClick={this.back}>挑选完成</button>
+				</footer>
 			</section>
 		)
 	}

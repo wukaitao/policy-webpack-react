@@ -601,7 +601,6 @@
 
 /*pointchoose page start*/
 .point-choose{
-    padding: 0 0 40px;
     background-color: #f4f4f4;
     .btn-primary{
         background-color: #2679c5;
@@ -613,52 +612,61 @@
     .btn-primary:active{
         box-shadow: 0px 1px 5px rgba(0,0,0,0.15) inset;
     }
-    .btn{
-        display: block;
-        line-height: 40px;
-        width: 100px;
-        margin: 20px auto 0;
-    }
-    dl{
-        border-bottom: 1px solid darkgray;
-        padding: 30px 20px;
-        dt{
-            header{
+    section{
+        padding: 20px;
+        .title{
+            font-size: 18px;
+            font-weight: bold;
+        }
+        dl{
+            border-bottom: 1px solid darkgray;
+            padding: 0px 0px 25px;
+            dt{
+                header{
+                    border: 1px solid gray;
+                    border-radius: 3px;
+                    display: inline-block;
+                    padding: 4px 10px;
+                    font-weight: bold;
+                    font-size: 15px;
+                    margin: 10px 0;
+                    background-color: #fff;
+                    cursor: pointer;
+                }
+                header.chosenSome{
+                    background-color: #3d9df6;
+                    border-color: #3d9df6;
+                    color: #fff;
+                }
+                header.chosenAll{
+                    background-color: #2679c5;
+                    border-color: #2679c5;
+                    color: #fff;
+                }
+            }
+            dd{
                 border: 1px solid gray;
                 border-radius: 3px;
                 display: inline-block;
                 padding: 4px 10px;
-                font-weight: bold;
-                font-size: 15px;
-                margin: 10px 0;
+                margin: 10px 10px 0 0;
                 background-color: #fff;
                 cursor: pointer;
             }
-        }
-        dd{
-            border: 1px solid gray;
-            border-radius: 3px;
-            display: inline-block;
-            padding: 4px 10px;
-            margin: 10px 10px 0 0;
-            background-color: #fff;
-            cursor: pointer;
-        }
-        dd.chosen{
-            background-color: #2679c5;
-            border-color: #2679c5;
-            color: #fff;
+            dd.chosen{
+                background-color: #2679c5;
+                border-color: #2679c5;
+                color: #fff;
+            }
         }
     }
-    header.chosenSome{
-        background-color: #3d9df6;
-        border-color: #3d9df6;
-        color: #fff;
-    }
-    header.chosenAll{
-        background-color: #2679c5;
-        border-color: #2679c5;
-        color: #fff;
+    footer{
+        text-align: center;
+        padding: 0px 0px 40px;
+        .btn{
+            line-height: 40px;
+            width: 100px;
+        }
     }
 }
 /*pointchoose page end*/

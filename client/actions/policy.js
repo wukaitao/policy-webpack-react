@@ -284,6 +284,7 @@ export function sendPdf(param){
 	};
 };
 //初始化保单节点
+/*
 export function initPolicyChosen(){
 	return (dispatch,getState)=>{
 		dispatch(loadingOpen());
@@ -304,6 +305,7 @@ export function initPolicyChosen(){
 		});
 	};
 };
+*/
 //选中医院
 export function chooseHospital(param){
 	return {
@@ -452,5 +454,26 @@ export function changeSortType(param){
 	return {
 		type: types.ChangeSortType,
 		sortType: param.sortType
+	};
+};
+//初始化节点数据
+export function initPolicyChosen(){
+	return (dispatch,getState)=>{
+		dispatch(loadingOpen());
+		return fetch('../assets/json/getTreeNode.json',{
+			method: 'get'
+		}).then(response=>response.text())
+		.then(data=>{
+			var result = JSON.parse(data);
+			if(result.statusCode==0){
+				dispatch({
+					type: types.PolicyInitChosen,
+					data: result.data
+				});
+			};
+			dispatch(loadingCancel());
+		}).catch(err=>{
+			dispatch(loadingCancel());
+		});
 	};
 };

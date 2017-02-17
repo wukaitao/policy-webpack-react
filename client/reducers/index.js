@@ -11,10 +11,6 @@ const rootReducer = combineReducers({
 	allPointData: point.allPointData,
 	pointData: point.pointData,
 	letterList: point.letterList,
-	
-	templateNodeAddData: point.templateNodeAddData,
-	templateNodeUpdateData: point.templateNodeUpdateData,
-	
 	pageStatus: popup.pageStatus
 });
 

@@ -8,13 +8,7 @@ const initState = {
 		benefitKeyDesc: '',
 		benefitValueDesc: ''
 	},
-	letterList: [],
-	templateNodeAddData: {
-		data: {}
-	},
-	templateNodeUpdateData: {
-		data: {}
-	}
+	letterList: []
 };
 //reducer其实也是一个方法而已，三处是state和action,返回值是新的state
 //获取节点树数据
@@ -112,25 +106,6 @@ export function pointData(state=initState.pointData,action){
 		case types.ChangeNodeTitle:
 			state.nodeTitle = action.param.nodeTitle;
 			return JSON.parse(JSON.stringify(state));
-		default:
-			return state;
-	};
-};
-
-//获取添加节点数据
-export function templateNodeAddData(state=initState.templateNodeAddData,action){
-	switch(action.type){
-		case types.SaveCreatePointData:
-			return action.data;
-		default:
-			return state;
-	};
-};
-//获取修改节点数据
-export function templateNodeUpdateData(state=initState.templateNodeUpdateData,action){
-	switch(action.type){
-		case types.SaveModifyPointData:
-			return action.data;
 		default:
 			return state;
 	};
