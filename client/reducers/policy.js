@@ -5,6 +5,7 @@ const initState = {
 		basicList: []
 	},
 	policyDetail: {},
+	policyDetailBasicListOrderCache: [],
 	hospitalList: []
 };
 //reducer其实也是一个方法而已，三处是state和action,返回值是新的state
@@ -76,71 +77,16 @@ export function policyDetail(state=initState.policyDetail,action){
 				item.nodeTitle = unescape(item.nodeTitle);
 				item.benefitKeyDesc = unescape(item.benefitKeyDesc);
 				item.benefitValueDesc = unescape(item.benefitValueDesc);
-				item.chosen=true;
 				item.children.sort((a,b)=>a.orderId-b.orderId);
 				item.children.forEach((subItem)=>{
 					subItem.showEdit = false;
 					subItem.nodeTitle = unescape(subItem.nodeTitle);
 					subItem.benefitKeyDesc = unescape(subItem.benefitKeyDesc);
 					subItem.benefitValueDesc = unescape(subItem.benefitValueDesc);
-					subItem.chosen=true;
 					subItem.isPrev=subItem.nodeType==4;
 				});
 			});
 			return Object.assign({},state,action.data);
-		/*
-		case types.PolicyInitChosen:
-			//获取节点树形列表
-			let l=JSON.parse(JSON.stringify(state.benefitList));
-			//遍历出所有现有id的list，包括父节点
-			let idList=l.reduce((p,c)=>{
-				p.push(c.libId);
-				return p.concat(c.children.map((o)=>{
-					return o.libId;
-				}));
-			},[]);
-			//遍历完整节点树
-			action.data.forEach((item)=>{
-				item.showEdit = false;
-				item.benefitKeyDesc = unescape(item.benefitKeyDesc);
-				item.benefitValueDesc = unescape(item.benefitValueDesc);
-				item.nodeTitle = unescape(item.nodeTitle);
-				//list中不包含当前父节点则全部加入
-				if(idList.indexOf(item.libId)==-1){
-					let pt=JSON.parse(JSON.stringify(item));
-					pt.chosen=false;
-					pt.children.forEach((subItem)=>{
-						subItem.showEdit = false;
-						subItem.benefitKeyDesc = unescape(subItem.benefitKeyDesc);
-						subItem.benefitValueDesc = unescape(subItem.benefitValueDesc);
-						subItem.nodeTitle = unescape(subItem.nodeTitle);
-						subItem.chosen=false;
-						subItem.isPrev=subItem.nodeType==4;
-					});
-					l.push(pt);
-				}else{
-					//找到当前父节点parent
-					let parent;
-					l.some((o)=>o.libId==item.libId&&(parent=o));
-					//遍历完整节点树中当前父节点
-					item.children.forEach((subItem)=>{
-						subItem.showEdit = false;
-						subItem.benefitKeyDesc = unescape(subItem.benefitKeyDesc);
-						subItem.benefitValueDesc = unescape(subItem.benefitValueDesc);
-						subItem.nodeTitle = unescape(subItem.nodeTitle);
-						subItem.isPrev=subItem.nodeType==4;
-						if(idList.indexOf(subItem.libId)==-1){
-							let pt=JSON.parse(JSON.stringify(c));
-							pt.chosen=false;
-							parent.children.push(pt);
-						}
-					});
-				}
-			});
-			return Object.assign({},state,{
-				benefitList: l
-			});
-		*/
 		case types.ChangePolicyName:
 			state.policyName = action.policyName;
 			return JSON.parse(JSON.stringify(state));
@@ -169,31 +115,46 @@ export function policyDetail(state=initState.policyDetail,action){
 		case types.PolicyInitChosen:
 			//保单详情->挑选节点-初始化节点数据
 			const benefitList=JSON.parse(JSON.stringify(state.benefitList));
-			//console.log(action.data);
+			//保存保单节点原始排序
+			initState.policyDetailBasicListOrderCache = [];
+			benefitList.forEach(item=>{
+				const one = {
+					libId: item.libId,
+					nodeType: item.nodeType
+				};
+				item.nodeType==2&&(one.children=[])&&item.children.forEach(subItem=>{
+					const subOne = {
+						libId: subItem.libId,
+						nodeType: subItem.nodeType
+					};
+					one.children.push(subOne);
+				});
+				initState.policyDetailBasicListOrderCache.push(one);
+			});
+			//匹配保单节点到节点树
 			action.data.sort((a,b)=>{
 				return makePy(unescape(b.nodeTitle).charAt(0))[0].toUpperCase() < makePy(unescape(a.nodeTitle).charAt(0))[0].toUpperCase() ? 1 : -1;
 			}).forEach((item,index)=>{
-				//console.log(index);
 				const one = benefitList.find(o=>o.libId==item.libId);
-				if(!!one){
-					item.nodeTitle = unescape(one.nodeTitle);
-					item.benefitKeyDesc = unescape(one.benefitKeyDesc);
-					item.benefitValueDesc = unescape(one.benefitValueDesc);
+				item.nodeTitle = one?one.nodeTitle:unescape(item.nodeTitle);
+				item.benefitKeyDesc = one?one.benefitKeyDesc:unescape(item.benefitKeyDesc);
+				item.benefitValueDesc = one?one.benefitValueDesc:unescape(item.benefitValueDesc);
+				item.nodeType==2&&item.children.forEach(subItem=>{
+					subItem.nodeTitle = unescape(subItem.nodeTitle);
+					subItem.benefitKeyDesc = unescape(subItem.benefitKeyDesc);
+					subItem.benefitValueDesc = unescape(subItem.benefitValueDesc);
+				});
+				if(one){
 					if(item.nodeType==2){
-						//item.showEdit = false;
 						item.chosenAll = item.children.length==one.children.length;
 						item.chosenSome = item.children.length>one.children.length&&!!one.children.length;
 						item.children.forEach(subItem=>{
 							const subOne = one.children.find(o=>o.libId==subItem.libId);
-							if(!!subOne){
-								//subItem.showEdit = false;
-								subItem.chosen = true;
-								subItem.nodeTitle = unescape(subOne.nodeTitle);
-								subItem.benefitKeyDesc = unescape(subOne.benefitKeyDesc);
-								subItem.benefitValueDesc = unescape(subOne.benefitValueDesc);
-							}else{
-								subItem.chosen = false;
-							};
+							subItem.nodeTitle = subOne?subOne.nodeTitle:subItem.nodeTitle;
+							subItem.benefitKeyDesc = subOne?subOne.benefitKeyDesc:subItem.benefitKeyDesc;
+							subItem.benefitValueDesc = subOne?subOne.benefitValueDesc:subItem.benefitValueDesc;
+							subOne&&(subItem.chosen=true);
+							!subOne&&(subItem.chosen=false);
 						});
 					}else if(item.nodeType==1){
 						item.chosen=true;
@@ -208,13 +169,106 @@ export function policyDetail(state=initState.policyDetail,action){
 					};
 				};
 			});
-			//console.log(action.data);
-			return JSON.parse(JSON.stringify(action.data));
-		case types.PolicyFilterChosen:
+			state.benefitList = action.data;
+			return JSON.parse(JSON.stringify(state));
+		case types.FilterChosen:
 			//挑选节点->保单详情-筛选节点数据
+			if(action.param.flag){
+				//挑选完成
+				//筛选已挑选
+				state.benefitList = state.benefitList.filter(item=>{
+					if(item.nodeType==2) item.children = item.children.filter(subItem=>subItem.chosen);
+					return item.chosen||item.chosenAll||item.chosenSome;
+				});
+				//合并已筛选节点到原保单节点
+				const newBenefitList = [];
+				initState.policyDetailBasicListOrderCache.forEach(item=>{
+					const one = state.benefitList.find(o=>o.libId==item.libId);
+					if(one){
+						const oItem = {
+							showEdit: false,
+							nodeType: one.nodeType,
+							libId: one.libId,
+							nodeTitle: one.nodeTitle,
+							benefitKeyDesc: one.benefitKeyDesc,
+							benefitValueDesc: one.benefitValueDesc
+						};
+						if(item.nodeType==2){
+							oItem.children = [];
+							item.children.forEach(subItem=>{
+								const subOne = one.children.find(o=>o.libId==subItem.libId);
+								if(subOne){
+									oItem.children.push({
+										isPrev: false,
+										showEdit: false,
+										nodeType: subOne.nodeType,
+										libId: subOne.libId,
+										nodeTitle: subOne.nodeTitle,
+										benefitKeyDesc: subOne.benefitKeyDesc,
+										benefitValueDesc: subOne.benefitValueDesc
+									});
+									one.children = one.children.filter(o=>o.libId!=subOne.libId);
+								};
+							});
+							oItem.children = oItem.children.concat(one.children);
+						};
+						newBenefitList.push(oItem);
+						state.benefitList = state.benefitList.filter(o=>o.libId!=one.libId);
+					};
+				});
+				state.benefitList = newBenefitList.concat(state.benefitList);
+			}else{
+				//取消挑选
+				//恢复原保单节点
+				const newBenefitList = [];
+				initState.policyDetailBasicListOrderCache.forEach(item=>{
+					const one = state.benefitList.find(o=>o.libId==item.libId);
+					one.showEdit = false;
+					if(item.nodeType==2){
+						const newChildren = [];
+						item.children.forEach(subItem=>{
+							const subOne = one.children.find(o=>o.libId==subItem.libId);
+							subOne.showEdit = false;
+							subOne.isPrev = false;
+							newChildren.push(subOne);
+						});
+						one.children = newChildren;
+					};
+					newBenefitList.push(one);
+				});
+				state.benefitList = newBenefitList
+			};
 			return JSON.parse(JSON.stringify(state));
 		case types.PolicyRefreshOrder:
 			//调整排序->保单详情-刷新节点排序
+			return JSON.parse(JSON.stringify(state));
+		case types.ChangeChosen:
+			//切换子节点/自定义标题节点/医院节点的选择
+			if(action.param.parentLibId){
+				//子节点
+				const parent = state.benefitList.find(item=>item.libId==action.param.parentLibId);
+				const flag = parent.children.find(item=>item.libId==action.param.libId).chosen;
+				parent.children.find(item=>item.libId==action.param.libId).chosen = !flag;
+				parent.chosenAll = parent.children.length==parent.children.filter(item=>item.chosen==true).length;
+				parent.chosenSome = parent.children.length>parent.children.filter(item=>item.chosen==true).length&&parent.children.filter(item=>item.chosen==true).length;
+			}else{
+				//自定义标题节点/医院节点
+				const flag = state.benefitList.find(item=>item.libId==action.param.libId).chosen;
+				state.benefitList.find(item=>item.libId==action.param.libId).chosen = !flag;
+			};
+			return JSON.parse(JSON.stringify(state));
+		case types.ChangeChosenAll:
+			//选择全部子节点/自定义标题节点/医院节点的选择
+			if(action.param.one==1||action.param.one==5){
+				//自定义标题节点/医院节点的选择
+				state.benefitList.filter(item=>item.nodeType==action.param.one).forEach(item=>item.chosen=!action.param.flag);
+			}else{
+				//子节点
+				const parent = state.benefitList.find(item=>item.libId==action.param.one.libId);
+				parent.chosenAll = !parent.chosenAll;
+				parent.chosenSome = false;
+				parent.children.forEach(item=>item.chosen=parent.chosenAll);
+			};
 			return JSON.parse(JSON.stringify(state));
 		default:
 			return state;

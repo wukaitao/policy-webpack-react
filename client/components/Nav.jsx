@@ -65,7 +65,6 @@ const Nav = React.createClass({
         return this.initPagePath().pointEditPath.indexOf(pagePath)!=-1;
   	},
 	render(){
-		console.log('nav render.');
 		const data = this.props.pageStatus;
 		const classSet = addons.classSet;
 		const tabPolicyClass = classSet({

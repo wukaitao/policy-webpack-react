@@ -46,6 +46,10 @@ export const AddExpHospital = 'AddExpHospital';//添加所有昂贵医院
 export const RemoveExpHospital = 'RemoveExpHospital';//移除所有昂贵医院
 export const HosSelectedAllLeft = 'HosSelectedAllLeft';//全选所有医院
 export const HosSelectedAllRight = 'HosSelectedAllRight';//全选选中医院
+//挑选节点
+export const ChangeChosen = 'ChangeChosen';//切换子节点/自定义标题节点/医院节点的选择
+export const ChangeChosenAll = 'ChangeChosenAll';//选择全部子节点/自定义标题节点/医院节点的选择
+export const FilterChosen = 'FilterChosen';//过滤节点挑选
 //节点管理
 export const ResetLetterList = 'ResetLetterList';//重置分类节点首字母列表
 export const ToggleSearchbox = 'ToggleSearchbox';//切换子节点搜索框的显示状态

@@ -21,7 +21,6 @@ const Popup = React.createClass({
 		});
 	},
 	render(){
-		console.log('popup render.');
 		const data = this.props.pageStatus;
 		const classSet = addons.classSet;
 		const dialogClass = classSet({

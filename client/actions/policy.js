@@ -283,29 +283,6 @@ export function sendPdf(param){
 		});
 	};
 };
-//初始化保单节点
-/*
-export function initPolicyChosen(){
-	return (dispatch,getState)=>{
-		dispatch(loadingOpen());
-		return fetch('../assets/json/getTreeNode.json',{
-			method: 'get'
-		}).then(response=>response.text())
-		.then(data=>{
-			var result = JSON.parse(data);
-			if(result.statusCode==0){
-				dispatch({
-					type: types.PolicyInitChosen,
-					data: result.data
-				});
-			};
-			dispatch(loadingCancel());
-		}).catch(err=>{
-			dispatch(loadingCancel());
-		});
-	};
-};
-*/
 //选中医院
 export function chooseHospital(param){
 	return {
@@ -475,5 +452,26 @@ export function initPolicyChosen(){
 		}).catch(err=>{
 			dispatch(loadingCancel());
 		});
+	};
+};
+//切换子节点/自定义标题节点/医院节点的选择
+export function changeChosen(param){
+	return {
+		type: types.ChangeChosen,
+		param
+	};
+};
+//选择全部子节点/自定义标题节点/医院节点的选择
+export function changeChosenAll(param){
+	return {
+		type: types.ChangeChosenAll,
+		param
+	};
+};
+//取消挑选/挑选完成
+export function filterChosen(param){
+	return {
+		type: types.FilterChosen,
+		param
 	};
 };

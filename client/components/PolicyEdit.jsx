@@ -61,14 +61,13 @@ const PolicyEdit = React.createClass({
 			keyword: ''//搜索医院关键字
 		};
 	},
-	componentWillMount(){
+	componentDidMount(){
 		//默认加载内容
 		const self = this;
-		this.getPolicyDetail(function(){
+		const fromPath = localStorage.getItem('fromPath');
+		(fromPath!='/pointchoose'&&fromPath!='/pointdrag')&&this.getPolicyDetail(function(){
 			self.changeBtnStatus();
 		});
-	},
-	componentDidMount(){
 		//固定菜单
 		$(window).scroll(function(){
 			let scollTop = $(window).scrollTop();
