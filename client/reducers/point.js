@@ -18,7 +18,9 @@ export function allPointData(state=initState.allPointData,action){
 			action.eventType=='init'&&(initState.allPointDataCache=action.data);
 			let letterList = [];
 			let allPointData = action.eventType=='init'?JSON.parse(JSON.stringify(action.data)):JSON.parse(JSON.stringify(initState.allPointDataCache));
-			allPointData = allPointData.filter(item=>unescape(item.nodeTitle).indexOf(action.keyword)!=-1);
+			allPointData = allPointData.filter(item=>{
+				return item.nodeTyp==1||item.nodeType==5||unescape(item.nodeTitle).indexOf(action.keyword)!=-1;
+			});
 			allPointData.sort((a,b)=>{
 				return makePy(unescape(b.nodeTitle).charAt(0))[0].toUpperCase() < makePy(unescape(a.nodeTitle).charAt(0))[0].toUpperCase() ? 1 : -1;
 			}).forEach((item)=>{

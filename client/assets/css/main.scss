@@ -600,7 +600,9 @@
 /*policyedit page end*/
 
 /*pointchoose page start*/
-.point-choose{
+/*pointdrag page start*/
+.point-choose,
+.point-drag{
     background-color: #f4f4f4;
     .btn-primary{
         background-color: #2679c5;
@@ -615,6 +617,8 @@
     section{
         padding: 20px;
         .title{
+            line-height: 38px;
+            padding-bottom: 10px;
             font-size: 18px;
             font-weight: bold;
         }
@@ -639,6 +643,11 @@
                     color: #fff;
                 }
                 header.chosenAll{
+                    background-color: #2679c5;
+                    border-color: #2679c5;
+                    color: #fff;
+                }
+                header.chosen{
                     background-color: #2679c5;
                     border-color: #2679c5;
                     color: #fff;
@@ -670,59 +679,6 @@
     }
 }
 /*pointchoose page end*/
-
-/*pointdrag page start*/
-.point-drag{
-    padding: 0 0 40px;
-    background-color: #f4f4f4;
-    .btn-primary{
-        background-color: #2679c5;
-        border: none;
-    }
-    .btn-primary:hover{
-        background-color: #175590;
-    }
-    .btn-primary:active{
-        box-shadow: 0px 1px 5px rgba(0,0,0,0.15) inset;
-    }
-    .btn{
-        display: block;
-        line-height: 40px;
-        width: 100px;
-        margin: 20px auto 0;
-    }
-    dl{
-        border-bottom: 1px solid darkgray;
-        padding: 30px 20px;
-        cursor: pointer;
-        dt{
-            header{
-                border: 1px solid gray;
-                border-radius: 3px;
-                display: inline-block;
-                padding: 4px 10px;
-                font-weight: bold;
-                font-size: 15px;
-                margin: 10px 0;
-                background-color: #fff;
-            }
-        }
-        dd{
-            border: 1px solid gray;
-            border-radius: 3px;
-            display: inline-block;
-            padding: 4px 10px;
-            margin: 10px 10px 0 0;
-            background-color: #fff;
-            cursor: pointer;
-        }
-    }
-    .chosen{
-        background-color: #2679c5;
-        border-color: #2679c5;
-        color: #fff;
-    }
-}
 /*pointdrag page end*/
 
 /*pointmanage page start*/

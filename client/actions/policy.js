@@ -475,3 +475,16 @@ export function filterChosen(param){
 		param
 	};
 };
+//保存默认排序
+export function initOrder(){
+	return {
+		type: types.InitOrder
+	};
+};
+//重新排序
+export function refreshOrder(param){
+	return {
+		type: types.RefreshOrder,
+		param
+	};
+};

@@ -50,6 +50,9 @@ export const HosSelectedAllRight = 'HosSelectedAllRight';//全选选中医院
 export const ChangeChosen = 'ChangeChosen';//切换子节点/自定义标题节点/医院节点的选择
 export const ChangeChosenAll = 'ChangeChosenAll';//选择全部子节点/自定义标题节点/医院节点的选择
 export const FilterChosen = 'FilterChosen';//过滤节点挑选
+//调整排序
+export const InitOrder = 'InitOrder';//初始化排序
+export const RefreshOrder = 'RefreshOrder';//重新排序
 //节点管理
 export const ResetLetterList = 'ResetLetterList';//重置分类节点首字母列表
 export const ToggleSearchbox = 'ToggleSearchbox';//切换子节点搜索框的显示状态

@@ -8,7 +8,7 @@ import Login from './containers/Login.js';
 import PolicyManage from './containers/PolicyManage.js';
 import PolicyEdit from './containers/PolicyEdit.js';
 import PointChoose from './containers/PointChoose.js';
-import PointDrag from './components/PointDrag.jsx';
+import PointDrag from './containers/PointDrag.js';
 import PointManage from './containers/PointManage.js';
 import PointEdit from './containers/PointEdit.js';
 import NotFound from './components/NotFound.jsx';

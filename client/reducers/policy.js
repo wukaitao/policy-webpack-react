@@ -189,6 +189,8 @@ export function policyDetail(state=initState.policyDetail,action){
 							showEdit: false,
 							nodeType: one.nodeType,
 							libId: one.libId,
+							parentId: one.parentId,
+							orderId: one.orderId,
 							nodeTitle: one.nodeTitle,
 							benefitKeyDesc: one.benefitKeyDesc,
 							benefitValueDesc: one.benefitValueDesc
@@ -203,6 +205,8 @@ export function policyDetail(state=initState.policyDetail,action){
 										showEdit: false,
 										nodeType: subOne.nodeType,
 										libId: subOne.libId,
+										parentId: subOne.parentId,
+										orderId: subOne.orderId,
 										nodeTitle: subOne.nodeTitle,
 										benefitKeyDesc: subOne.benefitKeyDesc,
 										benefitValueDesc: subOne.benefitValueDesc
@@ -239,8 +243,30 @@ export function policyDetail(state=initState.policyDetail,action){
 				state.benefitList = newBenefitList
 			};
 			return JSON.parse(JSON.stringify(state));
-		case types.PolicyRefreshOrder:
+		case types.RefreshOrder:
 			//调整排序->保单详情-刷新节点排序
+			if(action.param.eventType=='case'){
+				//分类/自定义标题节点/医院节点
+				const target = state.benefitList.find(item=>item.libId==action.param.target.libId);
+				const one = state.benefitList.find(item=>item.libId==action.param.one.libId);
+				const targetIndex = state.benefitList.indexOf(target);
+				const oneIndex = state.benefitList.indexOf(one);
+				state.benefitList.splice(targetIndex,1);
+				state.benefitList.splice(oneIndex,0,target);
+			}else if(action.param.eventType=='point'){
+				//子节点
+				const children = state.benefitList.find(item=>item.libId==action.param.target.parentId).children;
+				const target = children.find(item=>item.libId==action.param.target.libId);
+				const one = children.find(item=>item.libId==action.param.one.libId);
+				const targetIndex = children.indexOf(target);
+				const oneIndex = children.indexOf(one);
+				children.splice(targetIndex,1);
+				children.splice(oneIndex,0,target);
+				state.benefitList.find(item=>item.libId==action.param.target.parentId).children = children;
+			}else if(action.param.eventType=='reset'){
+				//取消(重置)
+				state.benefitList = initState.policyDetailBasicListOrderCache;
+			};
 			return JSON.parse(JSON.stringify(state));
 		case types.ChangeChosen:
 			//切换子节点/自定义标题节点/医院节点的选择
@@ -270,6 +296,9 @@ export function policyDetail(state=initState.policyDetail,action){
 				parent.children.forEach(item=>item.chosen=parent.chosenAll);
 			};
 			return JSON.parse(JSON.stringify(state));
+		case types.InitOrder:
+			initState.policyDetailBasicListOrderCache = JSON.parse(JSON.stringify(state.benefitList));
+			return state;
 		default:
 			return state;
 	};
