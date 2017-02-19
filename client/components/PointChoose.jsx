@@ -6,10 +6,6 @@ const PointChoose = React.createClass({
 	componentDidMount(){
 		//默认加载内容
 		this.props.page.initPolicyChosen();
-		//this.props.router.setRouteLeaveHook(
-		//	this.props.route,
-		//	this.routerWillLeave
-		//);
 	},
 	componentWillUnmount(){
 		//保存当前路径
@@ -18,15 +14,6 @@ const PointChoose = React.createClass({
 			localStorage.removeItem('fromPath');
 		},100);
 	},
-	//routerWillLeave(nextLocation){
-		//console.log(nextLocation);
-		//return true;
-		//返回false会停留当前页面
-		//否则,返回一个字符串,会显示给用户,让其自己决定
-		//if(!this.state.isSaved){
-		//	return '内容还没有保存,确定要离开?';
-		//};
-	//},
 	back(flag){
 		//取消挑选/挑选完成
 		const param = {flag};

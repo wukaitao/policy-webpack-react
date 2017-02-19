@@ -18,6 +18,17 @@ const store = configureStore();
 
 const App = React.createClass({
 	requireAuth(nextState,replace,next){
+		//刷新跳转
+		const path = nextState.location.pathname;
+		const isRefreshPolicyPointPath = ['pointchoose','pointdrag'].indexOf(path.split('/')[1])!=-1&&!store.getState().policyDetail.benefitList;
+		const isRefreshPointEditPath = ['cateadd','cateedit','pointadd','pointedit'].indexOf(path.split('/')[1])!=-1&&!store.getState().allPointData.length;
+		if(isRefreshPolicyPointPath){
+			replace('/policymanage');
+			next();
+		}else if(isRefreshPointEditPath){
+			replace('/pointmanage');
+			next();
+		}else next();
 		//登录认证
 		const isLogin = store.getState().pageStatus.isLogin;
 		if(isLogin) next();

@@ -3,6 +3,15 @@ import addons from 'react-addons';
 import {Link,hashHistory} from 'react-router';
 //声明组件
 const Nav = React.createClass({
+	componentDidMount(){
+		//刷新页面确认
+		const self = this;
+		window.onbeforeunload = function(){
+			const initPagePath = self.initPagePath();
+			if(initPagePath.policyPointPath.indexOf(initPagePath.pagePath)!=-1) return '刷新当前页面将丢失节点操作并返回首页，请确认.';
+			else if(initPagePath.pointEditPath.indexOf(initPagePath.pagePath)!=-1) return '刷新页面将丢失页面操作并返回节点管理页面，请确认.';
+		};
+	},
 	logout(){
 		//退出
 		const self = this;
@@ -20,6 +29,21 @@ const Nav = React.createClass({
 						}
 					});
 				});
+			}
+		});
+	},
+	goPath(path){
+		//跳转到保单管理/节点管理
+		const initPagePath = this.initPagePath();
+		const message = initPagePath.policyEditPath.indexOf(initPagePath.pagePath)!=-1?'离开当前页面将丢失未保存的保单内容，请确认.':
+						initPagePath.policyPointPath.indexOf(initPagePath.pagePath)!=-1?'离开当前页面将丢失节点操作，请确认.':
+						initPagePath.pointEditPath.indexOf(initPagePath.pagePath)!=-1?'离开页面将丢失未保存的内容':'';
+		if(!message) hashHistory.push('/'+path);
+		else this.props.popup.dialogOpen({
+			type: 'confirm',
+			message,
+			callback: function(){
+				hashHistory.push('/'+path);
 			}
 		});
 	},
@@ -84,9 +108,9 @@ const Nav = React.createClass({
 						<span onClick={this.logout} className="logout">退出</span>
 					</div>
 					<div className="menu">
-						<Link to="/policymanage" className={tabPolicyClass}>保单管理</Link>
+						<a onClick={this.goPath.bind(this,'policymanage')} className={tabPolicyClass}>保单管理</a>
 						<span className="br">｜</span>
-						<Link to="/pointmanage" className={tabPointClass}>节点管理</Link>
+						<a onClick={this.goPath.bind(this,'pointmanage')} className={tabPointClass}>节点管理</a>
 					</div>
 				</nav>
 			</header>
