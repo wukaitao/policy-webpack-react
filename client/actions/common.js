@@ -1,10 +1,12 @@
-﻿import {loadingOpen,loadingCancel,dialogOpen,dialogCancel} from './popup.js';
+﻿import {hashHistory} from 'react-router';
+import {loadingOpen,loadingCancel,dialogOpen,dialogCancel} from './popup.js';
 
 const defautOption = {
 	dispatch: function(){},
 	api: '',
 	param: {},
-	config: {}
+	config: {},
+	popup: {}
 };
 export const serverPath = {
 	domain: '..',//域
@@ -26,10 +28,12 @@ export const serverPath = {
 };
 export const baseDataService = (option=defautOption)=>{
 	const promise = new Promise((resolve,reject)=>{
-		fetch(serverPath.domain+serverPath.commonPath+api,param,config)
+		option.showLoading&&option.dispatch(loadingOpen());
+		fetch(serverPath.domain+serverPath.commonPath+option.api,option.param,option.config)
 		.then(response=>response.text())
 		.then(data=>{
 			//请求成功
+			option.showLoading&&option.dispatch(loadingCancel());
 			const result = JSON.parse(data);
 			if(result.statusCode==0){
 				//获取数据成功
@@ -40,12 +44,25 @@ export const baseDataService = (option=defautOption)=>{
 					type: 'toast',
 					message: '未登录.',
 					callback: function(){
-						console.log('未登录...');
+						localStorage.setItem('pageLogin','false');
+						localStorage.setItem('userName','');
+						localStorage.setItem('isTemplateManager',escape('0'));
+						dispatch({
+							type: types.Logout,
+							data: result.data
+						});
+						hashHistory.push('/login');
 					}
+				}));
+			}else{
+				option.dispatch(dialogOpen({
+					type: 'alert',
+					message: result.msg
 				}));
 			};
 		}).catch(err=>{
 			//请求失败
+			option.showLoading&&option.dispatch(loadingCancel());
 			option.dispatch(dialogOpen({
 				type: 'alert',
 				message: '网络错误.'
