@@ -8,7 +8,7 @@ import {loadingOpen,loadingCancel,dialogOpen,dialogCancel} from './popup.js';
 export function queryAllPoint(param){
 	return (dispatch,getState)=>{
 		common.baseDataService({
-			api: common.serverPath.getTreeNodeApi,
+			api: common.serverPath.pointListApi,
 			param: {method: 'get'},
 			showLoading: true,
 			dispatch
@@ -83,7 +83,7 @@ export function changeNodeTitle(param){
 //保存分类/节点
 export function savePoint(param,successCallback=function(){},errorCallback=function(){}){
 	const isAdd = param.eventType=='pointadd'||param.eventType=='cateadd';
-	const urlApi = isAdd ? common.serverPath.templateNodeAddApi : common.serverPath.templateNodeUpdateApi;
+	const urlApi = isAdd ? common.serverPath.pointAddApi : common.serverPath.pointEditApi;
 	delete param.eventType;
 	return (dispatch,getState)=>{
 		common.baseDataService({

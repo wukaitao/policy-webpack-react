@@ -89,7 +89,7 @@ export function queryPolicyDetail(param,callback=function(){}){
 				data
 			});
 			common.baseDataService({
-				api: common.serverPath.hosListApi,
+				api: common.serverPath.hospitalListApi,
 				param: {method: 'get'},
 				showLoading: true,
 				dispatch
@@ -105,7 +105,7 @@ export function queryPolicyDetail(param,callback=function(){}){
 		}else{
 			//编辑/复制/查看
 			common.baseDataService({
-				api: common.serverPath.policyDetailsApi,
+				api: common.serverPath.policyDetailApi,
 				param: {method: 'get'},
 				showLoading: true,
 				dispatch
@@ -116,7 +116,7 @@ export function queryPolicyDetail(param,callback=function(){}){
 					data
 				});
 				common.baseDataService({
-					api: common.serverPath.hosListApi,
+					api: common.serverPath.hospitalListApi,
 					param: {method: 'get'},
 					dispatch
 				}).then((data)=>{
@@ -306,7 +306,7 @@ export function policySave(param,callback=function(){}){
 	const type = param.isTemplate ? '模板' : 'policy';
 	const path = param.path;
 	delete param.path;
-	const urlApi = path=='edit' ? common.serverPath.hosListApi.policyUpdateApi : common.serverPath.hosListApi.policyAddApi;
+	const urlApi = path=='edit' ? common.serverPath.policyEditApi : common.serverPath.policyAddApi;
 	common.baseDataService({
 		api: urlApi,
 		param: {method: 'get'},
@@ -366,7 +366,7 @@ export function changeSortType(param){
 export function initPolicyChosen(){
 	return (dispatch,getState)=>{
 		common.baseDataService({
-			api: common.serverPath.getTreeNodeApi,
+			api: common.serverPath.pointListApi,
 			param: {method: 'get'},
 			dispatch
 		}).then((data)=>{
