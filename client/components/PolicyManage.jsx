@@ -277,7 +277,7 @@ const PolicyManage = React.createClass({
 						<tr>
 							<th>
 								<input type="checkbox" ref="chooseAll" onChange={this.chooseAllHandler}/>
-								<i onClick={this.chooseInvertHandler} className="icon-search"></i>
+								<i onClick={this.chooseInvertHandler} className="icon-call_missed"></i>
 							</th>
 							<th>名称</th>
 							<th>编号</th>

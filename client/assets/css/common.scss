@@ -325,11 +325,11 @@ i{
 /*fonts start*/
 @font-face {
   font-family: 'icomoon';
-  src:  url('../fonts/icomoon.eot?l2nyvf');
-  src:  url('../fonts/icomoon.eot?l2nyvf#iefix') format('embedded-opentype'),
-    url('../fonts/icomoon.ttf?l2nyvf') format('truetype'),
-    url('../fonts/icomoon.woff?l2nyvf') format('woff'),
-    url('../fonts/icomoon.svg?l2nyvf#icomoon') format('svg');
+  src:  url('../fonts/icomoon.eot?j273t4');
+  src:  url('../fonts/icomoon.eot?j273t4#iefix') format('embedded-opentype'),
+    url('../fonts/icomoon.ttf?j273t4') format('truetype'),
+    url('../fonts/icomoon.woff?j273t4') format('woff'),
+    url('../fonts/icomoon.svg?j273t4#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -349,21 +349,6 @@ i{
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-star-o:before {
-  content: "\f006";
-}
-.icon-caret-left:before {
-  content: "\f0d9";
-}
-.icon-caret-right:before {
-  content: "\f0da";
-}
-.icon-angle-left:before {
-  content: "\f104";
-}
-.icon-angle-right:before {
-  content: "\f105";
-}
 .icon-arrow_back:before {
   content: "\e5c4";
 }
@@ -375,6 +360,12 @@ i{
 }
 .icon-arrow_forward:before {
   content: "\e5c8";
+}
+.icon-call_missed:before {
+  content: "\e0b4";
+}
+.icon-create_new_folder:before {
+  content: "\e2cc";
 }
 .icon-expand_less:before {
   content: "\e5ce";
