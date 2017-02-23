@@ -14,7 +14,7 @@ export function queryAllPoint(param){
 			dispatch
 		}).then((data)=>{
 			dispatch({
-				type: types.AllPointData,
+				type: types.PointList,
 				data,
 				eventType: param.eventType,
 				keyword: param.keyword
@@ -32,7 +32,7 @@ export function queryAllPoint(param){
 export function filterAllPoint(param){
 	return (dispatch,getState)=>{
 		dispatch({
-			type: types.AllPointData,
+			type: types.PointList,
 			eventType: param.eventType,
 			keyword: param.keyword
 		});
@@ -64,10 +64,10 @@ export function filterPoint(param){
 	};
 };
 //获取节点内容
-export function getPointData(param){
+export function getPointDetail(param){
 	return (dispatch,getState)=>{
 		dispatch({
-			type: types.PointData,
+			type: types.PointDetail,
 			param,
 			data: getState().pointList
 		});

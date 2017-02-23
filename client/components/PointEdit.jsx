@@ -24,7 +24,7 @@ const PointEdit = React.createClass({
 			parentId: initPagePath.parentId,
 			pointId: initPagePath.pointId
 		};
-		this.props.page.getPointData(param);
+		this.props.page.getPointDetail(param);
 		//渲染编辑器
 		setTimeout(()=>{
 			UE.getEditor('editor0',{

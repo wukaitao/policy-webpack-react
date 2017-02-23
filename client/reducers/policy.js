@@ -12,7 +12,7 @@ const initState = {
 //获取保单列表结果数据
 export function policyList(state=initState.policyList,action){
 	switch(action.type){
-		case types.PolicyListData:
+		case types.PolicyList:
 			const pageCount = action.data.totalCount==0 ? 1 : 
 				  action.data.totalCount%20==0 ? action.data.totalCount/20 : 
 				  parseInt(action.data.totalCount/20)+1;
@@ -112,7 +112,7 @@ export function policyDetail(state=initState.policyDetail,action){
 		case types.ChangeIsPrev:
 			state.benefitList[action.nodeIndex[0]].children[action.nodeIndex[1]].isPrev = !state.benefitList[action.nodeIndex[0]].children[action.nodeIndex[1]].isPrev;
 			return JSON.parse(JSON.stringify(state));
-		case types.PolicyInitChosen:
+		case types.InitChosen:
 			//保单详情->挑选节点-初始化节点数据
 			const benefitList=JSON.parse(JSON.stringify(state.benefitList));
 			//保存保单节点原始排序

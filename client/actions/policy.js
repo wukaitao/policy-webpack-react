@@ -14,7 +14,7 @@ export function queryPolicyList(param,callback=function(){}){
 			dispatch
 		}).then((data)=>{
 			dispatch({
-				type: types.PolicyListData,
+				type: types.PolicyList,
 				param,
 				data
 			});
@@ -371,7 +371,7 @@ export function initPolicyChosen(){
 			dispatch
 		}).then((data)=>{
 			dispatch({
-				type: types.PolicyInitChosen,
+				type: types.InitChosen,
 				data
 			});
 		});

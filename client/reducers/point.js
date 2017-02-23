@@ -14,7 +14,7 @@ const initState = {
 //获取节点树数据
 export function pointList(state=initState.pointList,action){
 	switch(action.type){
-		case types.AllPointData:
+		case types.PointList:
 			action.eventType=='init'&&(initState.pointListCache=action.data);
 			let letterList = [];
 			let pointList = action.eventType=='init'?JSON.parse(JSON.stringify(action.data)):JSON.parse(JSON.stringify(initState.pointListCache));
@@ -87,7 +87,7 @@ export function letterList(state=initState.letterList,action){
 //获取节点内容
 export function pointDetail(state=initState.pointDetail,action){
 	switch(action.type){
-		case types.PointData:
+		case types.PointDetail:
 			if(action.param.eventType=='cateadd'||action.param.eventType=='pointadd'){
 				return initState.pointDetail;
 			}else if(action.param.eventType=='cateedit'){
