@@ -899,6 +899,10 @@
         display: table;
         .btn-area{
             padding: 20px 0px 0px 54px;
+            .btn{
+                line-height: 40px;
+                width: 100px;
+            }
         }
         .label{
             display: table-cell;
