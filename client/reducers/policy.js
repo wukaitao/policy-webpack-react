@@ -67,7 +67,7 @@ export function policyDetail(state=initState.policyDetail,action){
 	switch(action.type){
 		case types.PolicyDetail:
 			action.data.policyName = unescape(action.data.policyName);
-			if(action.data.path=='copy'){
+			if(action.param.path=='copy'){
 				action.data.policyName = action.data.policyName + '-复制';
 			};
 			action.data.policyTitle = unescape(action.data.policyTitle);
