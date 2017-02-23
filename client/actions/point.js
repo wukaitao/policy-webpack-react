@@ -5,7 +5,7 @@ import {loadingOpen,loadingCancel,dialogOpen,dialogCancel} from './popup.js';
 //导出所有方法
 //PointManage
 //获取节点树
-export function queryAllPoint(param){
+export function getPointList(param){
 	return (dispatch,getState)=>{
 		common.baseDataService({
 			api: common.serverPath.pointListApi,

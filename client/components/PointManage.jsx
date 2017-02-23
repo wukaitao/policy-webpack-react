@@ -36,7 +36,7 @@ const PointManage = React.createClass({
 			eventType: 'init',
 			keyword: this.state.keyword
 		};
-		this.props.queryAllPoint(param);
+		this.props.getPointList(param);
 	},
 	cateEditHandler(one,type){
 		//编辑分类/自定义节点/医院节点

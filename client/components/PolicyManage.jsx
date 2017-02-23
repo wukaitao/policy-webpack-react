@@ -28,7 +28,7 @@ const PolicyManage = React.createClass({
 		this.props.pageStatus.oSearch.isTemplate!==''&&(param.isTemplate=this.props.pageStatus.oSearch.isTemplate);
 		if(/^[0-9]*$/.test(this.refs.policyKeyword.value)) param.policyMemberIdPattern = this.refs.policyKeyword.value;
 		else param.policyNamePattern = this.refs.policyKeyword.value;
-		this.props.page.queryPolicyList(param);
+		this.props.page.getPolicyList(param);
 		//重置排序
 		this.setState({
 			sortType: 'desc'
@@ -88,13 +88,13 @@ const PolicyManage = React.createClass({
 		};
 		this.props.page.sendPdf(param);
 	},
-	queryPolicyRelationListHandler(id,policyName){
+	getPolicyRelationListHandler(id,policyName){
 		//保单关系列表
 		const param = {
 			policyId: id,
 			policyName: policyName
 		};
-		this.props.page.queryPolicyRelationList(param);
+		this.props.page.getPolicyRelationList(param);
 	},
 	chooseAllHandler(){
 		//全选保单
@@ -194,7 +194,7 @@ const PolicyManage = React.createClass({
 						{!item.isTemplate&&item.policyKeyMsg ?
 							<span>
 								{item.policyKeyMsg}
-								<i className="icon-eye" onClick={this.queryPolicyRelationListHandler.bind(this,item.policyId,item.policyName)}></i>
+								<i className="icon-eye" onClick={this.getPolicyRelationListHandler.bind(this,item.policyId,item.policyName)}></i>
 							</span> : null
 						}
 					</td>

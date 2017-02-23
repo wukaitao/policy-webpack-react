@@ -83,7 +83,7 @@ const PolicyEdit = React.createClass({
 					 this.props.route.path=='/policyedit/:id'?'edit':
 					 this.props.route.path=='/policyview/:id'?'view':'add';
 		const param = {policyId,path};
-		this.props.page.queryPolicyDetail(param,callback);
+		this.props.page.getPolicyDetail(param,callback);
 	},
 	backHandler(){
 		hashHistory.push('/policymanage');
@@ -265,7 +265,7 @@ const PolicyEdit = React.createClass({
 			});
 			return;
 		};
-		this.props.page.policySave(param,function(){
+		this.props.page.savePolicy(param,function(){
 			//保存成功回调
 			hashHistory.push('/policymanage');
 		});

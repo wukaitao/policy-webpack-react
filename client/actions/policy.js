@@ -5,7 +5,7 @@ import {loadingOpen,loadingCancel,dialogOpen,dialogCancel} from './popup.js';
 //导出所有方法
 //PolicyManage
 //获取保单列表
-export function queryPolicyList(param,callback=function(){}){
+export function getPolicyList(param,callback=function(){}){
 	return (dispatch,getState)=>{
 		common.baseDataService({
 			api: common.serverPath.policyListApi,
@@ -23,7 +23,7 @@ export function queryPolicyList(param,callback=function(){}){
 	};
 };
 //获取关联保单
-export function queryPolicyRelationList(param){
+export function getPolicyRelationList(param){
 	return (dispatch,getState)=>{
 		const policyName = param.policyName;
 		delete param.policyName;
@@ -71,7 +71,7 @@ export function queryPolicyRelationList(param){
 	};
 };
 //获取保单详情
-export function queryPolicyDetail(param,callback=function(){}){
+export function getPolicyDetail(param,callback=function(){}){
 	return (dispatch,getState)=>{
 		if(param.path=='add'){
 			//新建
@@ -178,7 +178,7 @@ export function deletePolicy(param,callback=function(){}){
 				icon: 'icon-circle-check',
 				callback: function(){
 					delete param.policyIdArray;
-					dispatch(queryPolicyList(param,callback));
+					dispatch(getPolicyList(param,callback));
 				}
 			}));
 		});
@@ -302,7 +302,7 @@ export function changeIsPrev(param){
 	};
 };
 //保存保单
-export function policySave(param,callback=function(){}){
+export function savePolicy(param,callback=function(){}){
 	const type = param.isTemplate ? '模板' : 'policy';
 	const path = param.path;
 	delete param.path;
