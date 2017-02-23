@@ -6,7 +6,7 @@ const defautOption = {
 	api: '',
 	param: {},
 	config: {},
-	showLoading: false
+	showLoading: true
 };
 export const serverPath = {
 	domain: '..',//域
