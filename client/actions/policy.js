@@ -307,20 +307,22 @@ export function savePolicy(param,callback=function(){}){
 	const path = param.path;
 	delete param.path;
 	const urlApi = path=='edit' ? common.serverPath.policyEditApi : common.serverPath.policyAddApi;
-	common.baseDataService({
-		api: urlApi,
-		param: {method: 'get'},
-		showLoading: true,
-		dispatch
-	}).then((data)=>{
-		const message = !data.policyId ? '修改'+type+'成功.' :
-						path=='copy' ? '复制'+type+'成功.' : '创建'+type+'成功.';
-		dispatch(dialogOpen({
-			type: 'alert',
-			message
-		}));
-		callback.call(this);
-	});
+	return (dispatch,getState)=>{
+		common.baseDataService({
+			api: urlApi,
+			param: {method: 'get'},
+			showLoading: true,
+			dispatch
+		}).then((data)=>{
+			const message = !data.policyId ? '修改'+type+'成功.' :
+				path=='copy' ? '复制'+type+'成功.' : '创建'+type+'成功.';
+			dispatch(dialogOpen({
+				type: 'alert',
+				message
+			}));
+			callback.call(this);
+		});
+	};
 };
 //全选保单
 export function chooseAll(param){
