@@ -6,7 +6,7 @@ const defautOption = {
 	api: '',
 	param: {},
 	config: {},
-	popup: {}
+	showLoading: false
 };
 export const serverPath = {
 	domain: '..',//域
@@ -17,6 +17,7 @@ export const serverPath = {
 	policyDeleteApi: 'policyDelete.json',//删除保单
 	submitPDFApi: 'submitPDF.json',//提交保单
 	emailPDFApi: 'emailPDF.json',//发送pdf
+	downLoadPDFApi: 'downLoadPDF',//生成pdf
 	policyRelationListApi: 'policyRelationList.json',//获取关联保单列表
 	policyDetailsApi: 'policyDetails.json',//获取保单详情
 	hosListApi: 'hosList.json',//获取全部医院列表

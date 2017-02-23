@@ -1,4 +1,5 @@
 ﻿import * as types from './actionType.js';
+import * as common from './common.js';
 import {loadingOpen,loadingCancel,dialogOpen,dialogCancel} from './popup.js';
 
 //导出所有方法
@@ -6,23 +7,18 @@ import {loadingOpen,loadingCancel,dialogOpen,dialogCancel} from './popup.js';
 //获取保单列表
 export function queryPolicyList(param,callback=function(){}){
 	return (dispatch,getState)=>{
-		dispatch(loadingOpen());
-		return fetch('../assets/json/policyList.json',{
-			method: 'get'
-		}).then(response=>response.text())
-		.then(data=>{
-			var result = JSON.parse(data);
-			if(result.statusCode==0){
-				dispatch({
-					type: types.PolicyListData,
-					param,
-					data: result.data
-				});
-				callback.call(this);
-			};
-			dispatch(loadingCancel());
-		}).catch(err=>{
-			dispatch(loadingCancel());
+		common.baseDataService({
+			api: common.serverPath.policyListApi,
+			param: {method: 'get'},
+			showLoading: true,
+			dispatch
+		}).then((data)=>{
+			dispatch({
+				type: types.PolicyListData,
+				param,
+				data
+			});
+			callback.call(this);
 		});
 	};
 };
@@ -31,59 +27,45 @@ export function queryPolicyRelationList(param){
 	return (dispatch,getState)=>{
 		const policyName = param.policyName;
 		delete param.policyName;
-		dispatch(loadingOpen());
-		return fetch('../assets/json/policyRelationList.json',{
-			method: 'get'
-		}).then(response=>response.text())
-		.then(data=>{
-			var result = JSON.parse(data);
-			if(result.statusCode==0){
-				let message = '<table class="data-policyInfo">'+
-							      '<colgroup>'+
-							          '<col width="80"/>'+
-							          '<col width="100"/>'+
-							          '<col/>'+
-							          '<col width="100"/>'+
-							          '<col width="100"/>'+
-							      '</colgroup>';
-				message += '<thead>'+
-						       '<tr>'+
-						           '<th>产品编码</th>'+
-						           '<th>计划编码</th>'+
-						           '<th>团体编号</th>'+
-						           '<th>子团体编号</th>'+
-						           '<th>会员数</th>'+
-						       '</tr>'+
-						   '</thead>'+
-						   '<tbody>';
-				result.data.forEach(item=>{
-					message += '<tr>'+
-							       '<td>'+item.productCode+'</td>'+
-							       '<td>'+item.planCode+'</td>'+
-							       '<td>'+item.groupCode+'</td>'+
-							       '<td>'+item.subGroupCode+'</td>'+
-							       '<td>'+item.mbCnt+'</td>'+
-							   '</tr>';
-				});
-				message += '</tbody></table>';
-				dispatch(dialogOpen({
-					type: 'window',
-					message,
-					style: {width:500,height:150,maxHeight:400},
-					title: '关联保单信息 -- '+policyName
-				}));
-			}else{
-				dispatch(dialogOpen({
-					type: 'alert',
-					message: result.msg
-				}));
-			};
-			dispatch(loadingCancel());
-		}).catch(err=>{
-			dispatch(loadingCancel());
+		common.baseDataService({
+			api: common.serverPath.policyRelationListApi,
+			param: {method: 'get'},
+			showLoading: true,
+			dispatch
+		}).then((data)=>{
+			let message = '<table class="data-policyInfo">'+
+						      '<colgroup>'+
+						          '<col width="80"/>'+
+						          '<col width="100"/>'+
+						          '<col/>'+
+						          '<col width="100"/>'+
+						          '<col width="100"/>'+
+						      '</colgroup>';
+			message += '<thead>'+
+				       '<tr>'+
+				           '<th>产品编码</th>'+
+				           '<th>计划编码</th>'+
+				           '<th>团体编号</th>'+
+				           '<th>子团体编号</th>'+
+				           '<th>会员数</th>'+
+				       '</tr>'+
+				   '</thead>'+
+				   '<tbody>';
+			data.forEach(item=>{
+				message += '<tr>'+
+						       '<td>'+item.productCode+'</td>'+
+						       '<td>'+item.planCode+'</td>'+
+						       '<td>'+item.groupCode+'</td>'+
+						       '<td>'+item.subGroupCode+'</td>'+
+						       '<td>'+item.mbCnt+'</td>'+
+						   '</tr>';
+			});
+			message += '</tbody></table>';
 			dispatch(dialogOpen({
-				type: 'alert',
-				message: '网络错误.'
+				type: 'window',
+				message,
+				style: {width:500,height:150,maxHeight:400},
+				title: '关联保单信息 -- '+policyName
 			}));
 		});
 	};
@@ -106,59 +88,46 @@ export function queryPolicyDetail(param,callback=function(){}){
 				param,
 				data
 			});
-			fetch('../assets/json/hosList.json',{
-				method: 'get'
-			}).then(response=>response.text())
-			.then(data=>{
-				var result = JSON.parse(data);
-				if(result.statusCode==0){
-					dispatch({
-						type: types.HospitalList,
-						data: result.data,
-						policyDetail: getState().policyDetail,
-						param
-					});
-				};
+			common.baseDataService({
+				api: common.serverPath.hosListApi,
+				param: {method: 'get'},
+				showLoading: true,
+				dispatch
+			}).then((data)=>{
+				dispatch({
+					type: types.HospitalList,
+					policyDetail: getState().policyDetail,
+					data,
+					param
+				});
 				callback.call(this);
-				dispatch(loadingCancel());
-			}).catch(err=>{
-				dispatch(loadingCancel());
 			});
 		}else{
 			//编辑/复制/查看
-			dispatch(loadingOpen());
-			return fetch('../assets/json/policyDetails.json',{
-				method: 'get'
-			}).then(response=>response.text())
-			.then(data=>{
-				var result = JSON.parse(data);
-				if(result.statusCode==0){
+			common.baseDataService({
+				api: common.serverPath.policyDetailsApi,
+				param: {method: 'get'},
+				showLoading: true,
+				dispatch
+			}).then((data)=>{
+				dispatch({
+					type: types.PolicyDetail,
+					param,
+					data
+				});
+				common.baseDataService({
+					api: common.serverPath.hosListApi,
+					param: {method: 'get'},
+					dispatch
+				}).then((data)=>{
 					dispatch({
-						type: types.PolicyDetail,
-						param,
-						data: result.data
+						type: types.HospitalList,
+						policyDetail: getState().policyDetail,
+						data,
+						param
 					});
-					fetch('../assets/json/hosList.json',{
-						method: 'get'
-					}).then(response=>response.text())
-					.then(data=>{
-						var result = JSON.parse(data);
-						if(result.statusCode==0){
-							dispatch({
-								type: types.HospitalList,
-								data: result.data,
-								policyDetail: getState().policyDetail,
-								param
-							});
-						};
-						callback.call(this);
-						dispatch(loadingCancel());
-					}).catch(err=>{
-						dispatch(loadingCancel());
-					});
-				};
-			}).catch(err=>{
-				dispatch(loadingCancel());
+					callback.call(this);
+				});
 			});
 		};
 	};
@@ -171,75 +140,53 @@ export function submitPDF(param){
 			status: 'before',
 			policyId: param.policyId
 		});
-		return fetch('../assets/json/submitPDF.json',{
-			method: 'get'
-		}).then(response=>response.text())
-		.then(data=>{
-			var result = JSON.parse(data);
-			if(result.statusCode==0){
-				dispatch({
-					type: types.SubmitPDF,
-					status: 'success',
-					policyId: param.policyId
-				});
-				dispatch(dialogOpen({
-					type: 'alert',
-					message: '操作成功'
-				}));
-			}else{
-				dispatch(dialogOpen({
-					type: 'alert',
-					message: result.msg
-				}));
-			};
-		}).catch(err=>{
+		common.baseDataService({
+			api: common.serverPath.submitPDFApi,
+			param: {method: 'get'},
+			dispatch
+		}).then((data)=>{
+			dispatch({
+				type: types.SubmitPDF,
+				status: 'success',
+				policyId: param.policyId
+			});
+			dispatch(dialogOpen({
+				type: 'alert',
+				message: '提交成功.'
+			}));
+		},(err)=>{
 			dispatch({
 				type: types.SubmitPDF,
 				status: 'error',
 				policyId: param.policyId
 			});
-			dispatch(dialogOpen({
-				type: 'alert',
-				message: '网络错误.'
-			}));
 		});
 	};
 };
 //删除保单
 export function deletePolicy(param,callback=function(){}){
 	return (dispatch,getState)=>{
-		return fetch('../assets/json/policyDelete.json',{
-			method: 'get'
-		}).then(response=>response.text())
-		.then(data=>{
-			var result = JSON.parse(data);
-			if(result.statusCode==0){
-				dispatch(dialogOpen({
-					type: 'toast',
-					message: '删除成功.',
-					icon: 'icon-circle-check',
-					callback: function(){
-						delete param.policyIdArray;
-						dispatch(queryPolicyList(param,callback));
-					}
-				}));
-			}else{
-				dispatch(dialogOpen({
-					type: 'alert',
-					message: result.msg
-				}));
-			};
-		}).catch(err=>{
+		common.baseDataService({
+			api: common.serverPath.policyDeleteApi,
+			param: {method: 'get'},
+			showLoading: true,
+			dispatch
+		}).then((data)=>{
 			dispatch(dialogOpen({
-				type: 'alert',
-				message: '网络错误.'
+				type: 'toast',
+				message: '删除成功.',
+				icon: 'icon-circle-check',
+				callback: function(){
+					delete param.policyIdArray;
+					dispatch(queryPolicyList(param,callback));
+				}
 			}));
 		});
 	};
 };
 //生成pdf
 export function createPdf(param){
-	window.location.href = '../assets/json/downLoadPDF?policyId='+param.policyId;
+	window.location.href = common.serverPath.downLoadPDFApi+'='+param.policyId;
 };
 //发送pdf
 export function sendPdf(param){
@@ -249,37 +196,26 @@ export function sendPdf(param){
 			status: 'before',
 			policyId: param.policyId
 		});
-		return fetch('../assets/json/emailPDF.json',{
-			method: 'get'
-		}).then(response=>response.text())
-		.then(data=>{
-			var result = JSON.parse(data);
-			if(result.statusCode==0){
-				dispatch({
-					type: types.SendPdf,
-					status: 'success',
-					policyId: param.policyId
-				});
-				dispatch(dialogOpen({
-					type: 'alert',
-					message: '操作成功'
-				}));
-			}else{
-				dispatch(dialogOpen({
-					type: 'alert',
-					message: result.msg
-				}));
-			};
-		}).catch(err=>{
+		common.baseDataService({
+			api: common.serverPath.emailPDFApi,
+			param: {method: 'get'},
+			dispatch
+		}).then((data)=>{
+			dispatch({
+				type: types.SendPdf,
+				status: 'success',
+				policyId: param.policyId
+			});
+			dispatch(dialogOpen({
+				type: 'alert',
+				message: '发送成功.'
+			}));
+		},(err)=>{
 			dispatch({
 				type: types.SendPdf,
 				status: 'error',
 				policyId: param.policyId
 			});
-			dispatch(dialogOpen({
-				type: 'alert',
-				message: '网络错误.'
-			}));
 		});
 	};
 };
@@ -370,28 +306,21 @@ export function policySave(param,callback=function(){}){
 	const type = param.isTemplate ? '模板' : 'policy';
 	const path = param.path;
 	delete param.path;
-	const urlApi = path=='edit' ? '../assets/json/policyUpdate.json' : '../assets/json/policyAdd.json';
-	return (dispatch,getState)=>{
-		dispatch(loadingOpen());
-		return fetch(urlApi,{
-			method: 'get'
-		}).then(response=>response.text())
-		.then(data=>{
-			var result = JSON.parse(data);
-			if(result.statusCode==0){
-				const message = !result.data.policyId ? '修改'+type+'成功.' :
-								path=='copy' ? '复制'+type+'成功.' : '创建'+type+'成功.';
-				dispatch(dialogOpen({
-					type: 'alert',
-					message
-				}));
-				callback.call(this);
-			};
-			dispatch(loadingCancel());
-		}).catch(err=>{
-			dispatch(loadingCancel());
-		});
-	};
+	const urlApi = path=='edit' ? common.serverPath.hosListApi.policyUpdateApi : common.serverPath.hosListApi.policyAddApi;
+	common.baseDataService({
+		api: urlApi,
+		param: {method: 'get'},
+		showLoading: true,
+		dispatch
+	}).then((data)=>{
+		const message = !data.policyId ? '修改'+type+'成功.' :
+						path=='copy' ? '复制'+type+'成功.' : '创建'+type+'成功.';
+		dispatch(dialogOpen({
+			type: 'alert',
+			message
+		}));
+		callback.call(this);
+	});
 };
 //全选保单
 export function chooseAll(param){
@@ -436,21 +365,15 @@ export function changeSortType(param){
 //初始化节点数据
 export function initPolicyChosen(){
 	return (dispatch,getState)=>{
-		dispatch(loadingOpen());
-		return fetch('../assets/json/getTreeNode.json',{
-			method: 'get'
-		}).then(response=>response.text())
-		.then(data=>{
-			var result = JSON.parse(data);
-			if(result.statusCode==0){
-				dispatch({
-					type: types.PolicyInitChosen,
-					data: result.data
-				});
-			};
-			dispatch(loadingCancel());
-		}).catch(err=>{
-			dispatch(loadingCancel());
+		common.baseDataService({
+			api: common.serverPath.getTreeNodeApi,
+			param: {method: 'get'},
+			dispatch
+		}).then((data)=>{
+			dispatch({
+				type: types.PolicyInitChosen,
+				data
+			});
 		});
 	};
 };
