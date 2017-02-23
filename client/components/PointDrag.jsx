@@ -15,7 +15,7 @@ const PointDrag = React.createClass({
 			localStorage.removeItem('fromPath');
 		},100);
 	},
-	back(flag){
+	backHandler(flag){
 		//完成排序/取消排序
 		const param = {
 			eventType: flag?'ok':'reset'
@@ -99,8 +99,8 @@ const PointDrag = React.createClass({
 					})}
 				</section>
 				<footer>
-					<button className="btn" onClick={this.back.bind(this,false)}>取消</button>
-					<button className="btn btn-primary" onClick={this.back.bind(this,true)}>完成</button>
+					<button className="btn" onClick={this.backHandler.bind(this,false)}>取消</button>
+					<button className="btn btn-primary" onClick={this.backHandler.bind(this,true)}>完成</button>
 				</footer>
 			</section>
 		)

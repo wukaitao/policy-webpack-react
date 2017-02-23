@@ -3,7 +3,7 @@ import {Link,hashHistory} from 'react-router';
 import md5 from 'md5';
 //声明组件
 const Login = React.createClass({
-	login(event){
+	loginHandler(event){
 		event.preventDefault();
 		//前端校验
 		const self = this;
@@ -60,7 +60,7 @@ const Login = React.createClass({
 					<div className="login-area">
 						<div className="login-box">
 							<h2 className="title">用户登录</h2>
-							<form id="formLogin" method="post" onSubmit={this.login}>
+							<form id="formLogin" method="post" onSubmit={this.loginHandler}>
 								<div className="form-row">
 									<label htmlFor="userName">
 										用户名：

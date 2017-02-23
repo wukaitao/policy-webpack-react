@@ -2,14 +2,14 @@
 import addons from 'react-addons';
 //声明组件
 const Popup = React.createClass({
-	closeDialog(){
+	closeDialogHandler(){
 		//关闭弹窗
 		const param = {
 			result: false
 		};
 		this.props.dialogCancel(param);
 	},
-	confirmDialog(){
+	confirmDialogHandler(){
 		//确认操作
 		const self = this;
 		const param = {
@@ -78,7 +78,7 @@ const Popup = React.createClass({
 					) : (
 						<div className="dialog-box" style={{width:data.dialog.style.width+'px'}}>
 							<div className="dialog-title">
-								<i onClick={this.closeDialog} className="icon-cross"></i>
+								<i onClick={this.closeDialogHandler} className="icon-cross"></i>
 								{data.dialog.title}
 							</div>
 							<div className="dialog-content" style={{
@@ -91,8 +91,8 @@ const Popup = React.createClass({
 								}}></p>
 							</div>
 							<div className="dialog-toolbar">
-								<button onClick={this.confirmDialog} className="btn btn-primary">确定</button>
-								{data.dialog.type=='confirm' ? <button onClick={this.closeDialog} className="btn">取消</button> : null}
+								<button onClick={this.confirmDialogHandler} className="btn btn-primary">确定</button>
+								{data.dialog.type=='confirm' ? <button onClick={this.closeDialogHandler} className="btn">取消</button> : null}
 							</div>
 						</div>
 					)}

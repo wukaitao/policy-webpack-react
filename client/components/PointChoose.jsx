@@ -14,13 +14,13 @@ const PointChoose = React.createClass({
 			localStorage.removeItem('fromPath');
 		},100);
 	},
-	back(flag){
+	backHandler(flag){
 		//取消挑选/挑选完成
 		const param = {flag};
 		this.props.page.filterChosen(param);
 		hashHistory.goBack();
 	},
-	changeChosen(one,parent={}){
+	changeChosenHandler(one,parent={}){
 		//切换子节点/自定义标题节点/医院节点的选择
 		const param = {
 			parentLibId: parent.libId?parent.libId:'',
@@ -28,7 +28,7 @@ const PointChoose = React.createClass({
 		};
 		this.props.page.changeChosen(param);
 	},
-	changeChosenAll(one,flag=false){
+	changeChosenAllHandler(one,flag=false){
 		//选择全部子节点/自定义标题节点/医院节点的选择
 		const param = {one,flag};
 		this.props.page.changeChosenAll(param);
@@ -59,13 +59,13 @@ const PointChoose = React.createClass({
 					});
 					return <dl key={index}>
 						<dt>
-							<header className={classNodeClass} onClick={this.changeChosenAll.bind(this,item)}>{item.nodeTitle}</header>
+							<header className={classNodeClass} onClick={this.changeChosenAllHandler.bind(this,item)}>{item.nodeTitle}</header>
 						</dt>
 						{item.children.map((subItem,subIndex)=>{
 							const nodeClass = classSet({
 								'chosen': subItem.chosen
 							});
-							return <dd key={subIndex} className={nodeClass} onClick={this.changeChosen.bind(this,subItem,item)}>{subItem.nodeTitle}</dd>;
+							return <dd key={subIndex} className={nodeClass} onClick={this.changeChosenHandler.bind(this,subItem,item)}>{subItem.nodeTitle}</dd>;
 						})}
 					</dl>;
 				})}
@@ -74,26 +74,26 @@ const PointChoose = React.createClass({
 		const customNodeHtml = (
 			<dl>
 				<dt>
-					<header className={customNodeHeaderClass} onClick={this.changeChosenAll.bind(this,1,isChosenAllCustom)}>自定义标题</header>
+					<header className={customNodeHeaderClass} onClick={this.changeChosenAllHandler.bind(this,1,isChosenAllCustom)}>自定义标题</header>
 				</dt>
 				{customNodeData.map((item,index)=>{
 					const nodeClass = classSet({
 						'chosen': item.chosen
 					});
-					return <dd key={index} className={nodeClass} onClick={this.changeChosen.bind(this,item)}>{item.nodeTitle}</dd>;
+					return <dd key={index} className={nodeClass} onClick={this.changeChosenHandler.bind(this,item)}>{item.nodeTitle}</dd>;
 				})}
 			</dl>
 		);
 		const hospitalNodeHtml = (
 			<dl>
 				<dt>
-					<header className={hospitalNodeHeaderClass} onClick={this.changeChosenAll.bind(this,5,isChosenAllHospital)}>医院</header>
+					<header className={hospitalNodeHeaderClass} onClick={this.changeChosenAllHandler.bind(this,5,isChosenAllHospital)}>医院</header>
 				</dt>
 				{hospitalNodeData.map((item,index)=>{
 					const nodeClass = classSet({
 						'chosen': item.chosen
 					});
-					return <dd key={index} className={nodeClass} onClick={this.changeChosen.bind(this,item)}>{item.nodeTitle}</dd>;
+					return <dd key={index} className={nodeClass} onClick={this.changeChosenHandler.bind(this,item)}>{item.nodeTitle}</dd>;
 				})}
 			</dl>
 		);
@@ -106,8 +106,8 @@ const PointChoose = React.createClass({
 					{hospitalNodeHtml}
 				</section>
 				<footer>
-					<button className="btn" onClick={this.back.bind(this,false)}>取消挑选</button>
-					<button className="btn btn-primary" onClick={this.back.bind(this,true)}>挑选完成</button>
+					<button className="btn" onClick={this.backHandler.bind(this,false)}>取消挑选</button>
+					<button className="btn btn-primary" onClick={this.backHandler.bind(this,true)}>挑选完成</button>
 				</footer>
 			</section>
 		)

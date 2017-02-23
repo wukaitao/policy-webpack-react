@@ -12,7 +12,7 @@ const Nav = React.createClass({
 			else if(initPagePath.pointEditPath.indexOf(initPagePath.pagePath)!=-1) return '刷新页面将丢失页面操作并返回节点管理页面，请确认.';
 		};
 	},
-	logout(){
+	logoutHandler(){
 		//退出
 		const self = this;
 		self.props.popup.dialogOpen({
@@ -32,7 +32,7 @@ const Nav = React.createClass({
 			}
 		});
 	},
-	goPath(path){
+	goPathHandler(path){
 		//跳转到保单管理/节点管理
 		const initPagePath = this.initPagePath();
 		const message = initPagePath.policyEditPath.indexOf(initPagePath.pagePath)!=-1?'离开当前页面将丢失未保存的保单内容，请确认.':
@@ -105,12 +105,12 @@ const Nav = React.createClass({
 					<div className="welcome">
 						欢迎您，<strong>{data.userName}</strong>
 						|
-						<span onClick={this.logout} className="logout">退出</span>
+						<span onClick={this.logoutHandler} className="logout">退出</span>
 					</div>
 					<div className="menu">
-						<a onClick={this.goPath.bind(this,'policymanage')} className={tabPolicyClass}>保单管理</a>
+						<a onClick={this.goPathHandler.bind(this,'policymanage')} className={tabPolicyClass}>保单管理</a>
 						<span className="br">｜</span>
-						<a onClick={this.goPath.bind(this,'pointmanage')} className={tabPointClass}>节点管理</a>
+						<a onClick={this.goPathHandler.bind(this,'pointmanage')} className={tabPointClass}>节点管理</a>
 					</div>
 				</nav>
 			</header>

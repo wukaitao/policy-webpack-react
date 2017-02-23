@@ -85,10 +85,10 @@ const PolicyEdit = React.createClass({
 		const param = {policyId,path};
 		this.props.page.queryPolicyDetail(param,callback);
 	},
-	back(){
+	backHandler(){
 		hashHistory.push('/policymanage');
 	},
-	show(one,param){
+	showHandler(one,param){
 		const self = this;
 		const count = param.count;
 		const id = param.id.split('-');
@@ -185,7 +185,7 @@ const PolicyEdit = React.createClass({
 			};
 		});
 	},
-	save(isTemplate){
+	saveHandler(isTemplate){
 		const self = this;
 		//更新orderId
 		//if(!drag) this.props.page.policyRefreshOrder(types.PolicyRefreshOrder,{isResetNodeType: false});
@@ -270,7 +270,7 @@ const PolicyEdit = React.createClass({
 			hashHistory.push('/policymanage');
 		});
 	},
-	toTop(){
+	toTopHandler(){
 		//页面滚动到顶部
 		$('body').animate({scrollTop:0},'slow');
 	},
@@ -294,13 +294,13 @@ const PolicyEdit = React.createClass({
 		//查看且为模板管理人员的时候隐藏
 		return this.props.route.path!='/policyview/:id';
 	},
-	changePolicyName(){
+	changePolicyNameHandlerHandler(){
 		const param = {
 			policyName: this.refs.policyName.value
 		};
 		this.props.page.changePolicyName(param);
 	},
-	changeIsPrev(nodeIndex){
+	changeIsPrevHandler(nodeIndex){
 		//切换责任限额
 		const param = {nodeIndex};
 		this.props.page.changeIsPrev(param);
@@ -321,14 +321,14 @@ const PolicyEdit = React.createClass({
 			});
 		});
 	},
-	changeCurHospitalType(type){
+	changeCurHospitalTypeHandler(type){
 		//切换当前医院选择类型
 		this.setState({
 			curHospitalType: type
 		});
 		this.changeBtnStatus();
 	},
-	changeChosen(one){
+	changeChosenHandler(one){
 		//切换医院选择
 		const param = {one};
 		this.props.page.chooseHospital(param);
@@ -363,21 +363,21 @@ const PolicyEdit = React.createClass({
 			};
 		});
 	},
-	filterHospital(){
+	filterHospitalHandler(){
 		//筛选医院
 		this.setState({
 			keyword: this.refs.keyword.value
 		});
 		this.changeBtnStatus();
 	},
-	addHospital(){
+	addHospitalHandler(){
 		//添加医院
 		const payType = this.state.curHospitalType=='coinsuranceList'?'0':'1';
 		const param = {payType};
 		this.props.page.addHospital(param);
 		this.changeBtnStatus();
 	},
-	removeHospital(){
+	removeHospitalHandler(){
 		//移除医院
 		const param = {
 			curHospitalType: this.state.curHospitalType
@@ -385,7 +385,7 @@ const PolicyEdit = React.createClass({
 		this.props.page.removeHospital(param);
 		this.changeBtnStatus();
 	},
-	addExpHospital(){
+	addExpHospitalHandler(){
 		//添加所有昂贵医院
 		const param = {
 			curHospitalType: this.state.curHospitalType
@@ -393,7 +393,7 @@ const PolicyEdit = React.createClass({
 		this.props.page.addExpHospital(param);
 		this.changeBtnStatus();
 	},
-	removeExpHospital(){
+	removeExpHospitalHandler(){
 		//移除所有昂贵医院
 		const param = {
 			curHospitalType: this.state.curHospitalType
@@ -401,7 +401,7 @@ const PolicyEdit = React.createClass({
 		this.props.page.removeExpHospital(param);
 		this.changeBtnStatus();
 	},
-	changeHosSelectedAllLeft(){
+	changeHosSelectedAllLeftHandler(){
 		//全选所有医院
 		const param = {
 			flag: this.refs.hosSelectedAllLeft.checked
@@ -409,7 +409,7 @@ const PolicyEdit = React.createClass({
 		this.props.page.changeHosSelectedAllLeft(param);
 		this.changeBtnStatus();
 	},
-	changeHosSelectedAllRight(){
+	changeHosSelectedAllRightHandler(){
 		//全选选中医院
 		const param = {
 			flag: this.refs.hosSelectedAllRight.checked,
@@ -468,7 +468,7 @@ const PolicyEdit = React.createClass({
 				<nav>
 					<div>基础信息</div>
 					<hr/>
-					{this.showEditBtn() ? <button className="btn" onClick={this.show.bind(this,'editBase',{
+					{this.showEditBtn() ? <button className="btn" onClick={this.showHandler.bind(this,'editBase',{
 						count: 1,
 						id: 'baseeditor0',
 						nodeIndex: 'base',
@@ -486,7 +486,7 @@ const PolicyEdit = React.createClass({
 							</td>
 							<td>
 								{this.state.editBase ? (
-									<input type="text" className="ipt" maxLength="250" value={data.policyName} onChange={this.changePolicyName} ref="policyName"/>
+									<input type="text" className="ipt" maxLength="250" value={data.policyName} onChange={this.changePolicyNameHandlerHandler} ref="policyName"/>
 								) : (
 									<div className="detail" dangerouslySetInnerHTML={{__html: data.policyName}}/>
 								)}
@@ -510,7 +510,7 @@ const PolicyEdit = React.createClass({
 				<nav>
 					<div>医院选择</div>
 					<hr/>
-					{this.showEditBtn() ? <button className="btn" onClick={this.show.bind(this,'editHospital',{
+					{this.showEditBtn() ? <button className="btn" onClick={this.showHandler.bind(this,'editHospital',{
 						count: 0,
 						id: '',
 						nodeIndex: '',
@@ -558,14 +558,14 @@ const PolicyEdit = React.createClass({
 							<td className="type">
 								医院类型选择：
 								<span className="tab-container">
-									<span className={coinsuranceClass} onClick={this.changeCurHospitalType.bind(this,'coinsuranceList')}>共付医院</span>
-									<span className={deductibleClass} onClick={this.changeCurHospitalType.bind(this,'deductibleList')}>无赔付医院</span>
+									<span className={coinsuranceClass} onClick={this.changeCurHospitalTypeHandler.bind(this,'coinsuranceList')}>共付医院</span>
+									<span className={deductibleClass} onClick={this.changeCurHospitalTypeHandler.bind(this,'deductibleList')}>无赔付医院</span>
 								</span>
 							</td>
 							<td/>
 							<td className="toolbar">
 								<span className="searchbox">
-									<input type="text" placeholder="请输入医院名称" onChange={this.filterHospital} ref="keyword"/>
+									<input type="text" placeholder="请输入医院名称" onChange={this.filterHospitalHandler} ref="keyword"/>
 									<i className="icon-search"></i>
 								</span>
 							</td>
@@ -574,14 +574,14 @@ const PolicyEdit = React.createClass({
 							<td className="title label">
 								所有医院
 								<span className="choose">
-									<input type="checkbox" disabled={this.state.isDisabledHosSelectedAllLeft} onChange={this.changeHosSelectedAllLeft} ref="hosSelectedAllLeft"/>全选
+									<input type="checkbox" disabled={this.state.isDisabledHosSelectedAllLeft} onChange={this.changeHosSelectedAllLeftHandler} ref="hosSelectedAllLeft"/>全选
 								</span>
 							</td>
 							<td></td>
 							<td className="title label">
 								选中医院
 								<span className="choose">
-									<input type="checkbox" disabled={this.state.isDisabledHosSelectedAllRight} onChange={this.changeHosSelectedAllRight} ref="hosSelectedAllRight"/>全选
+									<input type="checkbox" disabled={this.state.isDisabledHosSelectedAllRight} onChange={this.changeHosSelectedAllRightHandler} ref="hosSelectedAllRight"/>全选
 								</span>
 							</td>
 						</tr>
@@ -595,17 +595,17 @@ const PolicyEdit = React.createClass({
 												'exp': item.IS_EXPENSIVE,
 												'hospital': true
 											});
-											const html = <li key={index} className={liClass} onClick={this.changeChosen.bind(this,item)}>{item.HOS_NAME}</li>;
+											const html = <li key={index} className={liClass} onClick={this.changeChosenHandler.bind(this,item)}>{item.HOS_NAME}</li>;
 											return html;
 										})}
 									</ul>
 								</div>
 							</td>
 							<td className="text-center">
-								<span className={addHospitalClass} onClick={this.addHospital}> &gt;&gt; </span>
-								<span className={removeHospitalClass} onClick={this.removeHospital}> &lt;&lt; </span>
-								<span className={addExpHospitalClass} onClick={this.addExpHospital}>添加所有昂贵医院 </span>
-								<span className={removeExpHospitalClass} onClick={this.removeExpHospital}>移除所有昂贵医院 </span>
+								<span className={addHospitalClass} onClick={this.addHospitalHandler}> &gt;&gt; </span>
+								<span className={removeHospitalClass} onClick={this.removeHospitalHandler}> &lt;&lt; </span>
+								<span className={addExpHospitalClass} onClick={this.addExpHospitalHandler}>添加所有昂贵医院 </span>
+								<span className={removeExpHospitalClass} onClick={this.removeExpHospitalHandler}>移除所有昂贵医院 </span>
 							</td>
 							<td>
 								<div className="hospital-container">
@@ -617,7 +617,7 @@ const PolicyEdit = React.createClass({
 												'hospital': true
 											});
 											const html = (self.state.curHospitalType=='coinsuranceList'&&item.payType==0)||(self.state.curHospitalType=='deductibleList'&&item.payType==1) ? 
-													(<li key={index} className={liClass} onClick={this.changeChosen.bind(this,item)}>{item.HOS_NAME}</li>) : null;
+													(<li key={index} className={liClass} onClick={this.changeChosenHandler.bind(this,item)}>{item.HOS_NAME}</li>) : null;
 											return html;
 										})}
 									</ul>
@@ -645,7 +645,7 @@ const PolicyEdit = React.createClass({
 							<nav className="nodeType2">
 								<div>{item.nodeTitle}</div>
 								<hr style={{marginTop: "15px"}}/>
-								{this.showEditBtn() ? <button className="btn" onClick={this.show.bind(this,item,{
+								{this.showEditBtn() ? <button className="btn" onClick={this.showHandler.bind(this,item,{
 									count: 2,
 									id: 'o'+item.libId+'editor0'+'-o'+item.libId+'editor1',
 									nodeIndex: index+'',
@@ -700,7 +700,7 @@ const PolicyEdit = React.createClass({
 											<nav>
 												<div>{subItem.nodeTitle}</div>
 												<hr/>
-												{this.showEditBtn() ? <button className="btn" onClick={this.show.bind(this,subItem,{
+												{this.showEditBtn() ? <button className="btn" onClick={this.showHandler.bind(this,subItem,{
 													count: 2,
 													id: 'p'+subItem.libId+'editor0'+'-p'+subItem.libId+'editor1',
 													nodeIndex: index+'-'+subIndex,
@@ -720,7 +720,7 @@ const PolicyEdit = React.createClass({
 																		与上一节点相同
 																	</span>
 																	<span className={abledPrevClass}>
-																		<input type="checkbox" checked={subItem.isPrev} onChange={this.changeIsPrev.bind(this,[index,subIndex])}/>
+																		<input type="checkbox" checked={subItem.isPrev} onChange={this.changeIsPrevHandler.bind(this,[index,subIndex])}/>
 																		与上一节点相同
 																	</span>
 																</span>
@@ -751,7 +751,7 @@ const PolicyEdit = React.createClass({
 							<nav className="nodeType1">
 								<div>{item.nodeTitle}</div>
 								<hr/>
-								{this.showEditBtn() ? <button className="btn" onClick={this.show.bind(this,item,{
+								{this.showEditBtn() ? <button className="btn" onClick={this.showHandler.bind(this,item,{
 									count: 1,
 									id: 'o'+item.libId+'editor0',
 									nodeIndex: index+'',
@@ -779,7 +779,7 @@ const PolicyEdit = React.createClass({
 							<nav className="nodeType5">
 								<div>{item.nodeTitle}</div>
 								<hr/>
-								{this.showEditBtn() ? <button className="btn" onClick={this.show.bind(this,item,{
+								{this.showEditBtn() ? <button className="btn" onClick={this.showHandler.bind(this,item,{
 									count:2,
 									id:'o'+item.libId+'editor0'+'-o'+item.libId+'editor1',
 									nodeIndex:index+'',
@@ -815,9 +815,9 @@ const PolicyEdit = React.createClass({
 		return (
 			<section className="main policy-edit">
 				<header>
-					<button className="btn" onClick={this.back}>返回</button>
-					{this.showPolicyBtn ? <button className="btn" onClick={this.save.bind(this,false)}>保存POLICY</button> : null}
-					{this.showTemplateBtn ? <button className="btn" onClick={this.save.bind(this,true)}>保存模板</button> : null}
+					<button className="btn" onClick={this.backHandler}>返回</button>
+					{this.showPolicyBtn ? <button className="btn" onClick={this.saveHandler.bind(this,false)}>保存POLICY</button> : null}
+					{this.showTemplateBtn ? <button className="btn" onClick={this.saveHandler.bind(this,true)}>保存模板</button> : null}
 					{this.showEditBtn() ? <Link to="/pointchoose" className="btn">挑选节点</Link> : null}
 					{this.showEditBtn() ? <Link to="/pointdrag" className="btn">调整排序</Link> : null}
 				</header>
@@ -827,11 +827,11 @@ const PolicyEdit = React.createClass({
 					{hospitalHtml}
 				</section>
 				<footer>
-					<button className="btn" onClick={this.back}>返回</button>
-					{this.showPolicyBtn ? <button className="btn btn-primary" onClick={this.save.bind(this,false)}>保存POLICY</button> : null}
-					{this.showTemplateBtn ? <button className="btn btn-primary" onClick={this.save.bind(this,true)}>保存模板</button> : null}
+					<button className="btn" onClick={this.backHandler}>返回</button>
+					{this.showPolicyBtn ? <button className="btn btn-primary" onClick={this.saveHandler.bind(this,false)}>保存POLICY</button> : null}
+					{this.showTemplateBtn ? <button className="btn btn-primary" onClick={this.saveHandler.bind(this,true)}>保存模板</button> : null}
 				</footer>
-				<button className="btn toTop" onClick={this.toTop}>Top</button>
+				<button className="btn toTop" onClick={this.toTopHandler}>Top</button>
 			</section>
 		)
 	}

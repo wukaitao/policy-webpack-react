@@ -13,13 +13,13 @@ const PolicyManage = React.createClass({
 		//重置搜索类型
 		this.props.page.resetSearchType();
 		//默认加载列表
-		this.getPolicyList(1,true);
+		this.getPolicyListHandler(1,true);
 	},
 	isTemplateManager(){
 		//是否管理员
 		return true;
 	},
-	getPolicyList(page,flag){
+	getPolicyListHandler(page,flag){
 		//获取列表
 		if(!flag) return;
 		let param = {
@@ -34,14 +34,14 @@ const PolicyManage = React.createClass({
 			sortType: 'desc'
 		});
 	},
-	postPolicy(one){
+	postPolicyHandler(one){
 		//提交保单
 		const param = {
 			policyId: one.policyId
 		};
 		this.props.page.submitPDF(param);
 	},
-	delSelectedPolicy(){
+	delSelectedPolicyHandler(){
 		//删除保单
 		const self = this;
 		let param = {
@@ -74,21 +74,21 @@ const PolicyManage = React.createClass({
 			}
 		});
 	},
-	createPdf(id){
+	createPdfHandler(id){
 		//生成pdf
 		const param = {
 			policyId: id
 		};
 		this.props.page.createPdf(param);
 	},
-	sendPdf(id){
+	sendPdfHandler(id){
 		//发送pdf
 		const param = {
 			policyId: id
 		};
 		this.props.page.sendPdf(param);
 	},
-	queryPolicyRelationList(id,policyName){
+	queryPolicyRelationListHandler(id,policyName){
 		//保单关系列表
 		const param = {
 			policyId: id,
@@ -96,19 +96,19 @@ const PolicyManage = React.createClass({
 		};
 		this.props.page.queryPolicyRelationList(param);
 	},
-	chooseAll(){
+	chooseAllHandler(){
 		//全选保单
 		const param = {
 			flag: this.refs.chooseAll.checked
 		};
 		this.props.page.chooseAll(param);
 	},
-	chooseInvert(){
+	chooseInvertHandler(){
 		//反选保单
 		this.props.page.chooseInvert();
 		this.changeCheckboxStatus();
 	},
-	changePolicyChosen(one){
+	changePolicyChosenHandler(one){
 		//选择保单
 		const param = {one};
 		this.props.page.changePolicyChosen(param);
@@ -128,7 +128,7 @@ const PolicyManage = React.createClass({
 			};
 		});
 	},
-	changeShowSearchType(event){
+	changeShowSearchTypeHandler(event){
 		const isSelf = event.target.className=='searchType';
 		//阻止冒泡事件
 		isSelf&&event.stopPropagation();
@@ -137,12 +137,12 @@ const PolicyManage = React.createClass({
 			showSearchType: !isSelf?false:!this.state.showSearchType
 		});
 	},
-	changeSearchType(one){
+	changeSearchTypeHandler(one){
 		//切换搜索类型
 		const param = {one};
 		this.props.page.changeSearchType(param);
 	},
-	changeSortType(){
+	changeSortTypeHandler(){
 		//切换保单排序
 		this.setState({
 			sortType: this.state.sortType=='desc'?'asc':'desc'
@@ -184,7 +184,7 @@ const PolicyManage = React.createClass({
 			return (
 				<tr key={index}>
 					<td className="text-center">
-						<input type="checkbox" checked={item.chosen} onChange={this.changePolicyChosen.bind(this,item)}/>
+						<input type="checkbox" checked={item.chosen} onChange={this.changePolicyChosenHandler.bind(this,item)}/>
 					</td>
 					<td className="text-ellipsis" title={item.policyName}>{item.policyName}</td>
 					<td className="text-center">
@@ -194,7 +194,7 @@ const PolicyManage = React.createClass({
 						{!item.isTemplate&&item.policyKeyMsg ?
 							<span>
 								{item.policyKeyMsg}
-								<i className="icon-eye" onClick={this.queryPolicyRelationList.bind(this,item.policyId,item.policyName)}></i>
+								<i className="icon-eye" onClick={this.queryPolicyRelationListHandler.bind(this,item.policyId,item.policyName)}></i>
 							</span> : null
 						}
 					</td>
@@ -207,14 +207,14 @@ const PolicyManage = React.createClass({
 								<span style={{color: "#333"}}>待提交</span>
 								{item.isPosting?
 									<span className="btn btn-disabled">提交中.</span>:
-									<span className="btn" onClick={this.postPolicy.bind(this,item)}>提交</span>
+									<span className="btn" onClick={this.postPolicyHandler.bind(this,item)}>提交</span>
 								}
 							</span> : item.policyStatus==1 ?
 							<span>
 								<span style={{color: "#999"}}>已提交</span>
 								{item.isPosting?
 									<span className="btn btn-disabled">提交中.</span>:
-									<span className="btn" onClick={this.postPolicy.bind(this,item)}>再提交</span>
+									<span className="btn" onClick={this.postPolicyHandler.bind(this,item)}>再提交</span>
 								}
 							</span>: null
 						}
@@ -223,8 +223,8 @@ const PolicyManage = React.createClass({
 						{item.isTemplate&&!this.isTemplateManager?<Link to={`/policyview/${item.policyId}`} className="btn">查看</Link>:null}
 						{!item.isTemplate||this.isTemplateManager?<Link to={`/policyedit/${item.policyId}`} className="btn">修改</Link>:null}
 						<Link to={`/policycopy/${item.policyId}`} className="btn">复制</Link>
-						<span onClick={this.createPdf.bind(this,item.policyId)} className="btn">生成pdf</span>
-						<span onClick={this.sendPdf.bind(this,item.policyId)} className="btn">发送pdf</span>
+						<span onClick={this.createPdfHandler.bind(this,item.policyId)} className="btn">生成pdf</span>
+						<span onClick={this.sendPdfHandler.bind(this,item.policyId)} className="btn">发送pdf</span>
 					</td>
 				</tr>
 			);
@@ -243,27 +243,27 @@ const PolicyManage = React.createClass({
 			'icon-arrow_drop_down': !this.state.showSearchType
 		});
 		return(
-			<section className="main policy-manage" onClick={this.changeShowSearchType}>
+			<section className="main policy-manage" onClick={this.changeShowSearchTypeHandler}>
 				<div className="toolbar">
 					<div className="toolbar-row">
 						<span className="searchbox">
 							<input type="text" ref="policyKeyword" placeholder="请输入policy名称或memberId"/>
 							<span className="type">
-								<span className="searchType" onClick={this.changeShowSearchType}>
+								<span className="searchType" onClick={this.changeShowSearchTypeHandler}>
 									{pageStatus.oSearch.name}<i className={iSearchTypeClass}></i>
 								</span>
 								<ul className={ulSearchTypeClass}>
 									{pageStatus.aSearch.map((item,index)=>{
-										return <li key={index} onClick={this.changeSearchType.bind(this,item)}>{item.name}</li>;
+										return <li key={index} onClick={this.changeSearchTypeHandler.bind(this,item)}>{item.name}</li>;
 									})}
 								</ul>
 							</span>
-							<i onClick={this.getPolicyList.bind(this,1,true)} className="icon-search"></i>
+							<i onClick={this.getPolicyListHandler.bind(this,1,true)} className="icon-search"></i>
 						</span>
 					</div>
 					<div className="toolbar-row ">
 						<Link to="/policyadd" className="btn btn-primary">+新建policy</Link>
-						<span onClick={this.delSelectedPolicy} className="btn btn-warn">!批量删除</span>
+						<span onClick={this.delSelectedPolicyHandler} className="btn btn-warn">!批量删除</span>
 					</div>
 				</div>
 				<table className="data-table">
@@ -276,14 +276,14 @@ const PolicyManage = React.createClass({
 					<thead>
 						<tr>
 							<th>
-								<input type="checkbox" ref="chooseAll" onChange={this.chooseAll}/>
-								<i onClick={this.chooseInvert} className="icon-search"></i>
+								<input type="checkbox" ref="chooseAll" onChange={this.chooseAllHandler}/>
+								<i onClick={this.chooseInvertHandler} className="icon-search"></i>
 							</th>
 							<th>名称</th>
 							<th>编号</th>
 							<th>保单信息</th>
 							<th>最后修改人</th>
-							<th onClick={this.changeSortType}>
+							<th onClick={this.changeSortTypeHandler}>
 								最后修改日期
 								<i className={iSortClass}></i>
 							</th>
@@ -298,20 +298,20 @@ const PolicyManage = React.createClass({
 				<div className="toolbar">
 					<div className="toolbar-row">
 						<Link to="/policyadd" className="btn btn-primary">+新建policy</Link>
-						<span onClick={this.delSelectedPolicy} className="btn btn-warn">!批量删除</span>
+						<span onClick={this.delSelectedPolicyHandler} className="btn btn-warn">!批量删除</span>
 					</div>
 				</div>
 				<div className="pagination">
 					<span className="pageInfo">共有 {data.totalCount} 条记录，每页显示 20 条，当前第 {data.currentPage}/{'17'} 页</span>
-					<span onClick={this.getPolicyList.bind(this,1,data.currentPage!=1)} 
+					<span onClick={this.getPolicyListHandler.bind(this,1,data.currentPage!=1)} 
 					className={btnFirstClass}>第一页</span>
-					<span onClick={this.getPolicyList.bind(this,parseInt(data.currentPage)-1,parseInt(data.currentPage)>1)} 
+					<span onClick={this.getPolicyListHandler.bind(this,parseInt(data.currentPage)-1,parseInt(data.currentPage)>1)} 
 					className={btnPrevClass}>上一页</span>
-					<span onClick={this.getPolicyList.bind(this,parseInt(data.currentPage)+1,parseInt(data.currentPage)+1<=parseInt(data.pageCount))} 
+					<span onClick={this.getPolicyListHandler.bind(this,parseInt(data.currentPage)+1,parseInt(data.currentPage)+1<=parseInt(data.pageCount))} 
 					className={btnNextClass}>下一页</span>
-					<span onClick={this.getPolicyList.bind(this,parseInt(data.pageCount),parseInt(data.currentPage)!=parseInt(data.pageCount))} 
+					<span onClick={this.getPolicyListHandler.bind(this,parseInt(data.pageCount),parseInt(data.currentPage)!=parseInt(data.pageCount))} 
 					className={btnLastClass}>最后一页</span>
-					<select className="ipt-goPage" ref="selectedPage" value={data.currentPage} onChange={this.getPolicyList.bind(this,23,true)}>
+					<select className="ipt-goPage" ref="selectedPage" value={data.currentPage} onChange={this.getPolicyListHandler.bind(this,23,true)}>
 						{selectedPageOption}
 					</select>
 				</div>

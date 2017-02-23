@@ -38,25 +38,25 @@ const PointManage = React.createClass({
 		};
 		this.props.queryAllPoint(param);
 	},
-	cateEdit(one,type){
+	cateEditHandler(one,type){
 		//编辑分类/自定义节点/医院节点
 		hashHistory.push('/cateedit/'+type+'/'+one.libId);
 	},
-	pointAdd(one){
+	pointAddHandler(one){
 		//新建子节点
 		hashHistory.push('/pointadd/3/'+one.libId);
 	},
-	pointEdit(one){
+	pointEditHandler(one){
 		//编辑子节点
 		hashHistory.push('/pointedit/'+one.libId);
 	},
-	changeCurrentTabType(type){
+	changeCurrentTabTypeHandler(type){
 		//切换页签
 		this.setState({
 			currentTabType: type
 		});
 	},
-	caseFilter(){
+	caseFilterHandler(){
 		//筛选分类
 		this.setState({
 			keyword: this.refs.keyword.value
@@ -67,7 +67,7 @@ const PointManage = React.createClass({
 		};
 		this.props.filterAllPoint(param);
 	},
-	pointFilter(one){
+	pointFilterHandler(one){
 		//筛选节点
 		const param = {
 			keyword: this.refs['point'+one.libId].value,
@@ -75,7 +75,7 @@ const PointManage = React.createClass({
 		};
 		this.props.filterPoint(param);
 	},
-	toggleSearchbox(one,event){
+	toggleSearchboxHandler(one,event){
 		//切换筛选节点的显示状态
 		const self = this;
 		const param = {one};
@@ -85,7 +85,7 @@ const PointManage = React.createClass({
     		self.props.toggleSearchbox(param);
     	});
 	},
-	clearKeyword(one){
+	clearKeywordHandler(one){
 		//清除筛选节点的关键字
 		const param = {
 			keyword: '',
@@ -93,7 +93,7 @@ const PointManage = React.createClass({
 		};
 		this.props.filterPoint(param);
 	},
-	pageScrollTo(one){
+	pageScrollToHandler(one){
 		//点击字母滚动页面
   		$('.letter-list').css({
   			'background': 'rgba(145,145,145,0.6)'
@@ -152,18 +152,18 @@ const PointManage = React.createClass({
 		const letterOptionHtml = [];
 		self.props.letterList.forEach((item,index)=>{
 			letterOptionHtml.push(
-				<span key={index} onClick={this.pageScrollTo.bind(this,item)}>{item}</span>
+				<span key={index} onClick={this.pageScrollToHandler.bind(this,item)}>{item}</span>
 			);
 		});
 		const tabHtml = (
 		  	<div className="tab-wrap">
 		  		<span className="tab-container">
-		  			<span className={tab2Class} onClick={this.changeCurrentTabType.bind(this,'nodeType2')}>分类</span>
-		  			<span className={tab1Class} onClick={this.changeCurrentTabType.bind(this,'nodeType1')}>自定义标题节点</span>
-		  			<span className={tab5Class} onClick={this.changeCurrentTabType.bind(this,'nodeType5')}>医院节点</span>
+		  			<span className={tab2Class} onClick={this.changeCurrentTabTypeHandler.bind(this,'nodeType2')}>分类</span>
+		  			<span className={tab1Class} onClick={this.changeCurrentTabTypeHandler.bind(this,'nodeType1')}>自定义标题节点</span>
+		  			<span className={tab5Class} onClick={this.changeCurrentTabTypeHandler.bind(this,'nodeType5')}>医院节点</span>
 		  		</span>
 		  		<span className={searchCaseClass}>
-		  			<input type="text" placeholder="请输入分类关键字" value={this.state.keyword} onChange={this.caseFilter} ref="keyword"/>
+		  			<input type="text" placeholder="请输入分类关键字" value={this.state.keyword} onChange={this.caseFilterHandler} ref="keyword"/>
 		  			<span className="icon icon-search"></span>
 		  		</span>
 		  	</div>
@@ -192,19 +192,19 @@ const PointManage = React.createClass({
 					    		<dd id={letterId} className="letter">{item.firstLetter}</dd>
 					    	):null}
 					    	<dt>
-					    		<header onClick={self.cateEdit.bind(this,item,2)}>{item.nodeTitle}</header>
+					    		<header onClick={self.cateEditHandler.bind(this,item,2)}>{item.nodeTitle}</header>
 						      	<span className={searchPointClass}>
-						      		<i onClick={this.toggleSearchbox.bind(this,item)} className={iToggleClass}></i>
+						      		<i onClick={this.toggleSearchboxHandler.bind(this,item)} className={iToggleClass}></i>
 						      		<span className="inputbox">
-							      		<input type="text" placeholder="请输入节点关键字" value={item.keyword} onChange={this.pointFilter.bind(this,item)} ref={'point'+item.libId}/>
-							      		<span onClick={this.clearKeyword.bind(this,item)} className={iClearClass}></span>
+							      		<input type="text" placeholder="请输入节点关键字" value={item.keyword} onChange={this.pointFilterHandler.bind(this,item)} ref={'point'+item.libId}/>
+							      		<span onClick={this.clearKeywordHandler.bind(this,item)} className={iClearClass}></span>
 						      		</span>
 						      	</span>
 					    	</dt>
 					      	{item.children.filter(subItem=>subItem.nodeTitle.indexOf(item.keyword)!=-1).map((subItem,subIndex)=>{
-				      			return <dd key={subIndex} onClick={self.pointEdit.bind(this,subItem)}>{subItem.nodeTitle}</dd>;
+				      			return <dd key={subIndex} onClick={self.pointEditHandler.bind(this,subItem)}>{subItem.nodeTitle}</dd>;
 				      		})}
-					    	<dd className="btn" onClick={self.pointAdd.bind(this,item)}>+新建节点</dd>
+					    	<dd className="btn" onClick={self.pointAddHandler.bind(this,item)}>+新建节点</dd>
 					    </dl>
 					);
 				})}
@@ -225,7 +225,7 @@ const PointManage = React.createClass({
 					<header>自定义标题</header>
 				</dt>
 				{data.filter(item=>item.nodeType==1).map((item,index)=>{
-					return <dd key={index} onClick={self.cateEdit.bind(this,item,1)}>{item.nodeTitle}</dd>;
+					return <dd key={index} onClick={self.cateEditHandler.bind(this,item,1)}>{item.nodeTitle}</dd>;
 				})}
 		    	<dd className="btn">
 		    		<Link to="/cateadd/1" className="btn add">+新建自定义标题节点</Link>
@@ -238,7 +238,7 @@ const PointManage = React.createClass({
 					<header>医院</header>
 				</dt>
 				{data.filter(item=>item.nodeType==5).map((item,index)=>{
-					return <dd key={index} onClick={self.cateEdit.bind(this,item,5)}>{item.nodeTitle}</dd>;
+					return <dd key={index} onClick={self.cateEditHandler.bind(this,item,5)}>{item.nodeTitle}</dd>;
 				})}
 		    	<dd className="btn">
 		    		<Link to="/cateadd/5" className="btn add">+新建医院节点</Link>

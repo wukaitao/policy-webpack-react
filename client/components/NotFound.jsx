@@ -19,7 +19,7 @@ const NotFound = React.createClass({
 			};
 		},1000);
 	},
-	back(){
+	backHandler(){
 		window.history.back();
 	},
 	render(){
@@ -35,7 +35,7 @@ const NotFound = React.createClass({
 						秒后将会跳转到保单管理首页
 					</div>
 					<div className="btn-area">
-						<button className="btn" onClick={this.back}>返回</button>
+						<button className="btn" onClick={this.backHandler}>返回</button>
 						<Link to="/policymanage" className="btn btn-primary">保单管理</Link>
 					</div>
 				</div>
