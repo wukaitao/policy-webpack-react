@@ -3,10 +3,10 @@ import {connect} from 'react-redux';
 import PointManage from '../components/PointManage.jsx';
 import * as PointActions from '../actions/point.js';
 
-//将state.allPointData绑定到props.allPointData
+//将state.pointList绑定到props.pointList
 const mapStateToProps = state =>{
 	return {
-		allPointData: state.allPointData,
+		pointList: state.pointList,
 		letterList: state.letterList
 	};
 };

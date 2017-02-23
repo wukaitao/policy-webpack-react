@@ -4,10 +4,10 @@ import PointEdit from '../components/PointEdit.jsx';
 import * as PointActions from '../actions/point.js';
 import * as PopupActions from '../actions/popup.js';
 
-//将state.allPointData绑定到props.allPointData
+//将state.pointDetail绑定到props.pointDetail
 const mapStateToProps = state =>{
 	return {
-		pointData: state.pointData,
+		pointDetail: state.pointDetail,
 		pageStatus: state.pageStatus
 	};
 };

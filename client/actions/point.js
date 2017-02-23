@@ -22,7 +22,7 @@ export function queryAllPoint(param){
 			setTimeout(()=>{
 				dispatch({
 					type: types.ResetLetterList,
-					data: getState().allPointData
+					data: getState().pointList
 				});
 			});
 		});
@@ -39,7 +39,7 @@ export function filterAllPoint(param){
 		setTimeout(()=>{
 			dispatch({
 				type: types.ResetLetterList,
-				data: getState().allPointData
+				data: getState().pointList
 			});
 		});
 	};
@@ -69,7 +69,7 @@ export function getPointData(param){
 		dispatch({
 			type: types.PointData,
 			param,
-			data: getState().allPointData
+			data: getState().pointList
 		});
 	};
 };

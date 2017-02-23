@@ -32,7 +32,7 @@ const PointEdit = React.createClass({
 				initialFrameHeight: 250,
 				scaleEnabled: true
 			}).ready(function(){
-				this.setContent(self.props.pointData.benefitKeyDesc);
+				this.setContent(self.props.pointDetail.benefitKeyDesc);
 			});
 			if(initPagePath.type!=1){
 				UE.getEditor('editor1',{
@@ -40,7 +40,7 @@ const PointEdit = React.createClass({
 					initialFrameHeight: 250,
 					scaleEnabled: true
 				}).ready(function(){
-					this.setContent(self.props.pointData.benefitValueDesc);
+					this.setContent(self.props.pointDetail.benefitValueDesc);
 				});
 			};
 		});
@@ -118,7 +118,7 @@ const PointEdit = React.createClass({
 		//入参
 		if(isPointEditPath){
 			//修改节点
-			param.libId = this.props.pointData.libId;
+			param.libId = this.props.pointDetail.libId;
 			param.eventType = 'pointedit';
 		}else if(isPointAddPath){
 			//新增节点
@@ -128,8 +128,8 @@ const PointEdit = React.createClass({
 			param.eventType = 'pointadd';
 		}else if(isCateEditPath){
 			//修改分类
-			param.libId = this.props.pointData.libId;
-			param.nodeType = this.props.pointData.nodeType;
+			param.libId = this.props.pointDetail.libId;
+			param.nodeType = this.props.pointDetail.nodeType;
 			param.eventType = 'cateedit';
 		}else if(isCateAddPath){
 			//新增分类
@@ -167,7 +167,7 @@ const PointEdit = React.createClass({
 			'btn': true
 		});
 		const btnText = this.state.isRequesting?'保存中...':'保存';
-		const data = this.props.pointData;
+		const data = this.props.pointDetail;
 		return (
 			<section className="main point-edit">
 				<div className="title">{actionText+typeText}</div>

@@ -1,9 +1,9 @@
 ﻿import * as types from '../actions/actionType.js';
 
 const initState = {
-	allPointDataCache: [],
-	allPointData: [],
-	pointData: {
+	pointListCache: [],
+	pointList: [],
+	pointDetail: {
 		nodeTitle: '',
 		benefitKeyDesc: '',
 		benefitValueDesc: ''
@@ -12,16 +12,16 @@ const initState = {
 };
 //reducer其实也是一个方法而已，三处是state和action,返回值是新的state
 //获取节点树数据
-export function allPointData(state=initState.allPointData,action){
+export function pointList(state=initState.pointList,action){
 	switch(action.type){
 		case types.AllPointData:
-			action.eventType=='init'&&(initState.allPointDataCache=action.data);
+			action.eventType=='init'&&(initState.pointListCache=action.data);
 			let letterList = [];
-			let allPointData = action.eventType=='init'?JSON.parse(JSON.stringify(action.data)):JSON.parse(JSON.stringify(initState.allPointDataCache));
-			allPointData = allPointData.filter(item=>{
+			let pointList = action.eventType=='init'?JSON.parse(JSON.stringify(action.data)):JSON.parse(JSON.stringify(initState.pointListCache));
+			pointList = pointList.filter(item=>{
 				return item.nodeTyp==1||item.nodeType==5||unescape(item.nodeTitle).indexOf(action.keyword)!=-1;
 			});
-			allPointData.sort((a,b)=>{
+			pointList.sort((a,b)=>{
 				return makePy(unescape(b.nodeTitle).charAt(0))[0].toUpperCase() < makePy(unescape(a.nodeTitle).charAt(0))[0].toUpperCase() ? 1 : -1;
 			}).forEach((item)=>{
 				item.benefitKeyDesc = unescape(item.benefitKeyDesc);
@@ -49,7 +49,7 @@ export function allPointData(state=initState.allPointData,action){
 					subItem.nodeTitle = unescape(subItem.nodeTitle);
 				});
 			});
-			return JSON.parse(JSON.stringify(allPointData));
+			return JSON.parse(JSON.stringify(pointList));
 		case types.ToggleSearchbox:
 			state.forEach(item=>item.libId==action.one.libId&&(item.isShowSearchbox=!item.isShowSearchbox));
 			return JSON.parse(JSON.stringify(state));
@@ -85,11 +85,11 @@ export function letterList(state=initState.letterList,action){
 	}
 };
 //获取节点内容
-export function pointData(state=initState.pointData,action){
+export function pointDetail(state=initState.pointDetail,action){
 	switch(action.type){
 		case types.PointData:
 			if(action.param.eventType=='cateadd'||action.param.eventType=='pointadd'){
-				return initState.pointData;
+				return initState.pointDetail;
 			}else if(action.param.eventType=='cateedit'){
 				return action.data.filter(item=>item.libId==action.param.id)[0];
 			}else if(action.param.eventType=='pointedit'){

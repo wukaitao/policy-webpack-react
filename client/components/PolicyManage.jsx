@@ -45,10 +45,10 @@ const PolicyManage = React.createClass({
 		//删除保单
 		const self = this;
 		let param = {
-			currentPage: this.props.policyListData.currentPage,
+			currentPage: this.props.policyList.currentPage,
 			policyIdArray: []
 		};
-		this.props.policyListData.basicList.forEach(item=>item.chosen&&(param.policyIdArray.push(item.policyId)));
+		this.props.policyList.basicList.forEach(item=>item.chosen&&(param.policyIdArray.push(item.policyId)));
 		this.props.pageStatus.oSearch.isTemplate!==''&&(param.isTemplate=this.props.pageStatus.oSearch.isTemplate);
 		if(/^[0-9]*$/.test(this.refs.policyKeyword.value)) param.policyMemberIdPattern = this.refs.policyKeyword.value;
 		else param.policyNamePattern = this.refs.policyKeyword.value;
@@ -118,7 +118,7 @@ const PolicyManage = React.createClass({
 		//改变全选状态
 		const self = this;
 		setTimeout(function(){
-			const data = self.props.policyListData.basicList;
+			const data = self.props.policyList.basicList;
 			self.refs.chooseAll.checked=true;
 			for(let item of data){
 				if(!item.chosen){
@@ -154,7 +154,7 @@ const PolicyManage = React.createClass({
 	},
 	render(){
 		const pageStatus = this.props.pageStatus;
-		const data = this.props.policyListData;
+		const data = this.props.policyList;
 		const classSet = addons.classSet;
 		const iSortClass = classSet({
 			'icon-arrow_drop_up': this.state.sortType=='asc',

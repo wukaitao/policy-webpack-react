@@ -21,7 +21,7 @@ const App = React.createClass({
 		//刷新跳转/登录认证
 		const path = nextState.location.pathname;
 		const isRefreshPolicyPointPath = ['pointchoose','pointdrag'].indexOf(path.split('/')[1])!=-1&&!store.getState().policyDetail.benefitList;
-		const isRefreshPointEditPath = ['cateadd','cateedit','pointadd','pointedit'].indexOf(path.split('/')[1])!=-1&&!store.getState().allPointData.length;
+		const isRefreshPointEditPath = ['cateadd','cateedit','pointadd','pointedit'].indexOf(path.split('/')[1])!=-1&&!store.getState().pointList.length;
 		const isLogin = store.getState().pageStatus.isLogin;
 		if(isRefreshPolicyPointPath){
 			replace('/policymanage');

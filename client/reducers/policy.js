@@ -1,7 +1,7 @@
 ﻿import * as types from '../actions/actionType.js';
 
 const initState = {
-	policyListData: {
+	policyList: {
 		basicList: []
 	},
 	policyDetail: {},
@@ -10,7 +10,7 @@ const initState = {
 };
 //reducer其实也是一个方法而已，三处是state和action,返回值是新的state
 //获取保单列表结果数据
-export function policyListData(state=initState.policyListData,action){
+export function policyList(state=initState.policyList,action){
 	switch(action.type){
 		case types.PolicyListData:
 			const pageCount = action.data.totalCount==0 ? 1 : 

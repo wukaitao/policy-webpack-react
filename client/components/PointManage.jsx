@@ -121,7 +121,7 @@ const PointManage = React.createClass({
 	render(){
 		const self = this;
 		const classSet = addons.classSet;
-		const data = this.props.allPointData;
+		const data = this.props.pointList;
 		const tab2Class = classSet({
 			'selected': this.state.currentTabType=='nodeType2',
 			'tab': true
