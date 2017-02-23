@@ -15,7 +15,7 @@ const Popup = React.createClass({
 		const param = {
 			result: true
 		};
-		if(this.props.pageStatus.dialog.type=='alert'||this.props.pageStatus.dialog.type=='window') this.closeDialog();
+		if(this.props.pageStatus.dialog.type=='alert'||this.props.pageStatus.dialog.type=='window') this.closeDialogHandler();
 		else this.props.dialogCancel(param,function(){
 			self.props.pageStatus.dialog.callback.call(this);
 		});
