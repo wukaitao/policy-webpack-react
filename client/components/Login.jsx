@@ -74,7 +74,7 @@ const Login = React.createClass({
 									<input id="password" type="password" ref="password" autoComplete="off" maxLength="20" placeholder="请输入密码" className="textbox-text"/>
 								</div>
 								<div className="btn-area">
-									<button id="btnLogin" className="btn" type="submit">登录</button>
+									<button id="btnLogin" className="btn-primary" type="submit">登录</button>
 								</div>
 							</form>
 						</div>
