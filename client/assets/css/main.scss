@@ -2,17 +2,16 @@
 
 /*nav start*/
 .nav{
+    @extend .backgroung-blue;
     width: 100%;
     height: 80px;
-    background-color: #2679c5;
     line-height: 80px;
-    color: #fff;
     .title{
-        float: left;
         height: 40px;
         line-height: 40px;
-        font-size: 18px;
         margin: 20px 60px 20px 20px;
+        font-size: 18px;
+        float: left;
     }
     .welcome{
         position: absolute;
@@ -24,16 +23,21 @@
         }
     }
     .menu{
-        a,span{
-            display: block;
-            float: left;
+        a{
             padding: 0 15px;
             font-size: 16px;
-            color: #fff;
+            color: $white;
+            float: left;
+            display: block;
             cursor: pointer;
+            &:hover,&.current{
+                background-color: #175590;
+            }
         }
-        a:hover,a.current{
-            background-color: #175590;
+        span{
+            padding-bottom: 0px 15px;
+            float: left;
+            display: block;
         }
     }
 }
@@ -47,15 +51,11 @@
         height: 100px;
         margin: 0px auto;
         .logo{
-            display: inline-block;
-            vertical-align: middle;
             width: 220px;
             height: 40px;
-            margin: 30px 0px;/*
-            background-image: url('../images/cignacmb_logo.png');
-            background-position: center center;
-            background-repeat: no-repeat;
-            background-size: cover;*/
+            margin: 30px 0px;
+            display: inline-block;
+            vertical-align: middle;
         }
         .name{
             display: inline-block;
@@ -86,7 +86,7 @@
                 width: 450px;
                 height: 380px;
                 padding: 20px;
-                background-color: #fff;
+                background-color: $white;
                 border-radius: 5px;
                 box-shadow: 2px 2px 5px rgba(0,0,0,0.45);
                 box-sizing: border-box;
@@ -94,7 +94,7 @@
                 .title{
                     padding: 0px 0px 20px;
                     margin: 20px 0px 30px;
-                    border-bottom: 1px solid #ccc;
+                    border-bottom: 1px solid $gray;
                     font-size: 24px;
                 }
                 .form-row{
@@ -105,11 +105,10 @@
                         font-size: 18px;
                         font-weight: bold;
                         text-align: right;
-                        color: #333;
+                        color: $black;
                     }
                     .textbox-text{
-                        border-radius: 0px;
-                        border: 1px solid #d4d4d4;
+                        border: 1px solid $gray;
                         width: 200px;
                         height: 32px;
                         padding: 0px 5px;
@@ -117,38 +116,32 @@
                 }
                 .btn-area{
                     margin-top: 20px;
-                    margin-right: 80px;
+                    margin-right: 95px;
                     text-align: right;
-                    .btn{
+                    .btn-primary{
+                        @extend .btn-primary;
                         width: 110px;
                         line-height: 48px;
                         font-size: 24px;
-                        border: none;
-                        padding: 0px;
-                        border-radius: 5px;
-                        background-color: #2679c5;
-                        color: #fff;
-                        outline: none;
-                        cursor: pointer;
                     }
                     .btn-disabled{
-                        background-color: #ddd;
-                        text-shadow: 1px 1px 1px rgba(255,255,255,1);
-                        color: #666;
+                        @extend .btn-disabled;
+                        width: 110px;
+                        line-height: 48px;
+                        font-size: 24px;
                     }
                 }
             }
         }
     }
     .login-foot{
-        background-color: #fff;
+        @extend .fixed;
+        top: initial;
+        height: initial;
         line-height: 28px;
         padding-top: 5px;
-        position: fixed;
-        bottom: 0px;
-        left: 0px;
-        right: 0px;
         text-align: center;
+        background-color: $white;
     }
 }
 /*login page end*/
@@ -177,28 +170,28 @@
             text-align: right;
             padding: 5px 10px;
             .searchbox{
-                border:1px solid #fff;
-                border-radius: 5px;
+                @extend .border-radius;
                 height: 24px;
+                border:1px solid $white;
+                background-color: $white;
                 display: inline-block;
-                background-color: #fff;
                 input{
                     height: 22px;
                     width: 185px; 
+                    margin: 0px 5px;
                     vertical-align: middle;
                     border: none;
-                    margin: 0px 5px;
                 }
                 .type{
-                    position: relative;
-                    display: inline-block;
                     width: 55px;
                     height: 24px;
-                    text-align: left;
                     margin: 0px;
                     padding: 0px 5px;
+                    color: $black;
+                    text-align: left;
                     vertical-align: text-top;
-                    color: #333;
+                    position: relative;
+                    display: inline-block;
                     cursor: pointer;
                     span{
                         white-space: nowrap;
@@ -216,26 +209,27 @@
                         padding: 0px 0px 2px 0px;
                         border-radius: 0px 0px 5px 5px;
                         text-align: left;
-                        background-color: #fff;
+                        background-color: $white;
                     }
                     li{
                         margin: 0px 5px;
                         line-height: 22px;
-                    }
-                    li:hover{
-                        background-color: #97c5ef;
+                        &:hover{
+                            background-color: $lightBlue;
+                        }
                     }
                 }
                 .icon-search{
-                    display: inline-block;
-                    cursor: pointer;
-                    background-color: #2679c5;
-                    color: #fff;
+                    @extend .backgroung-blue;
+                    @extend .border-radius;
                     height: 22px;
                     padding: 0px 10px;
-                    border-radius: 0px 5px 5px 0px;
+                    border-top-left-radius: 0px;
+                    border-bottom-left-radius: 0px;
                     vertical-align: top;
                     line-height: 22px;
+                    display: inline-block;
+                    cursor: pointer;
                 }
             }
         }
@@ -246,14 +240,14 @@
         table-layout: fixed;
         thead{
             tr{
-                background-color: #ccc;
+                background-color: $gray;
                 font-weight: bold;
                 text-align: center;
                 th{
-                    white-space: nowrap;
-                    overflow: hidden;
                     line-height: 32px;
                     padding: 0px 5px;
+                    white-space: nowrap;
+                    overflow: hidden;
                 }
                 th:first-child{
                     font-size: 12px;
@@ -261,61 +255,51 @@
                         margin-left: -2px;
                     }
                     i{
-                        display: inline-block;
-                        vertical-align: middle;
                         font-size: 14px;
+                        vertical-align: middle;
+                        display: inline-block;
                         cursor: pointer;
-                    }
-                    button{
-                        background-color: #eee;
-                        font-size: 12px;
-                        padding: 0px 2px;
-                        line-height: 20px;
-                        vertical-align: baseline;
-                        border: none;
                     }
                 }
             }
         }
         .template{
-            color: #2679c5;
+            color: $blue;
         }
         td{
             line-height: 28px;
             padding: 0px 5px;
             .btn{
-                font-size: 12px;
-                background-color: #ddd;
-                border-color: #ddd;
-                line-height: 24px;
+                @extend .btn;
                 width: 50px;
                 margin: 2px 0px 2px 2px;
                 padding: 0px;
-                border-radius: 5px;
-            }
-            .btn:hover{
-                background-color: #bbb;
-                border-color: #bbb;
-            }
-            .btn:active{
-                box-shadow: 0px 1px 5px rgba(0,0,0,0.15) inset;
+                background-color: #ddd;
+                border-color: #ddd;
+                &:hover{
+                    background-color: #bbb;
+                    border-color: #bbb;
+                }
+                &:active{
+                    box-shadow: 0px 1px 5px rgba(0,0,0,0.15) inset;
+                }
             }
         }
         tbody{
             tr{
                 i{
-                    display: none;
-                    vertical-align: middle;
                     margin: 0px 0px 0px 5px;
                     font-size: 12px;
+                    vertical-align: middle;
+                    display: none;
                     cursor: pointer;
                 }
             }
             tr:nth-child(even){
-                background-color: #f0f0f0;
+                background-color: $lightGray;
             }
             tr:hover{
-                background-color: #97c5ef;
+                background-color: $lightBlue;
                 i{
                     display: inline-block;
                 }
@@ -324,34 +308,34 @@
     }
 }
 .data-policyInfo{
-    margin: -12px 0px;
     width: 100%;
+    margin: -12px 0px;
     table-layout: fixed;
     thead{
         tr{
-            background-color: #ccc;
+            background-color: $gray;
             font-weight: bold;
         }
     }
     tbody{
         tr:nth-child(even){
-            background-color: #f0f0f0;
+            background-color: $lightGray;
         }
         tr:hover{
-            background-color: #97c5ef;
+            background-color: $lightBlue;
         }
     }
     th,td{
-        text-align: center;
         padding: 0px 5px;
         line-height: 28px;
+        text-align: center;
     }
 }
 /*policymanage page end*/
 
 /*policyedit page start*/
 .policy-edit{
-    background-color: #f4f4f4;
+    background-color: $lightGray;
     *{
         box-sizing: border-box;
     }

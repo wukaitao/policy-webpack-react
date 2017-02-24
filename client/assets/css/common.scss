@@ -1,4 +1,8 @@
-﻿html,body{
+﻿/* Author: Nicky.Wu
+ * Date: 2017-02-24
+ * Version: 1.0.0 */
+
+html,body{
 	font-size: 12px;
 	font-family: '微软雅黑';
 	margin: 0;
@@ -13,28 +17,53 @@ a{
 }
 /*common start*/
 ul,ol,li,dl,dt,dd,p{
+    @extend .block;
+}
+button,input,textarea,select{
+    @extend .block;
+    vertical-align: middle;
+}
+table{
+    border-collapse: collapse;
+}
+i{
+    vertical-align: middle;
+}
+.block {
     margin: 0px;
     padding: 0px;
     list-style: none;
     border: none;
     outline: none;
 }
-button,input,textarea,select{
-    margin: 0px;
-    padding: 0px;
-    vertical-align: middle;
-    outline: none;
-}
-table{
-    border-collapse: collapse;
-}
-.text-center{
-    text-align: center;
-}
-.text-ellipsis{
+.text-ellipsis {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+.fixed{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    z-index: 10;
+}
+.display-table{
+    display: table;
+}
+.display-table-row{
+    display: table-row;
+    vertical-align: middle;
+}
+.display-table-cell{
+    display: table-cell;
+    vertical-align: middle;
+}
+.text-center{
+    text-align: center;
 }
 .show{
     display: block;
@@ -42,95 +71,104 @@ table{
 .hide{
     display: none !important;
 }
-i{
-    vertical-align: baseline;
+$blue: #2679c5;
+$white: #fff;
+$orange: #ff8502;
+$black: #333;
+$gray: #ccc;
+$lightGray: #f2f2f2;
+$deepGray: #999;
+$lightBlue: #97c5ef;
+$deepBlue: #175590;
+.backgroung-blue{
+    background-color: $blue;
+    color: $white;
+}
+.background-gray{
+    background-color: $lightGray;
+    color: $black;
+}
+.border-radius{
+    border-radius: 5px;
+}
+.icon{
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    margin: 0px;
+    padding: 0px;
+    font-size: 14px;
+    border-radius: 8px;
+    display: inline-block;
+    text-align: center;
 }
 /*common end*/
 
 /*dialog style start*/
 .dialog{
+    @extend .fixed;
     display: none;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
     background-color: rgba(0,0,0,0.35);
-    z-index: 1001;
-    *{
-        box-sizing: border-box;
-    }
 }
 .dialog.show{
-    display: table;
+    @extend .display-table;
 }
 .dialog-wrap{
-    display: table-cell;
+    @extend .display-table-cell;
     width: 100%;
     height: 100%;
-    vertical-align: middle;
 }
 .toast-box{
+    @extend .border-radius;
     margin: 0px auto;
     z-index: 1002;
     width: 260px;
     height: 100px;
     line-height: 100px;
+    background-color: $white;
     text-align: center;
-    background-color: #fff;
-    border-radius: 5px;
     overflow: hidden;
     i{
         vertical-align: middle;
         margin: 5px 10px 5px 0px;
         font-size: 32px;
-        color: #2679c5;
+        color: $blue;
     }
     p{
         display: inline-block;
     }
 }
 .dialog-box{
-    background-color: #fff;
-    border-radius: 5px;
-    overflow: hidden;
+    @extend .border-radius;
     margin: 0px auto;
+    background-color: $white;
+    overflow: hidden;
 }
 .dialog-title{
+    @extend .backgroung-blue;
     height: 28px;
     line-height: 28px;
     padding: 0px 10px;
-    color: #fff;
-    background-color: #2679c5;
     i{
-        float: right;
-        display: inline-block;
-        width: 16px;
-        height: 16px;
-        text-align: center;
-        line-height: 16px;
+        @extend .icon;
         margin: 6px 0px;
-        padding: 0px;
-        font-size: 14px;
-        border-radius: 8px;
+        float: right;
         cursor: pointer;
-    }
-    i:hover{
-        background-color: #175590;
+        &:hover{
+            background-color: $deepBlue;
+        };
     }
 }
 .dialog-content{
     padding: 10px 10px 0px;
     line-height: 22px;
-    color: #000;
+    color: $black;
     i{
         float: left;
         vertical-align: middle;
         margin: 5px 10px 5px 0px;
         font-size: 32px;
-        color: #2679c5;
+        color: $blue;
     }
     p{
         padding: 12px 0px;
@@ -153,13 +191,13 @@ i{
 .dialog-content i.icon-question,
 .dialog-content i.icon-info,
 .dialog-content i.icon-circle-check{
-    color: #2679c5;
+    color: $blue;
 }
 .toast-box i.icon-notification,
 .toast-box i.icon-circle-cross,
 .dialog-content i.icon-notification,
 .dialog-content i.icon-circle-cross{
-    color: #ff8502;
+    color: $orange;
 }
 /*dialog style end*/
 
@@ -173,15 +211,11 @@ i{
     }
 }
 .cover{
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
+    @extend .fixed;
     background-color: rgba(0,0,0,0.35);
-    z-index: 1000;
 }
 .loading{
+    @extend .border-radius;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -189,11 +223,10 @@ i{
     width: 150px;
     height: 80px;
     margin: -40px 0px 0px -75px;
-    background-color: rgba(0,0,0,0.65);
-    border-radius: 5px;
-    text-align: center;
     font-size: 12px;
-    color: #fff;
+    color: $white;
+    text-align: center;
+    background-color: rgba(0,0,0,0.65);
     p{
         line-height: 28px;
         margin: 10px 0px 0px;
@@ -214,7 +247,7 @@ i{
                 display: inline-block;
                 width: 100%;
                 height: 4px;
-                background-color: #fff;
+                background-color: $white;
                 animation: showDelay 1.3s infinite ease-in-out;
             }
             .rect-odd{
@@ -286,39 +319,48 @@ i{
 
 /*btn style start*/
 .btn{
-    border:1px solid #ccc;
-    background-color: #ccc;
-    line-height: 24px;
+    @extend .border-radius;
     margin-left: 5px;
     padding: 0px 10px;
+    line-height: 24px;
+    color: $black;
+    border: 1px solid $gray;
+    background-color: $gray;
     text-align: center;
     vertical-align: middle;
-    color: #333;
-    border-radius: 5px;
     display: inline-block;
     cursor: pointer;
 }
-.btn-primary,
-.btn-primary:hover,
-.btn-primary:active{
-    border:1px solid #2679c5;
-    background-color: #2679c5;
-    color: #fff;
+.btn-primary{
+    @extend .btn;
+    border:1px solid $blue;
+    background-color: $blue;
+    color: $white;
+    &:hover,
+    &:active{
+        border:1px solid $deepBlue;
+        background-color: $deepBlue;
+    }
 }
-.btn-warn,
-.btn-warn:hover,
-.btn-warn:active{
-    border:1px solid #ff8502;
-    background-color: #ff8502;
-    color: #fff;
+.btn-warn{
+    @extend .btn;
+    border:1px solid $orange;
+    background-color: $orange;
+    color: $white;
+    &:hover,
+    &:active{
+        border:1px solid $orange;
+        background-color: $orange;
+    }
 }
 .btn-disabled,
 .btn-disabled:hover,
 .btn-disabled:active{
-    border:1px solid #ddd;
-    background-color: #ddd;
+    @extend .btn;
+    border:1px solid $gray;
+    background-color: $gray;
     text-shadow: 1px 1px 1px rgba(255,255,255,1);
-    color: #666;
+    color: $deepGray;
 }
 /*btn style end*/
 
