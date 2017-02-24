@@ -80,7 +80,10 @@ $lightGray: #f2f2f2;
 $deepGray: #999;
 $lightBlue: #97c5ef;
 $deepBlue: #175590;
+<<<<<<< HEAD
 $deepOrange: #f36e01;
+=======
+>>>>>>> refs/remotes/origin/master
 .backgroung-blue{
     background-color: $blue;
     color: $white;
@@ -350,8 +353,13 @@ $deepOrange: #f36e01;
     color: $white;
     &:hover,
     &:active{
+<<<<<<< HEAD
         border:1px solid $deepOrange;
         background-color: $deepOrange;
+=======
+        border:1px solid $orange;
+        background-color: $orange;
+>>>>>>> refs/remotes/origin/master
     }
 }
 .btn-disabled,
