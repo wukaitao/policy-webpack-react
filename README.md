@@ -6,6 +6,7 @@ react开发webpack打包的cms系统
     * http-proxy-middleware:代理服务器
     * html-webpack-plugin:生成html文件
     * transfer-webpack-plugin:复制文件
+    * copy-webpack-plugin:复制文件(可以单个文件复制)
     * webpack:打包工具
     * webpack-dev-middleware:express框架的开发服务器
     * webpack-hot-middleware:热重载
