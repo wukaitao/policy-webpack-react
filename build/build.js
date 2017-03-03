@@ -19,7 +19,7 @@ const config = merge(baseWebpackConfig,{
 		loaders: [
 			{
 				test: /\.(css|scss)$/,
-				loader: ExtractTextPlugin.extract('style-loader','css-loader','resolve-url','sass-loader')
+				loader: ExtractTextPlugin.extract('style','css!sass','resolve-url')
 			}
 		]
 	},
@@ -30,13 +30,11 @@ const config = merge(baseWebpackConfig,{
   			{from: path.resolve(__dirname,'../client/assets/json'),to: 'assets/json'},//复制json文件
   			{from: path.resolve(__dirname,'../client/assets/lib'),to: 'assets/lib'}//复制lib文件
   		]),
-  		new CopyWebpackPlugin([
-            //复制单个文件
-            {
-            	from: path.resolve(__dirname,'../client/assets/images/favorite.ico'), 
-            	to: 'assets/images/favorite.ico'
-            }
-        ]),
+  		new CopyWebpackPlugin([{
+  			//复制单个文件
+        	from: path.resolve(__dirname,'../client/assets/images/favorite.ico'), 
+        	to: 'assets/images/favorite.ico'
+        }]),
   		new HtmlWebpackPlugin({
   			filename: 'index.html',//文件名
   			title: 'my first project by webpack.',//标题(会被template模板覆盖)
