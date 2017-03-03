@@ -9,6 +9,7 @@ react开发webpack打包的cms系统
     * webpack:打包工具
     * webpack-dev-middleware:express框架的开发服务器
     * webpack-hot-middleware:热重载
+    * opn:浏览器打开地址
     
     * react:mvvn框架
     * react-router:react路由
