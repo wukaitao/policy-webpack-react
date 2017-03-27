@@ -1,6 +1,6 @@
 ﻿const HtmlWebpackPlugin =  require('html-webpack-plugin');//生成html中间件
 const ExtractTextPlugin = require('extract-text-webpack-plugin');//抽取css样式
-const TransferWebpackPlugin = require('transfer-webpack-plugin');;//复制文件
+const TransferWebpackPlugin = require('transfer-webpack-plugin');//复制文件
 const CopyWebpackPlugin = require('copy-webpack-plugin');//复制文件(可以单个文件复制)
 const webpack = require('webpack');//打包工具
 const merge = require('webpack-merge');//合并
